@@ -11,6 +11,7 @@ use App\Livewire\Cookies\Orders as CookieOrders;
 use App\Livewire\Cookies\RecipeForm;
 use App\Livewire\Cookies\Show as CookieShow;
 use App\Livewire\Planning\Board;
+use App\Livewire\Raffle\Index as RaffleIndex;
 use App\Livewire\Stands\Index as StandsIndex;
 use App\Livewire\Stands\StandForm;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
         Route::livewire('recettes/{recipe}', CookieShow::class)->name('show');
     });
+
+    Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
 
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::livewire('users', Users::class)->name('users');

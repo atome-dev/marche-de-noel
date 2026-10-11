@@ -168,7 +168,13 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 
 - La page est rustique dans la v1 et doit être modernisée.
 - Les responsables du stand « Tombola » éditent la liste des lots et saisissent les gagnants.
-- Les détails restent à définir : ne rien inventer.
+- Un lot a un libellé, un numéro et, après le tirage, le numéro du ticket gagnant.
+- Le numéro d'un lot est sa position dans la liste (1 = lot le plus important) ; le tirage va du numéro n au numéro 1. Tant que la liste est en préparation, les lots peuvent être reclassés et les numéros suivent.
+- Une fois la liste validée, les numéros sont figés : tout nouveau lot prend le numéro n+1, n+2, etc. Un numéro supprimé n'est pas réattribué.
+- Le ticket gagnant se saisit après validation de la liste, le jour du tirage.
+- Page `/tombola` : tous les connectés voient les lots et les tickets gagnants ; les responsables d'un stand de type « Tombola » et l'administrateur éditent (`manage-raffle`).
+- La purge efface les lots.
+- Restent à définir : photo, donateur, annulation de la validation ; ne rien inventer.
 
 ## Visuel de l'année (flyer)
 

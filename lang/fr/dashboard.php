@@ -18,7 +18,7 @@ return [
         ],
         'raffle' => [
             'title' => 'Tombola',
-            'text' => 'Les lots et les gagnants.',
+            'text' => 'Les lots et les tickets gagnants.',
         ],
         'documents' => [
             'title' => 'Documents',

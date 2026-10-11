@@ -20,6 +20,9 @@
                 <flux:sidebar.item icon="cake" :href="route('cookies.index')" :current="request()->routeIs('cookies.*')" wire:navigate>
                     {{ __('navigation.cookies') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="gift" :href="route('raffle.index')" :current="request()->routeIs('raffle.*')" wire:navigate>
+                    {{ __('navigation.raffle') }}
+                </flux:sidebar.item>
                 @if (auth()->user()->isAdmin() || auth()->user()->managedStands()->exists())
                     <flux:sidebar.item icon="building-storefront" :href="route('stands.index')" :current="request()->routeIs('stands.*')" wire:navigate>
                         {{ auth()->user()->isAdmin() ? __('navigation.stands') : __('navigation.my_stands') }}

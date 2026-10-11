@@ -21,6 +21,7 @@ class Purge extends Command
      * @var list<string>
      */
     public const TABLES = [
+        'raffle_prizes',
         'ingredient_orders',
         'commitments',
         'registrations',

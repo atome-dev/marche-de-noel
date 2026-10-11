@@ -43,6 +43,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-cookies', fn (User $user): bool => $user->managedStands()
             ->where('type', StandType::Cookies)
             ->exists());
+
+        // Raffle prizes and winning tickets.
+        Gate::define('manage-raffle', fn (User $user): bool => $user->managedStands()
+            ->where('type', StandType::Raffle)
+            ->exists());
     }
 
     /**

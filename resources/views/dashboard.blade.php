@@ -54,7 +54,18 @@
                 </div>
             </a>
 
-            @foreach (['raffle' => 'gift', 'documents' => 'document-text'] as $module => $icon)
+            <a href="{{ route('raffle.index') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
+                    <flux:icon name="gift" />
+                </div>
+                <div>
+                    <h2 class="font-display text-lg">{{ __('dashboard.modules.raffle.title') }}</h2>
+                    <p class="text-sm text-zinc-600">{{ __('dashboard.modules.raffle.text') }}</p>
+                    <span class="mt-2 inline-block text-sm font-semibold text-brand-green">{{ __('dashboard.open') }} →</span>
+                </div>
+            </a>
+
+            @foreach (['documents' => 'document-text'] as $module => $icon)
                 <div class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5" wire:key="module-{{ $module }}">
                     <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
                         <flux:icon :name="$icon" />
