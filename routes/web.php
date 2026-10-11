@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
 
+Route::view('donnees-personnelles', 'privacy')->name('privacy');
+
 Route::middleware('guest')->group(function () {
     Route::livewire('register', Register::class)->name('register');
 

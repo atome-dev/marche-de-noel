@@ -43,6 +43,9 @@
                 <flux:sidebar.item icon="globe-alt" :href="config('marche.school_url')" target="_blank">
                     {{ __('navigation.school_site') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="shield-check" :href="route('privacy')" :current="request()->routeIs('privacy')">
+                    {{ __('privacy.link') }}
+                </flux:sidebar.item>
             </flux:sidebar.nav>
 
             <x-desktop-user-menu class="hidden lg:block" />

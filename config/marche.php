@@ -23,6 +23,11 @@ return [
 
     'school_url' => env('MARCHE_SCHOOL_URL', 'https://ecole-steiner-verrieres.org/'),
 
+    // Adresse de contact affichée sur la page « Données personnelles ».
+    'privacy' => [
+        'contact_email' => env('MARCHE_PRIVACY_CONTACT_EMAIL', 'accueil@ecole-steiner-verrieres.org'),
+    ],
+
     // Mot de passe commun permettant de demander la création d'un compte.
     'temp_password' => env('MARCHE_TEMP_PASSWORD'),
 

@@ -33,6 +33,7 @@ Priorité absolue au mobile-first : la plupart des bénévoles utilisent un tél
 - Le site reste actif environ deux semaines après le marché pour la tombola.
 - Aucune conservation des données au-delà de ce cycle.
 - La purge conserve uniquement les données de référence : les classes et la liste des stands (avec leurs classes associées). Créneaux, inscriptions, responsables et comptes sont effacés.
+- Page « Données personnelles » (`/donnees-personnelles`, `lang/fr/privacy.php`) : publique, liée depuis les pages de connexion et le menu ; adresse de contact dans `MARCHE_PRIVACY_CONTACT_EMAIL`. La tenir à jour quand une donnée collectée ou sa visibilité change.
 - Chaque année, redéfinir dans `.env` le mot de passe temporaire, les dates, les heures et les autres paramètres annuels.
 
 ## Variables `.env` à prévoir

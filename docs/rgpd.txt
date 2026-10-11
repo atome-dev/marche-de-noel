@@ -1,0 +1,64 @@
+Protection des données personnelles
+Comment le Cercle de Confiance collecte, protège et vous permet de contrôler vos données, conformément au RGPD.
+
+Responsable du traitement
+Le responsable du traitement des données collectées sur ce site est l'association LIBRE ÉCOLE RUDOLF STEINER (École Steiner Waldorf de Verrières-le-Buisson), déclarée auprès de la préfecture d'Évry sous le numéro W913000590, dont le siège social est situé 62 rue de Paris, 91370 Verrières-le-Buisson, représentée par Lionel Cornec, Trésorier.
+
+Pour toute question relative à vos données personnelles, vous pouvez contacter cercledeconfiancevlb@gmail.com, ou joindre l'établissement au 01 60 11 38 12 / accueil@ecole-steiner-verrieres.org.
+
+Données que nous collectons
+Formulaire « Nous contacter ». Le nom et l'adresse email sont facultatifs — vous n'êtes jamais obligé de les renseigner pour déposer un témoignage. Le contenu du message est toujours enregistré. Un code de suivi (ex. ABCD-EFGH) vous est remis pour consulter les réponses ; il n'est conservé nulle part par l'application après vous avoir été communiqué.
+
+Comptes des membres de l'équipe (parents, professeurs, administrateurs habilités) : nom, adresse email, mot de passe (jamais stocké en clair), photo facultative, rôle et titre au sein du Cercle, date et heure de chaque connexion (sans adresse IP ni navigateur), et — si activée — la configuration de la double authentification.
+
+Contenu des dossiers. Les messages échangés entre un expéditeur et l'équipe, ainsi que les notes internes ajoutées à un dossier, sont enregistrés pour assurer le suivi du signalement.
+
+Chiffrement. Le nom et l'email de l'expéditeur sont chiffrés avec l'algorithme AES-256-CBC (authentifié par HMAC-SHA256) ; les messages échangés et les notes internes sont chiffrés avec l'algorithme AES-256-GCM, avec une clé de chiffrement propre à chaque dossier.
+
+Cookies techniques. Un cookie mémorise que le code d'accès de l'établissement a été saisi (valable 30 jours) et un cookie de session assure le bon fonctionnement du site pendant votre visite. Aucun cookie publicitaire ou de mesure d'audience n'est utilisé. Les polices de caractères sont chargées depuis les serveurs de Google Fonts, ce qui transmet votre adresse IP à Google lors de l'affichage d'une page.
+
+Pourquoi, et sur quelle base légale
+Ces données sont traitées pour permettre le fonctionnement du Cercle de Confiance : recevoir et traiter les signalements, en assurer le suivi, et gérer les comptes des personnes habilitées à y accéder. Ce traitement repose sur l'intérêt légitime de l'établissement à assurer un espace d'écoute et de médiation pour sa communauté, et, pour les données facultatives (nom, email de l'expéditeur), sur votre consentement explicite au moment où vous choisissez de les renseigner.
+
+Le contenu des signalements peut, selon les cas, concerner des mineurs. Il est traité avec une vigilance renforcée et n'est accessible qu'aux personnes explicitement autorisées à consulter le dossier concerné (voir ci-dessous).
+
+Comment vos données sont protégées
+Le contenu des dossiers (messages échangés et notes internes) est chiffré : chaque dossier possède sa propre clé de chiffrement, elle-même remise uniquement aux personnes explicitement autorisées à consulter ce dossier précis. Un membre de l'équipe ne peut donc lire que les dossiers qui lui ont été attribués ou partagés — jamais l'ensemble des dossiers par défaut.
+
+Les mots de passe des comptes ne sont jamais stockés en clair, et une double authentification peut être activée pour les comptes administrateurs.
+
+Qui a accès à vos données
+Un dossier n'est visible que par les membres de l'équipe (parents, professeurs) auxquels il a été explicitement attribué ou partagé. Aucune donnée n'est vendue ni transmise à des tiers à des fins commerciales.
+
+Les données sont hébergées par OVH, dont le siège social est situé 2 rue Kellermann, 59053 Roubaix (France).
+
+Combien de temps vos données sont conservées
+Un dossier clos (statut « archivé ») est supprimé automatiquement et définitivement 18 mois après sa clôture — dossier, messages, notes internes et clés de chiffrement associées sont effacés dans leur intégralité. Si le dossier est rouvert avant ce délai, le compteur de 18 mois est annulé.
+
+Les comptes des membres qui quittent l'établissement sont supprimés aussitôt après leur départ, à la demande du responsable du traitement.
+
+Vos droits
+Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés, vous disposez des droits suivants sur vos données personnelles :
+
+Droit d'accès
+Savoir quelles données vous concernant sont enregistrées.
+
+Droit de rectification
+Faire corriger une donnée inexacte ou incomplète.
+
+Droit à l'effacement
+Demander la suppression de vos données, sous réserve des obligations légales de conservation.
+
+Droit d'opposition
+Vous opposer à un traitement pour un motif légitime.
+
+Droit à la limitation
+Demander la mise en pause temporaire d'un traitement.
+
+Droit à la portabilité
+Recevoir vos données dans un format réutilisable.
+
+Un expéditeur anonyme ne pouvant pas être identifié, ces droits s'exercent alors en fournissant le code de suivi de son dossier. Un membre de l'équipe disposant d'un compte peut à tout moment consulter, corriger ou supprimer les informations de son profil, ou demander la suppression de son compte, depuis son espace personnel ou en contactant le responsable du traitement.
+
+Une question, une réclamation ?
+Pour exercer l'un de ces droits, ou pour toute question sur l'utilisation de vos données, contactez cercledeconfiancevlb@gmail.com. Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la Commission nationale de l'informatique et des libertés (CNIL).

@@ -32,6 +32,8 @@
                     <div class="rounded-2xl border border-brand-line bg-white p-6 shadow-sm sm:p-8">
                         {{ $slot }}
                     </div>
+
+                    <a href="{{ route('privacy') }}" class="text-center text-sm text-zinc-600 underline underline-offset-4">{{ __('privacy.link') }}</a>
                 </div>
             </div>
         </div>
