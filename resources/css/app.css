@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Charte de l'École Steiner Waldorf de Verrières-le-Buisson
+ * (couleurs et polices relevées sur ecole-steiner-verrieres.org).
+ */
+@theme {
+    --font-sans: 'Raleway', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Raleway', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-ink: #1d4851;
+    --color-brand-green: #649b87;
+    --color-brand-coral: #ed6e7d;
+    --color-brand-yellow: #e9a600;
+    --color-brand-mauve: #997a8d;
+    --color-brand-brown: #4e3028;
+    --color-brand-cream: #fffdf0;
+    --color-brand-sand: #f8f1dc;
+    --color-brand-line: #e6dcc3;
+
+    /* Gris légèrement chauds pour s'accorder au fond crème. */
+    --color-zinc-50: #fbfaf7;
+    --color-zinc-100: #f4f2ec;
+    --color-zinc-200: #e7e3d9;
+    --color-zinc-300: #d3cdbf;
+    --color-zinc-400: #a59e8f;
+    --color-zinc-500: #776f62;
+    --color-zinc-600: #575045;
+    --color-zinc-700: #423c33;
+    --color-zinc-800: #2a2621;
+    --color-zinc-900: #1b1814;
+    --color-zinc-950: #0d0b09;
+
+    --color-accent: var(--color-brand-ink);
+    --color-accent-content: var(--color-brand-ink);
+    --color-accent-foreground: var(--color-white);
+}
+
+@layer base {
+    /* Raleway affiche des chiffres elzéviriens par défaut : on aligne les chiffres. */
+    html {
+        font-variant-numeric: lining-nums;
+    }
+
+    .font-display {
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-zinc-200, currentColor);
+    }
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* Planning : case hachurée quand le stand n'a pas de créneau à cet horaire. */
+.planning-hatched {
+    background: repeating-linear-gradient(135deg, #f1eee9 0, #f1eee9 5px, #e8e3dc 5px, #e8e3dc 7px);
+}
+
+/* Texte enrichi des recettes (préparation). */
+.recipe-content :is(h2, h3, h4) {
+    @apply mb-1 mt-4 font-bold first:mt-0;
+}
+
+.recipe-content p {
+    @apply mb-3 last:mb-0;
+}
+
+.recipe-content ul {
+    @apply mb-3 list-disc pl-5;
+}
+
+.recipe-content ol {
+    @apply mb-3 list-decimal pl-5;
+}
+
+.recipe-content a {
+    @apply text-brand-green underline;
+}
