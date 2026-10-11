@@ -28,6 +28,18 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->configureUploads();
+    }
+
+    /**
+     * Livewire refuses temporary uploads above 12 MB by default: follow the
+     * documents limit, never going under that default.
+     */
+    protected function configureUploads(): void
+    {
+        $maxKilobytes = max(12288, (int) config('marche.documents.max_size_mb') * 1024);
+
+        config(['livewire.temporary_file_upload.rules' => ['required', 'file', 'max:'.$maxKilobytes]]);
     }
 
     /**

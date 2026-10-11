@@ -28,6 +28,11 @@ return [
         'contact_email' => env('MARCHE_PRIVACY_CONTACT_EMAIL', 'accueil@ecole-steiner-verrieres.org'),
     ],
 
+    // Taille maximale (en Mo) d'un document téléversé par l'administrateur.
+    'documents' => [
+        'max_size_mb' => (int) env('DOCUMENTS_MAX_SIZE_MB', 20),
+    ],
+
     // Mot de passe commun permettant de demander la création d'un compte.
     'temp_password' => env('MARCHE_TEMP_PASSWORD'),
 

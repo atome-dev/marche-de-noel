@@ -4,7 +4,6 @@ return [
     'title' => 'Accueil',
     'greeting' => 'Bonjour :name',
     'intro' => 'Merci pour votre aide ! Retrouvez ici le planning des bénévoles, les recettes des petits gâteaux et toutes les informations utiles.',
-    'coming_soon' => 'Bientôt disponible',
     'open' => 'Ouvrir',
 
     'modules' => [

@@ -65,18 +65,16 @@
                 </div>
             </a>
 
-            @foreach (['documents' => 'document-text'] as $module => $icon)
-                <div class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5" wire:key="module-{{ $module }}">
-                    <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
-                        <flux:icon :name="$icon" />
-                    </div>
-                    <div>
-                        <h2 class="font-display text-lg">{{ __('dashboard.modules.'.$module.'.title') }}</h2>
-                        <p class="text-sm text-zinc-600">{{ __('dashboard.modules.'.$module.'.text') }}</p>
-                        <flux:badge size="sm" class="mt-2">{{ __('dashboard.coming_soon') }}</flux:badge>
-                    </div>
+            <a href="{{ route('documents.index') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
+                    <flux:icon name="document-text" />
                 </div>
-            @endforeach
+                <div>
+                    <h2 class="font-display text-lg">{{ __('dashboard.modules.documents.title') }}</h2>
+                    <p class="text-sm text-zinc-600">{{ __('dashboard.modules.documents.text') }}</p>
+                    <span class="mt-2 inline-block text-sm font-semibold text-brand-green">{{ __('dashboard.open') }} →</span>
+                </div>
+            </a>
         </section>
     </div>
 </x-layouts::app>

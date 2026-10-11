@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Document;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 #[Signature('marche:purge')]
 #[Description('Efface toutes les données personnelles de l’édition (purge annuelle RGPD)')]
@@ -21,6 +23,7 @@ class Purge extends Command
      * @var list<string>
      */
     public const TABLES = [
+        'documents',
         'raffle_prizes',
         'ingredient_orders',
         'commitments',
@@ -58,6 +61,9 @@ class Purge extends Command
                 }
             }
         });
+
+        // Yearly documents are uploaded again by the administrator.
+        Storage::disk(Document::DISK)->deleteDirectory(Document::DIRECTORY);
 
         $this->info(__('commands.purge.done'));
         $this->line(__('commands.purge.next_steps'));

@@ -184,6 +184,8 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 ## Autres contenus
 
 - Journal PDF et bons de commande : nouveaux documents à téléverser chaque année par l'administrateur.
+- Page `/documents` : tous les connectés ouvrent les documents ; seul l'administrateur ajoute, classe et supprime. Un document a un titre et un fichier (PDF, Word, Excel, OpenDocument ou image), limité à `DOCUMENTS_MAX_SIZE_MB`.
+- Les fichiers sont sur le disque privé et servis uniquement aux personnes connectées. La purge efface les documents et leurs fichiers.
 - Commande de sapins : fonctionnalité à définir plus tard, hors périmètre de la première livraison.
 
 ## Périmètre de livraison et ordre de développement

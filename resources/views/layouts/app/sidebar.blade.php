@@ -23,6 +23,9 @@
                 <flux:sidebar.item icon="gift" :href="route('raffle.index')" :current="request()->routeIs('raffle.*')" wire:navigate>
                     {{ __('navigation.raffle') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="document-text" :href="route('documents.index')" :current="request()->routeIs('documents.*')" wire:navigate>
+                    {{ __('navigation.documents') }}
+                </flux:sidebar.item>
                 @if (auth()->user()->isAdmin() || auth()->user()->managedStands()->exists())
                     <flux:sidebar.item icon="building-storefront" :href="route('stands.index')" :current="request()->routeIs('stands.*')" wire:navigate>
                         {{ auth()->user()->isAdmin() ? __('navigation.stands') : __('navigation.my_stands') }}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Cookies\ExportOrders;
+use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Planning\PrintPlanning;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\CompleteRegistration;
@@ -10,6 +11,7 @@ use App\Livewire\Cookies\Index as CookiesIndex;
 use App\Livewire\Cookies\Orders as CookieOrders;
 use App\Livewire\Cookies\RecipeForm;
 use App\Livewire\Cookies\Show as CookieShow;
+use App\Livewire\Documents\Index as DocumentsIndex;
 use App\Livewire\Planning\Board;
 use App\Livewire\Raffle\Index as RaffleIndex;
 use App\Livewire\Stands\Index as StandsIndex;
@@ -54,6 +56,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
+
+    Route::livewire('documents', DocumentsIndex::class)->name('documents.index');
+    Route::get('documents/{document}', ShowDocument::class)->name('documents.show');
 
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::livewire('users', Users::class)->name('users');
