@@ -33,6 +33,11 @@ return [
         'max_size_mb' => (int) env('DOCUMENTS_MAX_SIZE_MB', 20),
     ],
 
+    // Instantanés des données (marche:snapshot, toutes les 15 minutes) : durée de conservation en jours.
+    'snapshots' => [
+        'retention_days' => (int) env('SNAPSHOT_RETENTION_DAYS', 30),
+    ],
+
     // Mot de passe commun permettant de demander la création d'un compte.
     'temp_password' => env('MARCHE_TEMP_PASSWORD'),
 

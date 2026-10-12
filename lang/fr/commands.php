@@ -29,6 +29,24 @@ return [
         'done' => ':count créneaux par défaut créés sur :stands stand(s).',
     ],
 
+    'snapshot' => [
+        'done' => 'Instantané enregistré : :path',
+        'unchanged' => 'Aucun changement depuis le dernier instantané : rien à enregistrer.',
+        'pruned' => '{1} :count ancien instantané effacé.|[2,*] :count anciens instantanés effacés.',
+    ],
+
+    'restore_snapshot' => [
+        'available' => 'Instantanés disponibles (les plus récents d’abord, heures UTC) :',
+        'none' => 'Aucun instantané disponible.',
+        'not_found' => 'Instantané introuvable : :name',
+        'warning' => 'ATTENTION : les comptes, stands, créneaux, inscriptions, recettes, commandes, lots et documents actuels vont être remplacés par ceux de l’instantané :name.',
+        'word' => 'RESTAURER',
+        'confirm' => 'Tapez :word pour confirmer',
+        'aborted' => 'Restauration annulée : aucune donnée n’a été modifiée.',
+        'backup' => 'État actuel sauvegardé avant restauration : :name',
+        'done' => 'Instantané :name restauré (:count lignes).',
+    ],
+
     'purge' => [
         'warning' => 'ATTENTION : tous les comptes et toutes les données de l’édition vont être définitivement effacés (seules les classes, la liste des stands et les recettes sont conservées).',
         'word' => 'PURGER',

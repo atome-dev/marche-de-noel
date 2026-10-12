@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Document;
+use App\Snapshots\SnapshotStore;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -64,6 +65,9 @@ class Purge extends Command
 
         // Yearly documents are uploaded again by the administrator.
         Storage::disk(Document::DISK)->deleteDirectory(Document::DIRECTORY);
+
+        // Snapshots hold personal data: they go with the rest.
+        Storage::disk(SnapshotStore::DISK)->deleteDirectory(SnapshotStore::DIRECTORY);
 
         $this->info(__('commands.purge.done'));
         $this->line(__('commands.purge.next_steps'));

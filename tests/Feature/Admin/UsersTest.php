@@ -27,10 +27,11 @@ test('admins see every user with their phone number', function () {
 });
 
 test('admins can search users', function () {
-    User::factory()->create(['first_name' => 'Camille', 'last_name' => 'Martin']);
-    User::factory()->create(['first_name' => 'Dominique', 'last_name' => 'Petit']);
+    // Explicit names and emails: random ones sometimes matched the search.
+    User::factory()->create(['first_name' => 'Camille', 'last_name' => 'Martin', 'email' => 'camille@example.com']);
+    User::factory()->create(['first_name' => 'Dominique', 'last_name' => 'Petit', 'email' => 'dominique@example.com']);
 
-    $this->actingAs(User::factory()->admin()->create());
+    $this->actingAs(User::factory()->admin()->create(['first_name' => 'Alex', 'last_name' => 'Durand', 'email' => 'alex@example.com']));
 
     Livewire::test(Users::class)
         ->set('search', 'mart')

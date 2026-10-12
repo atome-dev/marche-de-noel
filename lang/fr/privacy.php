@@ -71,6 +71,7 @@ return [
             'paragraphs' => [
                 'Le site ne conserve aucune donnée d’une année sur l’autre. Après le marché, une fois la tombola terminée, tous les comptes, inscriptions et commandes sont effacés définitivement. Seules les informations qui ne concernent personne (liste des stands, classes, recettes) sont conservées pour l’année suivante.',
                 'Vous pouvez à tout moment supprimer votre compte depuis la page « Mon compte » : vos inscriptions et vos commandes sont alors effacées avec lui.',
+                'Pour pouvoir réparer une erreur de manipulation, des sauvegardes techniques des données sont enregistrées sur le serveur. Elles sont conservées :days jours au plus et effacées en même temps que le reste après le marché.',
             ],
         ],
 
