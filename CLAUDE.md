@@ -58,6 +58,7 @@ Prévoir notamment les variables suivantes, avec des valeurs d'exemple adaptées
 - Login classique par courriel et mot de passe.
 - Mot de passe oublié par courriel.
 - Inscription en deux temps : la personne saisit son courriel et le mot de passe commun (`MARCHE_TEMP_PASSWORD`). S'il est correct, un lien signé et temporaire est envoyé par courriel ; il valide l'adresse et ouvre la création du compte (mot de passe personnel + profil). Toute personne qui connaît le mot de passe commun peut créer un compte.
+- Invitation par l'administrateur (page Utilisateurs) : il saisit prénom, nom, courriel, éventuellement les stands dont la personne sera responsable et un message personnel. Le compte est créé aussitôt avec un mot de passe aléatoire (jamais le mot de passe commun : le compte serait utilisable par n'importe qui) et la personne reçoit un courriel personnalisé (« Vous êtes responsable du stand … ») avec un lien signé (`MARCHE_INVITATION_LINK_TTL`, 7 jours) qui confirme son adresse et lui fait choisir son mot de passe. Tant que l'adresse n'est pas confirmée, le compte est marqué « Invitation en attente » et l'invitation peut être renvoyée.
 - Pas de 2FA ni de passkeys.
 - Mot de passe : au moins 6 caractères, avec lettres et chiffres (site privé et temporaire).
 - Changement d'adresse électronique : appliqué seulement après clic sur un lien de confirmation envoyé à la nouvelle adresse.

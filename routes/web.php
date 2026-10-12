@@ -6,6 +6,7 @@ use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Planning\PrintPlanning;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
+use App\Livewire\Auth\AcceptInvitation;
 use App\Livewire\Auth\CompleteRegistration;
 use App\Livewire\Auth\Register;
 use App\Livewire\Cookies\Categories as CookieCategories;
@@ -30,6 +31,10 @@ Route::middleware('guest')->group(function () {
     Route::livewire('register/complete', CompleteRegistration::class)
         ->middleware('signed')
         ->name('register.complete');
+
+    Route::livewire('invitation/{user}', AcceptInvitation::class)
+        ->middleware('signed')
+        ->name('invitation.accept');
 });
 
 Route::middleware('auth')->group(function () {

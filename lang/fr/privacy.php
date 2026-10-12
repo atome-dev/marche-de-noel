@@ -21,7 +21,7 @@ return [
                 'Ce site est privé : il est réservé aux parents, aux professeurs et aux intervenants de l’école qui participent à l’organisation du marché.',
             ],
             'items' => [
-                'Votre compte' => 'Prénom, nom, adresse électronique, mot de passe (jamais stocké en clair) et langue. Le téléphone et les classes de vos enfants sont facultatifs. Nous n’enregistrons ni le nom ni le nombre de vos enfants.',
+                'Votre compte' => 'Prénom, nom, adresse électronique, mot de passe (jamais stocké en clair) et langue. Un administrateur peut créer votre compte pour vous inviter, par exemple comme responsable d’un stand : il reste inutilisable tant que vous n’avez pas suivi le lien reçu par courriel. Le téléphone et les classes de vos enfants sont facultatifs. Nous n’enregistrons ni le nom ni le nombre de vos enfants.',
                 'Le planning des stands' => 'Les créneaux sur lesquels vous vous inscrivez et, si vous en écrivez un, le message destiné au responsable du stand. Un responsable peut aussi inscrire sur un créneau le nom d’une personne qui n’a pas de compte.',
                 'Les petits gâteaux' => 'Les recettes que vous prévoyez de réaliser, les quantités annoncées et vos commandes d’ingrédients.',
                 'Données techniques' => 'Tant que vous êtes connecté, votre adresse IP et le type de votre navigateur sont associés à votre session, pour assurer la sécurité du compte. Ils sont effacés à l’expiration de la session.',

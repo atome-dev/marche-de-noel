@@ -44,6 +44,9 @@ return [
         'heartbeat_url' => env('SNAPSHOT_HEARTBEAT_URL'),
     ],
 
+    // Durée de validité (en minutes) du lien d'invitation envoyé par un administrateur.
+    'invitation_link_ttl' => (int) env('MARCHE_INVITATION_LINK_TTL', 10080),
+
     // Mot de passe commun permettant de demander la création d'un compte.
     'temp_password' => env('MARCHE_TEMP_PASSWORD'),
 

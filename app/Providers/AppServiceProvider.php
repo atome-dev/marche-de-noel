@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Enums\StandType;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -29,6 +31,14 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         $this->configureAuthorization();
         $this->configureUploads();
+
+        // Resetting a password through the emailed link proves the address:
+        // an invited person who used "forgot password" is activated too.
+        Event::listen(function (PasswordReset $event): void {
+            if ($event->user instanceof User && $event->user->email_verified_at === null) {
+                $event->user->forceFill(['email_verified_at' => now()])->save();
+            }
+        });
     }
 
     /**
