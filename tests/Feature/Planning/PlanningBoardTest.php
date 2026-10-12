@@ -7,6 +7,7 @@ use App\Models\Slot;
 use App\Models\Stand;
 use App\Models\User;
 use App\Planning\PlanningFingerprint;
+use App\Planning\PlanningStats;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -342,4 +343,54 @@ describe('automatic refresh', function () {
         'a new manager' => [fn ($test) => $test->buvette->managers()->attach($test->user)],
         'a reserved class' => [fn ($test) => $test->buvetteSlot->reservedClasses()->attach(SchoolClass::factory()->create())],
     ]);
+});
+
+describe('past days', function () {
+    test('days before today are left out of the planning', function () {
+        $this->travelTo('2026-11-29 10:00');
+
+        Livewire::test(Board::class)
+            ->assertDontSeeHtml('data-day="2026-11-28"')
+            ->assertSeeHtml('data-day="2026-11-29"')
+            ->assertDontSeeHtml('wire:key="tab-2026-11-28"')
+            ->assertSeeHtml('wire:key="tab-2026-11-29"');
+    });
+
+    test('the current day stays until midnight in the market time zone', function () {
+        config(['marche.timezone' => 'Europe/Paris']);
+
+        // 23:30 in Paris on the 28th.
+        $this->travelTo('2026-11-28 22:30');
+        Livewire::test(Board::class)->assertSeeHtml('data-day="2026-11-28"');
+
+        // 00:30 in Paris on the 29th.
+        $this->travelTo('2026-11-28 23:30');
+        Livewire::test(Board::class)->assertDontSeeHtml('data-day="2026-11-28"');
+    });
+
+    test('the printable planning leaves out past days too', function () {
+        $this->travelTo('2026-11-29 10:00');
+
+        $this->get(route('planning.print'))
+            ->assertOk()
+            ->assertDontSee('Buvette')
+            ->assertSee('Crêpes');
+    });
+
+    test('an open planning is redrawn when the day changes', function () {
+        $this->travelTo('2026-11-28 12:00');
+        $component = Livewire::test(Board::class)->assertSeeHtml('data-day="2026-11-28"');
+
+        $this->travelTo('2026-11-29 12:00');
+        $component->call('refreshIfChanged')->assertDontSeeHtml('data-day="2026-11-28"');
+    });
+
+    test('past registrations still count in the figures', function () {
+        Registration::factory()->for($this->buvetteSlot)->for($this->user)->create();
+
+        $this->travelTo('2026-12-05 10:00');
+
+        expect((new PlanningStats)->volunteers())->toBe(1)
+            ->and((new PlanningStats)->minutes())->toBe(120);
+    });
 });

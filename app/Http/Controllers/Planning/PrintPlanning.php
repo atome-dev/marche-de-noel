@@ -36,7 +36,7 @@ class PrintPlanning extends Controller
         $stand = $request->filled('stand') ? $stands->first() : null;
 
         return view('planning.print', [
-            'grid' => new PlanningGrid($stands, $day),
+            'grid' => new PlanningGrid($stands, $day, from: PlanningGrid::today()),
             'stand' => $stand,
             'day' => $day,
             // Phones are only printed for the managers of the stand and admins.

@@ -42,6 +42,9 @@ class PlanningFingerprint
                 ->selectSub("select sum({$first} * 31 + {$second}) from {$table}", "{$table}_sum");
         }
 
-        return hash('xxh3', implode('|', array_map(strval(...), (array) $query->first())));
+        // The day is part of it: at midnight, the day that just ended leaves the planning.
+        $values = [PlanningGrid::today(), ...array_values((array) $query->first())];
+
+        return hash('xxh3', implode('|', array_map(strval(...), $values)));
     }
 }

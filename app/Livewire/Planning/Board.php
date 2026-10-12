@@ -176,7 +176,7 @@ class Board extends Component
 
     /**
      * Days offered by the day filter: the market days, and every other day
-     * that has slots (preparations).
+     * that has slots (preparations). Past days are left out.
      *
      * @return list<string>
      */
@@ -187,6 +187,7 @@ class Board extends Component
             ->flatMap(fn (Stand $stand) => $stand->slots->map(fn (Slot $slot) => $slot->date->toDateString()))
             ->merge(config('marche.dates'))
             ->unique()
+            ->filter(fn (string $date): bool => $date >= PlanningGrid::today())
             ->sort();
 
         return array_values($days->all());
@@ -209,7 +210,7 @@ class Board extends Component
             default => null,
         };
 
-        return new PlanningGrid($stands, $this->day ?: null, rowFilter: $rowFilter);
+        return new PlanningGrid($stands, $this->day ?: null, rowFilter: $rowFilter, from: PlanningGrid::today());
     }
 
     #[Computed]

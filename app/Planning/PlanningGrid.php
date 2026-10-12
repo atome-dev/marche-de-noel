@@ -29,6 +29,7 @@ class PlanningGrid
     /**
      * @param  Collection<int, Stand>  $stands  stands with their slots loaded
      * @param  (Closure(Stand, Collection<int, Slot>): bool)|null  $rowFilter  keeps a stand on a given day
+     * @param  string|null  $from  first day shown (Y-m-d); earlier days are left out
      */
     public function __construct(
         Collection $stands,
@@ -36,6 +37,7 @@ class PlanningGrid
         ?string $hourMin = null,
         ?string $hourMax = null,
         ?Closure $rowFilter = null,
+        ?string $from = null,
     ) {
         $this->openingMinutes = self::toMinutes($hourMin ?? config('marche.planning.hour_min'));
         $closingMinutes = self::toMinutes($hourMax ?? config('marche.planning.hour_max'));
@@ -46,9 +48,19 @@ class PlanningGrid
             ->map(fn (Slot $slot) => $slot->date->toDateString())
             ->unique()
             ->filter(fn (string $date) => $day === null || $date === $day)
+            ->filter(fn (string $date) => $from === null || $date >= $from)
             ->sort()
             ->mapWithKeys(fn (string $date) => [$date => $this->buildDay($date, $stands, $rowFilter)])
             ->filter(fn (PlanningDay $planningDay) => $planningDay->rows->isNotEmpty());
+    }
+
+    /**
+     * Today's date (Y-m-d) where the market takes place: the planning leaves
+     * out the days before it.
+     */
+    public static function today(): string
+    {
+        return now(config('marche.timezone'))->toDateString();
     }
 
     /**
