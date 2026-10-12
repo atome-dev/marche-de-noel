@@ -249,3 +249,45 @@ describe('print', function () {
             ->assertSee('06 98 76 54 32');
     });
 });
+
+describe('preparation days', function () {
+    beforeEach(function () {
+        Slot::factory()->for($this->buvette)->at('2026-11-26', '17:00', '19:00')->create(['capacity' => 3]);
+    });
+
+    test('a day before the market gets its own table, first and flagged', function () {
+        Livewire::test(Board::class)
+            ->assertSeeInOrder(['data-day="2026-11-26"', __('planning.preparation'), 'data-day="2026-11-28"', 'data-day="2026-11-29"'], false)
+            ->assertSet('days', ['2026-11-26', '2026-11-28', '2026-11-29']);
+    });
+
+    test('market days are not flagged as preparations', function () {
+        Livewire::test(Board::class)
+            ->set('day', '2026-11-28')
+            ->assertDontSee(__('planning.preparation'));
+    });
+
+    test('the planning can be filtered on a preparation day', function () {
+        Livewire::test(Board::class)
+            ->set('day', '2026-11-26')
+            ->assertSee('data-day="2026-11-26"', false)
+            ->assertDontSee('data-day="2026-11-28"', false)
+            ->assertDontSee('data-stand="'.$this->crepes->id.'"', false);
+    });
+
+    test('volunteers register on a preparation slot like on any other', function () {
+        $slot = $this->buvette->slots()->whereDate('date', '2026-11-26')->sole();
+
+        Livewire::test(Board::class)->call('openSlot', $slot->id)->call('register')->assertHasNoErrors();
+
+        expect($slot->registrations()->where('user_id', $this->user->id)->exists())->toBeTrue();
+    });
+
+    test('a preparation day can be printed', function () {
+        $this->get(route('planning.print', ['day' => '2026-11-26']))
+            ->assertOk()
+            ->assertSee(__('planning.preparation'))
+            ->assertSee('Buvette')
+            ->assertDontSee('Crêpes');
+    });
+});

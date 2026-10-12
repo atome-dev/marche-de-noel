@@ -53,7 +53,7 @@ class Index extends Component
     /**
      * Drag and drop: the position is the zero-based index in the list.
      */
-    public function sort(int $prizeId, int $position, PrizeList $list): void
+    public function reorder(int $prizeId, int $position, PrizeList $list): void
     {
         $this->authorize('manage-raffle');
 

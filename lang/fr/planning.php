@@ -6,6 +6,7 @@ return [
     'description' => 'Touchez une case pour vous inscrire ou vous désinscrire.',
     'print' => 'Imprimer',
     'reserved' => 'Réservé',
+    'preparation' => 'Préparatifs',
     'to_fill' => 'À pourvoir',
     'no_slot' => 'Pas de créneau',
     'stand_column' => 'Stand',

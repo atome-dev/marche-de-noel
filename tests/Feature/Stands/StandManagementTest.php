@@ -140,3 +140,41 @@ describe('stand form', function () {
             ->assertForbidden();
     });
 });
+
+describe('order', function () {
+    beforeEach(function () {
+        // The stand of the file setup stays first; the three below follow it.
+        $this->stand->update(['position' => 0]);
+
+        [$this->alpha, $this->bravo, $this->charlie] = collect(['Alpha', 'Bravo', 'Charlie'])
+            ->map(fn (string $name, int $index) => Stand::factory()->create(['name' => 'Stand '.$name, 'position' => $index + 1]))
+            ->all();
+    });
+
+    test('an administrator reorders the stands by drag and drop', function () {
+        $this->actingAs($this->admin);
+
+        Livewire::test(Index::class)
+            ->call('reorder', $this->charlie->id, 0)
+            ->assertSeeInOrder(['Stand Charlie', 'Buvette', 'Stand Alpha', 'Stand Bravo']);
+
+        expect(Stand::query()->ordered()->pluck('position', 'name')->all())
+            ->toBe(['Stand Charlie' => 1, 'Buvette' => 2, 'Stand Alpha' => 3, 'Stand Bravo' => 4]);
+
+        // A position past the end drops the stand last.
+        Livewire::test(Index::class)->call('reorder', $this->charlie->id, 99);
+
+        expect(Stand::query()->ordered()->pluck('name')->all())->toBe(['Buvette', 'Stand Alpha', 'Stand Bravo', 'Stand Charlie']);
+    });
+
+    test('managers cannot reorder the stands', function () {
+        $this->actingAs($this->manager);
+
+        Livewire::test(Index::class)
+            ->assertDontSee(__('stands.index.sort_help'))
+            ->call('reorder', $this->stand->id, 2)
+            ->assertForbidden();
+
+        expect(Stand::query()->ordered()->pluck('name')->all())->toBe(['Buvette', 'Stand Alpha', 'Stand Bravo', 'Stand Charlie']);
+    });
+});

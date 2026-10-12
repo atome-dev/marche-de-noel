@@ -7,12 +7,8 @@
             </flux:subheading>
         </div>
 
-        <flux:button icon="plus" wire:click="create" :disabled="blank(config('marche.dates'))">{{ __('stands.slots.add') }}</flux:button>
+        <flux:button icon="plus" wire:click="create">{{ __('stands.slots.add') }}</flux:button>
     </div>
-
-    @if (blank(config('marche.dates')))
-        <flux:callout variant="warning" icon="exclamation-triangle" :text="__('stands.slots.no_dates')" />
-    @endif
 
     <div class="divide-y divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white">
         @forelse ($this->standSlots as $slot)
@@ -24,6 +20,9 @@
                     </div>
                     <div class="flex flex-wrap items-center gap-2 text-sm text-zinc-600">
                         <span>{{ __('stands.slots.taken', ['taken' => $slot->registrations_count, 'capacity' => $slot->capacity]) }}</span>
+                        @unless (in_array($slot->date->toDateString(), config('marche.dates'), true))
+                            <flux:badge size="sm" color="amber">{{ __('stands.slots.off_market') }}</flux:badge>
+                        @endunless
                         @if ($slot->label)
                             <flux:badge size="sm">{{ $slot->label }}</flux:badge>
                         @endif
@@ -54,13 +53,20 @@
         <form wire:submit="save" class="space-y-5">
             <flux:heading size="lg">{{ $editingId ? __('stands.slots.edit') : __('stands.slots.add') }}</flux:heading>
 
-            <flux:select wire:model="date" :label="__('stands.slots.date')">
-                @foreach (config('marche.dates') as $marketDate)
-                    <flux:select.option :value="$marketDate">
-                        {{ ucfirst(\Illuminate\Support\Carbon::parse($marketDate)->locale(app()->getLocale())->translatedFormat('l j F')) }}
-                    </flux:select.option>
-                @endforeach
-            </flux:select>
+            <div class="space-y-2">
+                <flux:input type="date" wire:model="date" :label="__('stands.slots.date')" :description="__('stands.slots.date_help')" required />
+
+                @if (filled(config('marche.dates')))
+                    {{-- Raccourcis vers les jours du marché --}}
+                    <div class="flex flex-wrap gap-1.5">
+                        @foreach (config('marche.dates') as $marketDate)
+                            <flux:button size="xs" type="button" wire:click="$set('date', '{{ $marketDate }}')" wire:key="market-date-{{ $marketDate }}">
+                                {{ ucfirst(\Illuminate\Support\Carbon::parse($marketDate)->locale(app()->getLocale())->translatedFormat('l j F')) }}
+                            </flux:button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <flux:select wire:model="starts_at" :label="__('stands.slots.starts_at')" :placeholder="__('stands.slots.starts_at_placeholder')">

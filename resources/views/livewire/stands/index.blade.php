@@ -16,10 +16,20 @@
 
     <x-auth-session-status :status="session('status')" />
 
-    <div class="divide-y divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white">
+    @can('admin')
+        <p class="text-sm text-zinc-600">{{ __('stands.index.sort_help') }}</p>
+    @endcan
+
+    <div class="divide-y divide-zinc-200 overflow-hidden rounded-xl border border-zinc-200 bg-white" @can('admin') wire:sort="reorder" @endcan>
         @forelse ($this->stands as $stand)
-            <a href="{{ route('stands.edit', $stand) }}" wire:navigate wire:key="stand-{{ $stand->id }}"
-               class="flex items-center gap-4 p-4 hover:bg-zinc-50">
+            <div class="flex items-stretch bg-white" wire:key="stand-{{ $stand->id }}" @can('admin') wire:sort:item="{{ $stand->id }}" @endcan>
+            @can('admin')
+                <button type="button" wire:sort:handle class="flex w-10 shrink-0 cursor-grab touch-none items-center justify-center text-zinc-400 hover:text-zinc-600" aria-label="{{ __('stands.index.drag') }}">
+                    <flux:icon name="bars-3" variant="mini" />
+                </button>
+            @endcan
+            <a href="{{ route('stands.edit', $stand) }}" wire:navigate
+               @class(['flex min-w-0 flex-1 items-center gap-4 p-4 hover:bg-zinc-50', 'ps-1' => auth()->user()->isAdmin()])>
                 <div class="min-w-0 flex-1 space-y-1">
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="font-semibold">{{ $stand->name }}</span>
@@ -46,6 +56,7 @@
                 </div>
                 <flux:icon name="chevron-right" variant="micro" class="text-zinc-400" />
             </a>
+            </div>
         @empty
             <div class="p-8 text-center text-zinc-500">{{ __('stands.index.empty') }}</div>
         @endforelse

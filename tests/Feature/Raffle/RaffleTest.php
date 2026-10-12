@@ -46,7 +46,7 @@ test('only raffle managers and administrators can edit the prizes', function (Cl
 
     $this->actingAs($user());
 
-    foreach ([['rename', $prize->id, 'Autre'], ['validateList'], ['saveTicket', $prize->id, '12'], ['moveUp', $prize->id], ['sort', $prize->id, 0], ['delete', $prize->id]] as $call) {
+    foreach ([['rename', $prize->id, 'Autre'], ['validateList'], ['saveTicket', $prize->id, '12'], ['moveUp', $prize->id], ['reorder', $prize->id, 0], ['delete', $prize->id]] as $call) {
         $response = Livewire::test(Index::class)->call(...$call);
 
         $allowed ? $response->assertOk() : $response->assertForbidden();
@@ -94,7 +94,7 @@ test('moving a prize renumbers the draft list', function () {
     expect(prizeNumbers())->toBe([1 => 'C', 2 => 'A', 3 => 'B']);
 
     // Drag and drop sends a zero-based index.
-    Livewire::test(Index::class)->call('sort', $b->id, 0);
+    Livewire::test(Index::class)->call('reorder', $b->id, 0);
     expect(prizeNumbers())->toBe([1 => 'B', 2 => 'C', 3 => 'A']);
 
     // Moving past the ends keeps the list consistent.
@@ -119,7 +119,7 @@ test('validating the list freezes the numbers', function () {
         ->call('validateList')
         ->assertSee(__('raffle.validated.badge'))
         ->call('moveUp', $c->id)
-        ->call('sort', $c->id, 0);
+        ->call('reorder', $c->id, 0);
 
     expect(RafflePrize::query()->ordered()->pluck('number', 'label')->all())->toBe(['A' => 1, 'B' => 2, 'C' => 3]);
 

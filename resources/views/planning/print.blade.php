@@ -82,7 +82,7 @@
             @php $times = $grid->times(); @endphp
             @foreach ($grid->days() as $date => $planningDay)
                 <section class="print-day mb-6">
-                    <h2 class="mb-1 font-display text-base font-bold">{{ $formatDay($date, 'l j F') }}</h2>
+                    <h2 class="mb-1 font-display text-base font-bold">{{ $formatDay($date, 'l j F') }}@if ($planningDay->isPreparation) — {{ __('planning.preparation') }}@endif</h2>
                     <table class="w-full table-fixed border-collapse text-[9px] leading-tight">
                         <colgroup>
                             <col style="width: 13%">

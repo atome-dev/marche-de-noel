@@ -22,6 +22,7 @@ use Livewire\Component;
  *
  * @property-read EloquentCollection<int, Stand> $allStands
  * @property-read PlanningGrid $grid
+ * @property-read list<string> $days
  * @property-read Slot|null $selectedSlot
  * @property-read bool $canManageSelected
  * @property-read Collection<int, Slot> $overlaps
@@ -155,6 +156,24 @@ class Board extends Component
             ->each(fn (Stand $stand) => $stand->slots->each->setRelation('stand', $stand));
     }
 
+    /**
+     * Days offered by the day filter: the market days, and every other day
+     * that has slots (preparations).
+     *
+     * @return list<string>
+     */
+    #[Computed]
+    public function days(): array
+    {
+        $days = $this->allStands
+            ->flatMap(fn (Stand $stand) => $stand->slots->map(fn (Slot $slot) => $slot->date->toDateString()))
+            ->merge(config('marche.dates'))
+            ->unique()
+            ->sort();
+
+        return array_values($days->all());
+    }
+
     #[Computed]
     public function grid(): PlanningGrid
     {
@@ -238,6 +257,6 @@ class Board extends Component
 
     private function refreshPlanning(): void
     {
-        unset($this->allStands, $this->grid, $this->selectedSlot, $this->overlaps, $this->refusal, $this->canManageSelected);
+        unset($this->allStands, $this->days, $this->grid, $this->selectedSlot, $this->overlaps, $this->refusal, $this->canManageSelected);
     }
 }

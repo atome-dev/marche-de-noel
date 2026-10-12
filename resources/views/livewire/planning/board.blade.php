@@ -32,8 +32,8 @@
 
         <flux:select wire:model.live="day" size="sm" class="max-md:hidden md:w-56" :aria-label="__('planning.filters.day')">
             <flux:select.option value="">{{ __('planning.filters.all_days') }}</flux:select.option>
-            @foreach (config('marche.dates') as $marketDate)
-                <flux:select.option :value="$marketDate">{{ $formatDay($marketDate, 'l j F') }}</flux:select.option>
+            @foreach ($this->days as $marketDate)
+                <flux:select.option :value="$marketDate" wire:key="filter-day-{{ $marketDate }}">{{ $formatDay($marketDate, 'l j F') }}</flux:select.option>
             @endforeach
         </flux:select>
 
@@ -45,14 +45,14 @@
     </div>
 
     {{-- Onglets des jours (mobile) --}}
-    <div class="flex gap-1.5 md:hidden" role="tablist" aria-label="{{ __('planning.filters.day') }}">
+    <div class="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1 md:hidden" role="tablist" aria-label="{{ __('planning.filters.day') }}">
         <button type="button" wire:click="$set('day', '')"
-            @class(['flex-1 rounded-lg border px-2 py-2 text-xs font-bold', 'border-brand-ink bg-brand-ink text-white' => $day === '', 'border-brand-line bg-white text-zinc-600' => $day !== ''])>
+            @class(['min-w-16 flex-1 shrink-0 rounded-lg border px-2 py-2 text-xs font-bold', 'border-brand-ink bg-brand-ink text-white' => $day === '', 'border-brand-line bg-white text-zinc-600' => $day !== ''])>
             {{ __('planning.filters.all_days_short') }}
         </button>
-        @foreach (config('marche.dates') as $marketDate)
+        @foreach ($this->days as $marketDate)
             <button type="button" wire:click="$set('day', '{{ $marketDate }}')" wire:key="tab-{{ $marketDate }}"
-                @class(['flex-1 rounded-lg border px-2 py-2 text-xs font-bold', 'border-brand-ink bg-brand-ink text-white' => $day === $marketDate, 'border-brand-line bg-white text-zinc-600' => $day !== $marketDate])>
+                @class(['min-w-16 flex-1 shrink-0 whitespace-nowrap rounded-lg border px-2 py-2 text-xs font-bold', 'border-brand-ink bg-brand-ink text-white' => $day === $marketDate, 'border-brand-line bg-white text-zinc-600' => $day !== $marketDate])>
                 {{ $formatDay($marketDate, 'D j') }}
             </button>
         @endforeach
@@ -68,7 +68,12 @@
         {{-- Un tableau par jour, avec les stands ouverts ce jour-là --}}
         @foreach ($grid->days() as $date => $planningDay)
             <section class="space-y-2 pt-4 first:pt-0" data-day="{{ $date }}" wire:key="day-{{ $date }}">
-                <h2 class="font-display text-xl">{{ $formatDay($date, 'l j F') }}</h2>
+                <h2 class="flex flex-wrap items-center gap-2 font-display text-xl">
+                    {{ $formatDay($date, 'l j F') }}
+                    @if ($planningDay->isPreparation)
+                        <flux:badge size="sm" color="amber">{{ __('planning.preparation') }}</flux:badge>
+                    @endif
+                </h2>
 
                 {{-- Grille (ordinateur) : colonnes de 30 minutes sur toute la plage horaire --}}
                 <div class="max-md:hidden overflow-x-auto rounded-xl border border-brand-line bg-white shadow-sm">

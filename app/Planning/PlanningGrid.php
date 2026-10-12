@@ -96,7 +96,9 @@ class PlanningGrid
             ->filter()
             ->values();
 
-        return new PlanningDay(CarbonImmutable::parse($date), $rows);
+        $marketDates = config('marche.dates');
+
+        return new PlanningDay(CarbonImmutable::parse($date), $rows, $marketDates !== [] && $date < min($marketDates));
     }
 
     /**

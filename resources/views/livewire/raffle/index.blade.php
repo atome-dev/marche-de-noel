@@ -32,7 +32,7 @@
     @endif
 
     <div class="divide-y divide-brand-line overflow-hidden rounded-2xl border border-brand-line bg-white"
-        @if ($this->canManage && ! $this->isValidated) wire:sort="sort" @endif>
+        @if ($this->canManage && ! $this->isValidated) wire:sort="reorder" @endif>
         @forelse ($this->prizes as $prize)
             @if ($this->canManage)
                 <div class="flex flex-wrap items-center gap-2 p-3" wire:key="prize-{{ $prize->id }}-{{ $prize->displayNumber() }}"

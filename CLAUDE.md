@@ -80,6 +80,7 @@ Prévoir notamment les variables suivantes, avec des valeurs d'exemple adaptées
   - Autres stands génériques.
 - Un stand peut ne pas apparaître dans le planning si son nombre de bénévoles est nul.
 - L'administrateur crée le stand et désigne un ou plusieurs responsables.
+- L'administrateur change l'ordre des stands par glisser-déposer dans la liste des stands ; cet ordre est celui du planning.
 - Les responsables peuvent ensuite modifier librement leur stand.
 - Un stand peut être associé à une ou plusieurs classes.
 - Cette association restreint les inscriptions aux personnes de ces classes. Le responsable peut lever la restriction et ouvrir le stand à tout le monde à tout moment.
@@ -90,7 +91,8 @@ Le planning est la page la plus importante.
 
 - La plage horaire minimale et maximale vient de `.env`.
 - Pour chaque stand, définir des créneaux libres (par exemple `10h00–11h30` et `14h00–16h00), environ quatre créneaux par jour.
-- Création des créneaux : pour chaque jour du marché (`MARCHE_DATES`) et dans la plage horaire (`PLANNING_HOUR_MIN`, `PLANNING_HOUR_MAX`), le responsable ajoute, modifie ou supprime des créneaux en précisant l'heure de début et la durée parmi 0:30, 1:00, 1:30 et 2:00 (`PLANNING_SLOT_DURATIONS`). L'heure de fin est calculée.
+- Préparatifs : le planning sert aussi à organiser les jours de préparation. La date d'un créneau est libre (jour du marché ou n'importe quel autre jour), sur les mêmes stands et la même plage horaire. Les jours de préparation s'affichent sur la même page, un tableau par jour dans l'ordre chronologique ; ceux qui précèdent le marché portent la mention « Préparatifs ». Aucun créneau par défaut n'est créé hors des jours du marché.
+- Création des créneaux : pour un jour au choix (les jours du marché `MARCHE_DATES` sont proposés en raccourci) et dans la plage horaire (`PLANNING_HOUR_MIN`, `PLANNING_HOUR_MAX`), le responsable ajoute, modifie ou supprime des créneaux en précisant l'heure de début et la durée parmi 0:30, 1:00, 1:30 et 2:00 (`PLANNING_SLOT_DURATIONS`). L'heure de fin est calculée.
 - Le nombre de places est défini par stand et par créneau.
 - Un créneau peut être réservé à une liste de personnes, via une liste de courriels ou de classes.
 - Pour les autres utilisateurs, le créneau s'affiche « Réservé » avec un cadenas.

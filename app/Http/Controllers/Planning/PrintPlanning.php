@@ -16,7 +16,7 @@ class PrintPlanning extends Controller
 {
     public function __invoke(Request $request): View
     {
-        $day = in_array($request->query('day'), config('marche.dates'), true) ? $request->query('day') : null;
+        $day = is_string($request->query('day')) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $request->query('day')) ? $request->query('day') : null;
 
         $stands = Stand::query()
             ->inPlanning()

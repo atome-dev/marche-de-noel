@@ -42,7 +42,7 @@ test('a manager adds a slot', function () {
         ->and($slot->is_reserved)->toBeFalse();
 });
 
-test('slots must fit the market dates and planning hours', function (string $date, string $start, int $duration, string $field) {
+test('slots need a valid day and must fit the planning hours', function (string $date, string $start, int $duration, string $field) {
     Livewire::test(SlotEditor::class, ['stand' => $this->stand])
         ->call('create')
         ->set('date', $date)
@@ -54,7 +54,8 @@ test('slots must fit the market dates and planning hours', function (string $dat
 
     expect($this->stand->slots()->count())->toBe(0);
 })->with([
-    'unknown date' => ['2026-12-01', '10:00', 120, 'date'],
+    'invalid date' => ['28/11/2026', '10:00', 120, 'date'],
+    'missing date' => ['', '10:00', 120, 'date'],
     'too early' => ['2026-11-28', '08:00', 120, 'starts_at'],
     'ends after closing' => ['2026-11-28', '18:00', 90, 'duration'],
     'unknown duration' => ['2026-11-28', '10:00', 45, 'duration'],
@@ -221,4 +222,19 @@ test('volunteers cannot manage slots', function () {
     $this->actingAs(User::factory()->create());
 
     Livewire::test(SlotEditor::class, ['stand' => $this->stand])->assertForbidden();
+});
+
+test('a slot can be created on any day, for the preparations', function () {
+    Livewire::test(SlotEditor::class, ['stand' => $this->stand])
+        ->call('create')
+        ->assertSet('date', '2026-11-28')
+        ->set('date', '2026-11-25')
+        ->set('starts_at', '16:00')
+        ->set('duration', 120)
+        ->set('capacity', 4)
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertSee(__('stands.slots.off_market'));
+
+    expect($this->stand->slots()->sole()->date->toDateString())->toBe('2026-11-25');
 });

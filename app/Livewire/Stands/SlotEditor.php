@@ -19,6 +19,7 @@ use Livewire\Component;
 
 /**
  * Slots of a stand: day, times, places and optional reservation.
+ * The day is free: market days, or any other day for the preparations.
  *
  * @property-read Stand $stand
  * @property-read Collection<int, Slot> $standSlots
@@ -181,7 +182,7 @@ class SlotEditor extends Component
         $hourMax = config('marche.planning.hour_max');
 
         return [
-            'date' => ['required', Rule::in(config('marche.dates'))],
+            'date' => ['required', 'date_format:Y-m-d'],
             'starts_at' => ['required', Rule::in($this->startTimes()), function (string $attribute, mixed $value, \Closure $fail) use ($slot): void {
                 if ($conflict = $this->overlappingSlot($slot)) {
                     $fail(__('stands.slots.overlap', ['start' => $conflict->starts_at, 'end' => $conflict->ends_at]));
