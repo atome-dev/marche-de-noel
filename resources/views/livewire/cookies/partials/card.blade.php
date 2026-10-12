@@ -23,4 +23,11 @@
             <p class="mt-auto pt-1 text-xs text-zinc-500">{{ $recipe->schoolClasses->pluck('name')->implode(', ') }}</p>
         @endif
     </div>
+    @can('manage-cookies')
+        @php($totalKg = (int) $recipe->total_kg)
+        <p class="flex items-center gap-1.5 border-t border-brand-line px-3 py-2 text-xs {{ $totalKg > 0 ? 'font-semibold text-brand-green' : 'text-zinc-400' }}">
+            <flux:icon name="scale" variant="micro" class="size-4" />
+            {{ trans_choice('cookies.index.total_kg', $totalKg) }}
+        </p>
+    @endcan
 </a>

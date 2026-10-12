@@ -13,6 +13,7 @@ return [
         'others' => 'Les autres recettes',
         'all' => 'Toutes les recettes',
         'committed' => 'Je la réalise',
+        'total_kg' => '{0} 0 kg annoncé|{1} 1 kg annoncé|[2,*] :count kg annoncés',
     ],
 
     'show' => [

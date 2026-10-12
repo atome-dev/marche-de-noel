@@ -1,11 +1,13 @@
 <?php
 
+use App\Enums\StandType;
 use App\Livewire\Cookies\Index;
 use App\Livewire\Cookies\Show;
 use App\Models\Commitment;
 use App\Models\Recipe;
 use App\Models\RecipeIngredient;
 use App\Models\SchoolClass;
+use App\Models\Stand;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -53,6 +55,40 @@ describe('recipes list', function () {
             ->assertSee(__('cookies.index.all'))
             ->assertDontSee(__('cookies.index.mine'))
             ->assertDontSee(__('cookies.index.others'));
+    });
+
+    describe('announced kilos', function () {
+        beforeEach(function () {
+            $this->recipe = Recipe::factory()->create(['title' => 'Étoiles à la cannelle']);
+            Commitment::factory()->for($this->recipe)->create(['quantity_kg' => 2]);
+            Commitment::factory()->for($this->recipe)->create(['quantity_kg' => 3]);
+
+            $this->manager = User::factory()->create();
+            Stand::factory()->ofType(StandType::Cookies)->create()->managers()->attach($this->manager);
+        });
+
+        test('managers of the cookies stand see the total announced for each recipe', function () {
+            Recipe::factory()->create(['title' => 'Sablés délaissés']);
+
+            Livewire::actingAs($this->manager)->test(Index::class)
+                ->assertSeeInOrder([
+                    'Étoiles à la cannelle',
+                    trans_choice('cookies.index.total_kg', 5),
+                    'Sablés délaissés',
+                    trans_choice('cookies.index.total_kg', 0),
+                ]);
+        });
+
+        test('admins see the total too', function () {
+            Livewire::actingAs(User::factory()->admin()->create())->test(Index::class)
+                ->assertSee(trans_choice('cookies.index.total_kg', 5));
+        });
+
+        test('volunteers do not see any total', function () {
+            Livewire::test(Index::class)
+                ->assertSee('Étoiles à la cannelle')
+                ->assertDontSee('annoncé');
+        });
     });
 });
 
