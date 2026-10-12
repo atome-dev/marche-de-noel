@@ -25,7 +25,7 @@ return [
         'title' => 'Biscuits pommes, cannelle et avoine',
         'category' => 'Recette facile',
         'pdf' => 'flocons-d-avoine-pomme-cannelle.pdf',
-        'photo' => null,
+        'photo' => 'flocons-d-avoine-pomme-cannelle.source.png',
         'classes' => ['JE Pommier'],
         'ingredients' => [
             '150 | g | Pommes séchées hachées',
