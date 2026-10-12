@@ -33,6 +33,13 @@ return [
         'done' => 'Instantané enregistré : :path',
         'unchanged' => 'Aucun changement depuis le dernier instantané : rien à enregistrer.',
         'pruned' => '{1} :count ancien instantané effacé.|[2,*] :count anciens instantanés effacés.',
+        'log' => [
+            'written' => 'Instantané enregistré',
+            'unchanged' => 'Aucun changement, rien à enregistrer',
+            'pruned' => 'Anciens instantanés effacés',
+            'restored' => 'Instantané restauré',
+            'failed' => 'Échec de l’instantané',
+        ],
     ],
 
     'restore_snapshot' => [

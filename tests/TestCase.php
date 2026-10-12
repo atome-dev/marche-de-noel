@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Features;
+use Monolog\Handler\NullHandler;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,6 +19,9 @@ abstract class TestCase extends BaseTestCase
 
         Storage::fake('local');
         Storage::fake('public');
+
+        // Nor the real snapshot log.
+        config(['logging.channels.snapshots' => ['driver' => 'monolog', 'handler' => NullHandler::class]]);
     }
 
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void

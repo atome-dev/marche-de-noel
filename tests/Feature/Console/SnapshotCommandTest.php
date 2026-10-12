@@ -11,6 +11,7 @@ use App\Snapshots\SnapshotStore;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule as ScheduleFacade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -198,3 +199,89 @@ test('the heartbeat address is pinged after a successful snapshot, when configur
     'configured' => ['https://forge.example/heartbeat/abc', ['https://forge.example/heartbeat/abc']],
     'not configured' => [null, []],
 ]);
+
+describe('log', function () {
+    beforeEach(function () {
+        $this->logFile = storage_path('framework/testing/snapshots-test.log');
+        @unlink($this->logFile);
+
+        config(['logging.channels.snapshots' => ['driver' => 'single', 'path' => $this->logFile, 'level' => 'info']]);
+        Log::forgetChannel('snapshots');
+
+        $this->lines = fn (): array => is_file($this->logFile) ? array_values(array_filter(explode("\n", file_get_contents($this->logFile)))) : [];
+    });
+
+    afterEach(fn () => @unlink($this->logFile));
+
+    test('the dedicated channel keeps one file per day for seven days', function () {
+        $channel = (require base_path('config/logging.php'))['channels']['snapshots'];
+
+        expect($channel['driver'])->toBe('daily')
+            ->and($channel['max_files'])->toBe(7)
+            ->and($channel['path'])->toBe(storage_path('logs/snapshots.log'));
+    });
+
+    test('every run is logged with its details, written or not', function () {
+        $this->artisan('marche:snapshot');
+        $this->travelTo('2026-11-20 10:15:00');
+        $this->artisan('marche:snapshot');
+
+        $lines = ($this->lines)();
+
+        expect($lines)->toHaveCount(2)
+            ->and($lines[0])->toContain(__('commands.snapshot.log.written'))
+            ->toContain('snapshot-2026-11-20_10-00-00.json.gz')
+            ->toContain('"users":1')
+            ->toContain('"registrations":1')
+            ->toContain('"size":')
+            ->toContain('"duration_ms":')
+            ->toContain('"origin":"console"')
+            ->and($lines[1])->toContain(__('commands.snapshot.log.unchanged'))
+            ->toContain('snapshot-2026-11-20_10-00-00.json.gz')
+            ->not->toContain('"size":');
+    });
+
+    test('prunes and restores are logged too', function () {
+        config(['marche.snapshots.retention_days' => 1]);
+
+        $this->artisan('marche:snapshot');
+        $this->travelTo('2026-11-22 10:00:00');
+        $this->stand->update(['name' => 'B']);
+        $this->artisan('marche:snapshot');
+        $this->artisan('marche:restore-snapshot', ['snapshot' => 'latest', '--force' => true]);
+
+        $log = implode("\n", ($this->lines)());
+
+        expect($log)->toContain(__('commands.snapshot.log.pruned'))
+            ->toContain('"deleted":1')
+            ->toContain(__('commands.snapshot.log.restored'))
+            ->toContain('WARNING');
+    });
+
+    test('a failure is logged and reported', function () {
+        $this->mock(SnapshotStore::class, function ($mock) {
+            $mock->shouldReceive('create')->andThrow(new RuntimeException('disque plein'));
+            $mock->shouldReceive('log')->once()->with('failed', ['error' => 'disque plein'], 'error');
+        });
+
+        expect(fn () => $this->artisan('marche:snapshot')->run())->toThrow(RuntimeException::class, 'disque plein');
+    });
+});
+
+test('the last check is remembered, whether a snapshot was written or not', function () {
+    expect($this->snapshots->lastCheck())->toBeNull();
+
+    $this->artisan('marche:snapshot');
+
+    expect($this->snapshots->lastCheck()['changed'])->toBeTrue();
+
+    $this->travelTo('2026-11-20 10:15:00');
+    $this->artisan('marche:snapshot');
+
+    $check = $this->snapshots->lastCheck();
+
+    expect($check['changed'])->toBeFalse()
+        ->and($check['checked_at']->format('Y-m-d H:i'))->toBe('2026-11-20 10:15')
+        // The marker is not a snapshot.
+        ->and($this->snapshots->all())->toHaveCount(1);
+});

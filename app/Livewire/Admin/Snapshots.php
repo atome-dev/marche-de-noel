@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Snapshots\SnapshotLog;
 use App\Snapshots\SnapshotStore;
 use Carbon\CarbonImmutable;
 use Flux\Flux;
@@ -13,6 +14,8 @@ use Livewire\Component;
  * Snapshots of the data: list, take one now, download, restore.
  *
  * @property-read list<array{name: string, path: string, taken_at: CarbonImmutable, size: int}> $snapshots
+ * @property-read array{checked_at: CarbonImmutable, changed: bool}|null $lastCheck
+ * @property-read list<array{at: CarbonImmutable, level: string, message: string, context: array<string, mixed>, changes: array<string, int>}> $log
  */
 class Snapshots extends Component
 {
@@ -30,7 +33,7 @@ class Snapshots extends Component
 
         $created = $store->create() !== null;
 
-        unset($this->snapshots);
+        unset($this->snapshots, $this->lastCheck, $this->log);
 
         Flux::toast(
             variant: $created ? 'success' : null,
@@ -45,7 +48,7 @@ class Snapshots extends Component
         $path = $store->find($name);
 
         if ($path === null) {
-            unset($this->snapshots);
+            unset($this->snapshots, $this->lastCheck, $this->log);
 
             Flux::toast(variant: 'danger', text: __('admin.snapshots.not_found'));
 
@@ -58,7 +61,7 @@ class Snapshots extends Component
         $store->create();
         $store->restore($path);
 
-        unset($this->snapshots);
+        unset($this->snapshots, $this->lastCheck, $this->log);
 
         Flux::toast(variant: 'success', text: __('admin.snapshots.restored', ['date' => $date]));
     }
@@ -70,6 +73,24 @@ class Snapshots extends Component
     public function snapshots(): array
     {
         return app(SnapshotStore::class)->describe();
+    }
+
+    /**
+     * @return array{checked_at: CarbonImmutable, changed: bool}|null
+     */
+    #[Computed]
+    public function lastCheck(): ?array
+    {
+        return app(SnapshotStore::class)->lastCheck();
+    }
+
+    /**
+     * @return list<array{at: CarbonImmutable, level: string, message: string, context: array<string, mixed>, changes: array<string, int>}>
+     */
+    #[Computed]
+    public function log(): array
+    {
+        return app(SnapshotLog::class)->today();
     }
 
     public function formatDate(CarbonImmutable $date): string

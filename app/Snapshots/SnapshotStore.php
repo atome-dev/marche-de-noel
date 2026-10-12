@@ -4,7 +4,9 @@ namespace App\Snapshots;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
@@ -20,6 +22,8 @@ class SnapshotStore
     public const DISK = 'local';
 
     public const DIRECTORY = 'snapshots';
+
+    public const LAST_CHECK = 'last-check.json';
 
     /**
      * Tables of a snapshot, parents first. Sessions, cache, queues and
@@ -54,20 +58,67 @@ class SnapshotStore
      */
     public function create(): ?string
     {
-        $content = json_encode($this->export(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $startedAt = microtime(true);
+        $tables = $this->export();
+        $content = json_encode($tables, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $rows = array_map(count(...), $tables);
 
         $latest = $this->latest();
+        $now = CarbonImmutable::now();
+        $path = null;
 
-        if ($latest !== null && $this->read($latest) === $content) {
+        if ($latest === null || $this->read($latest) !== $content) {
+            $path = self::DIRECTORY.'/'.$now->format('Y-m-d').'/snapshot-'.$now->format('Y-m-d_H-i-s').'.json.gz';
+
+            $this->disk()->put($path, (string) gzencode($content, 6));
+        }
+
+        $this->disk()->put(self::DIRECTORY.'/'.self::LAST_CHECK, (string) json_encode([
+            'checked_at' => $now->toIso8601String(),
+            'changed' => $path !== null,
+        ]));
+
+        $this->log($path !== null ? 'written' : 'unchanged', [
+            'file' => basename($path ?? $latest),
+            'size' => $path !== null ? $this->disk()->size($path) : null,
+            'rows' => array_sum($rows),
+            'tables' => $rows,
+            'duration_ms' => (int) round((microtime(true) - $startedAt) * 1000),
+        ]);
+
+        return $path;
+    }
+
+    /**
+     * When the data was last compared with the latest snapshot, and whether a
+     * new snapshot was written.
+     *
+     * @return array{checked_at: CarbonImmutable, changed: bool}|null
+     */
+    public function lastCheck(): ?array
+    {
+        $check = json_decode((string) $this->disk()->get(self::DIRECTORY.'/'.self::LAST_CHECK), true);
+
+        if (! is_array($check) || ! isset($check['checked_at'])) {
             return null;
         }
 
-        $now = CarbonImmutable::now();
-        $path = self::DIRECTORY.'/'.$now->format('Y-m-d').'/snapshot-'.$now->format('Y-m-d_H-i-s').'.json.gz';
+        return ['checked_at' => CarbonImmutable::parse($check['checked_at']), 'changed' => (bool) ($check['changed'] ?? false)];
+    }
 
-        $this->disk()->put($path, (string) gzencode($content, 6));
-
-        return $path;
+    /**
+     * Write a line in the dedicated daily log (storage/logs/snapshots-*.log).
+     *
+     * @param  array<string, mixed>  $context
+     */
+    public function log(string $event, array $context = [], string $level = 'info'): void
+    {
+        Log::channel('snapshots')->log($level, __('commands.snapshot.log.'.$event), array_filter([
+            ...$context,
+            // Who triggered it: the scheduler or a command line, or an administrator on the site.
+            'origin' => app()->runningInConsole() ? 'console' : 'site',
+            'user' => Auth::id(),
+        ], fn (mixed $value): bool => $value !== null && $value !== ''));
     }
 
     /**
@@ -146,6 +197,10 @@ class SnapshotStore
             }
         }
 
+        if ($deleted > 0) {
+            $this->log('pruned', ['deleted' => $deleted, 'retention_days' => $days]);
+        }
+
         foreach ($this->disk()->directories(self::DIRECTORY) as $directory) {
             if ($this->disk()->allFiles($directory) === []) {
                 $this->disk()->deleteDirectory($directory);
@@ -187,6 +242,8 @@ class SnapshotStore
         } finally {
             Schema::enableForeignKeyConstraints();
         }
+
+        $this->log('restored', ['file' => basename($path), 'rows' => $restored], 'warning');
 
         return $restored;
     }

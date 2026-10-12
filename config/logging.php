@@ -65,6 +65,16 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // Journal dédié aux instantanés (marche:snapshot) : un fichier par jour,
+        // storage/logs/snapshots-AAAA-MM-JJ.log, conservé SNAPSHOT_LOG_DAYS jours.
+        'snapshots' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/snapshots.log'),
+            'level' => 'info',
+            'max_files' => (int) env('SNAPSHOT_LOG_DAYS', 7),
+            'replace_placeholders' => true,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
