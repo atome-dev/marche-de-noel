@@ -36,6 +36,9 @@ return [
     // Instantanés des données (marche:snapshot, toutes les 15 minutes) : durée de conservation en jours.
     'snapshots' => [
         'retention_days' => (int) env('SNAPSHOT_RETENTION_DAYS', 30),
+
+        // Adresse appelée après chaque instantané réussi (heartbeat Forge), facultative.
+        'heartbeat_url' => env('SNAPSHOT_HEARTBEAT_URL'),
     ],
 
     // Mot de passe commun permettant de demander la création d'un compte.

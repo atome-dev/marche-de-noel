@@ -8,7 +8,10 @@ use App\Models\Slot;
 use App\Models\Stand;
 use App\Models\User;
 use App\Snapshots\SnapshotStore;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Schedule as ScheduleFacade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
@@ -169,3 +172,29 @@ test('the purge deletes the snapshots', function () {
 
     expect($this->snapshots->all())->toBe([]);
 });
+
+test('the heartbeat address is pinged after a successful snapshot, when configured', function (?string $url, array $expected) {
+    config(['marche.snapshots.heartbeat_url' => $url]);
+
+    $pinged = [];
+    $client = Mockery::mock(Client::class);
+    $client->shouldReceive('request')->andReturnUsing(function (string $method, string $url) use (&$pinged) {
+        $pinged[] = $url;
+
+        return new Response;
+    });
+    app()->instance(Client::class, $client);
+
+    $schedule = new Schedule;
+    ScheduleFacade::swap($schedule);
+    require base_path('routes/console.php');
+
+    $event = collect($schedule->events())->sole(fn ($event) => str_contains($event->command, 'marche:snapshot'));
+    $event->exitCode = 0;
+    $event->callAfterCallbacks(app());
+
+    expect($pinged)->toBe($expected);
+})->with([
+    'configured' => ['https://forge.example/heartbeat/abc', ['https://forge.example/heartbeat/abc']],
+    'not configured' => [null, []],
+]);
