@@ -14,6 +14,20 @@ return [
         'all' => 'Toutes les recettes',
         'committed' => 'Je la réalise',
         'total_kg' => '{0} 0 kg annoncé|{1} 1 kg annoncé|[2,*] :count kg annoncés',
+        'info' => [
+            'heading' => 'Informations importantes',
+            'intro' => 'Chaque année, le stand des petits gâteaux est très attendu et fait le bonheur de tous nos visiteurs !',
+            'quantity_label' => 'Quantité libre :',
+            'quantity' => 'chaque famille réalise autant de gâteaux qu’elle le souhaite, en priorité les recettes de ses classes afin d’assurer un grand choix.',
+            'orders_label' => 'Ingrédients fournis par l’école :',
+            'orders' => 'certaines recettes en demandent de grandes quantités. L’école vous fournit sur demande :ingredients.',
+            'orders_until' => 'À commander jusqu’au :date !',
+            'orders_closed' => 'Les commandes sont closes.',
+            'and' => 'et',
+            'organic_label' => 'Ingrédients bio obligatoires :',
+            'organic' => 'tous les ingrédients doivent être issus de l’agriculture biologique.',
+            'thanks' => 'Merci à tous pour votre engagement et vos délicieuses réalisations !',
+        ],
     ],
 
     'show' => [

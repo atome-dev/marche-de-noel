@@ -16,6 +16,8 @@
 
     <x-auth-session-status :status="session('status')" />
 
+    @include('livewire.cookies.partials.info')
+
     @if ($this->recipes->isEmpty())
         <div class="rounded-xl border border-brand-line bg-white p-10 text-center text-zinc-500">{{ __('cookies.index.empty') }}</div>
     @elseif ($this->mine->isEmpty())
@@ -32,7 +34,6 @@
         <div class="space-y-3">
             <div>
                 <h2 class="font-display text-xl">{{ __('cookies.index.mine') }}</h2>
-                <p class="text-sm text-zinc-600">{{ __('cookies.index.mine_help') }}</p>
             </div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 @foreach ($this->mine as $recipe)

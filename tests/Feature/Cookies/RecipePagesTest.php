@@ -57,6 +57,32 @@ describe('recipes list', function () {
             ->assertDontSee(__('cookies.index.others'));
     });
 
+    describe('important information', function () {
+        test('announces the orderable ingredients and the order deadline from the configuration', function () {
+            Livewire::test(Index::class)
+                ->assertSee(__('cookies.index.info.heading'))
+                ->assertSee('poudre d’amande, poudre de noisette et noix de coco râpée')
+                ->assertSee('dimanche 15 novembre 2026')
+                ->assertSee(__('cookies.index.info.organic'));
+        });
+
+        test('says that orders are closed after the deadline', function () {
+            $this->travelTo('2026-11-16 08:00');
+
+            Livewire::test(Index::class)
+                ->assertSee(__('cookies.index.info.orders_closed'))
+                ->assertDontSee('dimanche 15 novembre 2026');
+        });
+
+        test('does not mention orders when no ingredient can be ordered', function () {
+            config(['marche.orders.ingredients' => []]);
+
+            Livewire::test(Index::class)
+                ->assertSee(__('cookies.index.info.heading'))
+                ->assertDontSee(__('cookies.index.info.orders_label'));
+        });
+    });
+
     describe('announced kilos', function () {
         beforeEach(function () {
             $this->recipe = Recipe::factory()->create(['title' => 'Étoiles à la cannelle']);

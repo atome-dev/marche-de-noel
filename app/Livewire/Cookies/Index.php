@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Cookies;
 
+use App\Cookies\CookieOrdering;
 use App\Models\Recipe;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -17,6 +20,9 @@ use Livewire\Component;
  * @property-read Collection<int, Recipe> $recipes
  * @property-read Collection<int, Recipe> $mine
  * @property-read Collection<int, Recipe> $others
+ * @property-read string $orderableIngredients
+ * @property-read CarbonImmutable|null $deadline
+ * @property-read bool $locked
  */
 class Index extends Component
 {
@@ -58,6 +64,29 @@ class Index extends Component
     public function others(): Collection
     {
         return $this->recipes->diff($this->mine)->values();
+    }
+
+    /**
+     * Orderable ingredients as a sentence fragment: "poudre d’amande et poudre de noisette".
+     */
+    #[Computed]
+    public function orderableIngredients(): string
+    {
+        return collect(config('marche.orders.ingredients'))
+            ->map(fn (string $name) => Str::of($name)->lower()->replace("'", '’')->toString())
+            ->join(', ', ' '.__('cookies.index.info.and').' ');
+    }
+
+    #[Computed]
+    public function deadline(): ?CarbonImmutable
+    {
+        return app(CookieOrdering::class)->deadline();
+    }
+
+    #[Computed]
+    public function locked(): bool
+    {
+        return app(CookieOrdering::class)->isLocked();
     }
 
     public function render(): View
