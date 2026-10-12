@@ -11,6 +11,14 @@ return [
         'delete_confirm' => 'Supprimer définitivement le compte de :name ?',
         'deleted' => 'Le compte de :name a été supprimé.',
         'role_updated' => 'Le rôle de :name a été modifié.',
+        'manages' => '{1} Responsable du stand|[2,*] Responsable des stands',
+    ],
+
+    'impersonation' => [
+        'start' => 'Agir en tant que',
+        'banner' => 'Vous agissez en tant que :name. Ce que vous faites est enregistré à son nom.',
+        'stop' => 'Revenir à mon compte',
+        'forbidden' => 'Le compte et le mot de passe d’une autre personne ne se modifient pas en agissant à sa place.',
     ],
 
     'snapshots' => [

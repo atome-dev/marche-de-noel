@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\Settings\ConfirmEmailChange;
+use App\Http\Middleware\ForbidWhileImpersonating;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\Security;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', ForbidWhileImpersonating::class])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::livewire('settings/profile', Profile::class)->name('profile.edit');

@@ -31,6 +31,14 @@
                             <a href="tel:{{ preg_replace('/[^0-9+]/', '', $user->phone) }}" class="hover:underline">{{ $user->phone }}</a>
                         @endif
                     </div>
+                    @if ($user->managedStands->isNotEmpty())
+                        <div class="flex min-w-0 flex-wrap items-center gap-1 pt-1">
+                            <span class="text-xs text-zinc-500">{{ trans_choice('admin.users.manages', $user->managedStands->count()) }}</span>
+                            @foreach ($user->managedStands as $stand)
+                                <flux:badge size="sm" color="teal" icon="building-storefront" as="a" :href="route('stands.edit', $stand)" wire:navigate wire:key="user-{{ $user->id }}-stand-{{ $stand->id }}" class="max-w-full" :title="$stand->name"><span class="truncate">{{ $stand->name }}</span></flux:badge>
+                            @endforeach
+                        </div>
+                    @endif
                     @if ($user->schoolClasses->isNotEmpty())
                         <div class="flex flex-wrap gap-1 pt-1">
                             @foreach ($user->schoolClasses as $schoolClass)
@@ -45,6 +53,10 @@
                         @if ($user->email_verified_at === null)
                             <flux:button size="sm" icon="paper-airplane" wire:click="resendInvitation({{ $user->id }})">{{ __('invitations.admin.resend') }}</flux:button>
                         @endif
+
+                        @unless ($user->isAdmin())
+                            <flux:button size="sm" icon="eye" wire:click="impersonate({{ $user->id }})">{{ __('admin.impersonation.start') }}</flux:button>
+                        @endunless
 
                         <flux:select
                             size="sm"

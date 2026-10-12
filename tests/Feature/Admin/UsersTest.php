@@ -2,6 +2,7 @@
 
 use App\Enums\Role;
 use App\Livewire\Admin\Users;
+use App\Models\Stand;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -93,4 +94,18 @@ test('volunteers cannot call admin actions', function () {
     Livewire::test(Users::class)->assertForbidden();
 
     expect($other->fresh())->not->toBeNull();
+});
+
+test('the stands a user manages are listed', function () {
+    $manager = User::factory()->create(['first_name' => 'Camille', 'last_name' => 'Martin']);
+    $stand = Stand::factory()->create(['name' => 'Les petites bougies']);
+    $stand->managers()->attach($manager);
+    $unmanaged = Stand::factory()->create(['name' => 'Stand sans responsable']);
+
+    $this->actingAs(User::factory()->admin()->create());
+
+    Livewire::test(Users::class)
+        ->assertSeeInOrder(['Camille', 'Responsable du stand', 'Les petites bougies'])
+        ->assertSee(route('stands.edit', $stand))
+        ->assertDontSee(route('stands.edit', $unmanaged));
 });

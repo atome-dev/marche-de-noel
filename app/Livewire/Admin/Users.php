@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Auth\Impersonation;
 use App\Auth\Invitations;
 use App\Enums\Role;
 use App\Models\Stand;
@@ -116,6 +117,18 @@ class Users extends Component
         return Stand::query()->ordered()->get(['id', 'name']);
     }
 
+    /**
+     * "Act as": sign in as this user to check what they see and may do.
+     */
+    public function impersonate(int $userId, Impersonation $impersonation): void
+    {
+        $this->authorize('admin');
+
+        $impersonation->start(Auth::user(), User::findOrFail($userId));
+
+        $this->redirectRoute('dashboard');
+    }
+
     public function deleteUser(int $userId): void
     {
         $this->authorize('admin');
@@ -135,7 +148,7 @@ class Users extends Component
         $search = trim($this->search);
 
         return User::query()
-            ->with('schoolClasses')
+            ->with(['schoolClasses', 'managedStands' => fn ($stands) => $stands->ordered()])
             ->when($search !== '', fn ($query) => $query->where(fn ($query) => $query
                 ->where('first_name', 'like', "%{$search}%")
                 ->orWhere('last_name', 'like', "%{$search}%")

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DownloadSnapshot;
+use App\Http\Controllers\Admin\StopImpersonation;
 use App\Http\Controllers\Cookies\ExportOrders;
 use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Planning\PrintPlanning;
@@ -63,6 +64,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
+
+    // Reachable while acting as a volunteer: not behind the admin gate.
+    Route::post('agir-en-tant-que/quitter', StopImpersonation::class)->name('impersonation.stop');
 
     Route::livewire('documents', DocumentsIndex::class)->name('documents.index');
     Route::get('documents/{document}', ShowDocument::class)->name('documents.show');
