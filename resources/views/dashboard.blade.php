@@ -36,6 +36,30 @@
             </div>
         </section>
 
+        @can('admin')
+            @php $stats = app(\App\Planning\PlanningStats::class); @endphp
+
+            <section class="rounded-2xl border border-brand-line bg-white p-5" data-planning-stats>
+                <h2 class="font-display text-lg">{{ __('dashboard.stats.title') }}</h2>
+
+                <dl class="mt-3 grid grid-cols-2 gap-3">
+                    <div class="rounded-xl bg-brand-sand/60 p-4">
+                        <dt class="text-sm text-zinc-600">{{ __('dashboard.stats.volunteers') }}</dt>
+                        <dd class="whitespace-nowrap font-display text-2xl sm:text-3xl" data-stat="volunteers">{{ $stats->volunteers() }}</dd>
+                        @if ($stats->guests() > 0)
+                            <dd class="text-xs text-zinc-600">{{ trans_choice('dashboard.stats.guests', $stats->guests(), ['count' => $stats->guests()]) }}</dd>
+                        @endif
+                    </div>
+                    <div class="rounded-xl bg-brand-sand/60 p-4">
+                        <dt class="text-sm text-zinc-600">{{ __('dashboard.stats.hours') }}</dt>
+                        <dd class="whitespace-nowrap font-display text-2xl sm:text-3xl" data-stat="hours">{{ $stats->hoursLabel() }}</dd>
+                    </div>
+                </dl>
+
+                <p class="mt-3 text-xs text-zinc-600">{{ __('dashboard.stats.note') }}</p>
+            </section>
+        @endcan
+
         <section class="grid gap-4 sm:grid-cols-2">
             <a href="{{ route('planning') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
                 <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
