@@ -105,6 +105,7 @@ Le planning est la page la plus importante.
 - Message au responsable : facultatif à l'inscription.
 - La liste de référence des stands est dans `database/data/stands.php` ; `php artisan marche:import-stands` crée les stands manquants sans toucher aux stands existants. L'administrateur peut aussi en ajouter à la main.
 - Par défaut, tous les stands sont créés avec les mêmes créneaux de 2 places, chaque jour du marché : 12:30–14:00, 14:30–16:00, 16:00–17:30, 17:30–19:00 et 19:00–20:00 (`PLANNING_DEFAULT_SLOTS`, `PLANNING_DEFAULT_CAPACITY`). Les responsables les ajustent ensuite.
+- `php artisan marche:reset-slots` efface tous les créneaux et leurs inscriptions, puis recrée les créneaux par défaut du `.env` (confirmation demandée, sauf avec `--force` pour une exécution depuis Forge ; `--stand=ID` pour un seul stand). À réserver à la phase de préparation.
 
 ### Maquette de référence
 

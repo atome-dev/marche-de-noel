@@ -19,6 +19,16 @@ return [
         'missing_file' => 'Fichier introuvable « :file » pour la recette « :recipe ».',
     ],
 
+    'reset_slots' => [
+        'no_stand' => 'Aucun stand à réinitialiser.',
+        'no_defaults' => 'Aucun créneau par défaut valide : vérifiez MARCHE_DATES, PLANNING_DEFAULT_SLOTS et la plage horaire du .env.',
+        'warning' => 'ATTENTION : :slots créneaux et :registrations inscriptions vont être définitivement effacés sur :stands stand(s), puis remplacés, chaque jour du marché, par :',
+        'word' => 'REINITIALISER',
+        'confirm' => 'Tapez :word pour confirmer',
+        'aborted' => 'Réinitialisation annulée : aucun créneau n’a été modifié.',
+        'done' => ':count créneaux par défaut créés sur :stands stand(s).',
+    ],
+
     'purge' => [
         'warning' => 'ATTENTION : tous les comptes et toutes les données de l’édition vont être définitivement effacés (seules les classes, la liste des stands et les recettes sont conservées).',
         'word' => 'PURGER',
