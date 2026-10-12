@@ -103,6 +103,7 @@ Le planning est la page la plus importante.
 - Un bénévole peut s'inscrire sur tout créneau non plein et non réservé, sauf s'il appartient à la liste réservée.
 - Le responsable peut remplir un créneau avec un texte libre pour une personne sans compte.
 - Prévoir des filtres par stand et/ou par date.
+- Actualisation automatique : chaque page de planning ouverte interroge le serveur toutes les `PLANNING_REFRESH_SECONDS` secondes (15 par défaut, 0 pour désactiver) avec `wire:poll`. Le serveur compare une empreinte du planning (`App\Planning\PlanningFingerprint`, une seule requête) et ne redessine la page que si elle a changé. Toute nouvelle table affichée dans le planning doit entrer dans cette empreinte.
 - Prévoir une version imprimable par stand ou globale.
 - Ne pas envoyer de notification par courriel pour le moment.
 - Chevauchement : un bénévole peut s'inscrire sur deux créneaux qui se chevauchent, mais une alerte le lui signale (pas de blocage).

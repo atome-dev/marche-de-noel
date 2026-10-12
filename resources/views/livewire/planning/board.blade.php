@@ -1,9 +1,10 @@
 @php
     $grid = $this->grid;
+    $refreshSeconds = (int) config('marche.planning.refresh_seconds');
     $formatDay = fn ($date, string $format) => ucfirst(\Illuminate\Support\Carbon::parse($date)->locale(app()->getLocale())->translatedFormat($format));
 @endphp
 
-<section class="w-full space-y-4">
+<section class="w-full space-y-4" @if ($refreshSeconds > 0) wire:poll.{{ $refreshSeconds }}s="refreshIfChanged" @endif>
     <div class="flex flex-wrap items-end justify-between gap-3">
         <div>
             <flux:heading size="xl" level="1" class="font-display">{{ __('planning.heading') }}</flux:heading>

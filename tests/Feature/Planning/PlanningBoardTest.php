@@ -2,9 +2,11 @@
 
 use App\Livewire\Planning\Board;
 use App\Models\Registration;
+use App\Models\SchoolClass;
 use App\Models\Slot;
 use App\Models\Stand;
 use App\Models\User;
+use App\Planning\PlanningFingerprint;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -290,4 +292,54 @@ describe('preparation days', function () {
             ->assertSee('Buvette')
             ->assertDontSee('Crêpes');
     });
+});
+
+describe('automatic refresh', function () {
+    test('the planning polls at the configured interval', function () {
+        config(['marche.planning.refresh_seconds' => 20]);
+
+        Livewire::test(Board::class)->assertSeeHtml('wire:poll.20s="refreshIfChanged"');
+    });
+
+    test('polling is disabled when the interval is zero', function () {
+        config(['marche.planning.refresh_seconds' => 0]);
+
+        Livewire::test(Board::class)->assertDontSeeHtml('wire:poll');
+    });
+
+    test('a poll does not redraw an unchanged planning', function () {
+        $component = Livewire::test(Board::class);
+        $fingerprint = $component->get('fingerprint');
+
+        $component->call('refreshIfChanged')->assertSet('fingerprint', $fingerprint);
+
+        expect($component->effects)->not->toHaveKey('html');
+    });
+
+    test('a poll shows a registration made by someone else', function () {
+        $component = Livewire::test(Board::class)->assertDontSee('Dominique P.');
+
+        Registration::factory()->for($this->buvetteSlot)
+            ->for(User::factory()->create(['first_name' => 'Dominique', 'last_name' => 'Perrin']))
+            ->create();
+
+        $component->call('refreshIfChanged')->assertSee('Dominique P.');
+    });
+
+    test('the fingerprint changes with what the planning shows', function (Closure $change) {
+        $fingerprint = app(PlanningFingerprint::class);
+        $before = $fingerprint->current();
+
+        expect($fingerprint->current())->toBe($before);
+
+        $change($this);
+
+        expect($fingerprint->current())->not->toBe($before);
+    })->with([
+        'a registration' => [fn ($test) => Registration::factory()->for($test->buvetteSlot)->for(User::factory())->create()],
+        'a new slot' => [fn ($test) => Slot::factory()->for($test->crepes)->at('2026-11-28', '14:00', '15:00')->create()],
+        'a deleted slot' => [fn ($test) => $test->crepesSlot->delete()],
+        'a new manager' => [fn ($test) => $test->buvette->managers()->attach($test->user)],
+        'a reserved class' => [fn ($test) => $test->buvetteSlot->reservedClasses()->attach(SchoolClass::factory()->create())],
+    ]);
 });

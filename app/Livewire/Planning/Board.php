@@ -5,6 +5,7 @@ namespace App\Livewire\Planning;
 use App\Exceptions\RegistrationRefused;
 use App\Models\Slot;
 use App\Models\Stand;
+use App\Planning\PlanningFingerprint;
 use App\Planning\PlanningGrid;
 use App\Planning\SlotRegistrar;
 use Flux\Flux;
@@ -14,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -44,6 +46,22 @@ class Board extends Component
     public string $message = '';
 
     public string $guestName = '';
+
+    /**
+     * Signature of the planning as it was last drawn.
+     */
+    #[Locked]
+    public string $fingerprint = '';
+
+    /**
+     * Called by the periodic poll: redraws only when the planning changed.
+     */
+    public function refreshIfChanged(PlanningFingerprint $fingerprint): void
+    {
+        if ($fingerprint->current() === $this->fingerprint) {
+            $this->skipRender();
+        }
+    }
 
     public function openSlot(int $slotId): void
     {
@@ -244,6 +262,8 @@ class Board extends Component
 
     public function render(): View
     {
+        $this->fingerprint = app(PlanningFingerprint::class)->current();
+
         return view('livewire.planning.board')
             ->title(__('planning.title'));
     }

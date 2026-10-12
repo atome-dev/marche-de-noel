@@ -74,6 +74,9 @@ return [
 
         // Nombre de places de ces créneaux par défaut.
         'default_capacity' => (int) env('PLANNING_DEFAULT_CAPACITY', 2),
+
+        // Intervalle (en secondes) d'actualisation automatique du planning ; 0 pour la désactiver.
+        'refresh_seconds' => max(0, (int) env('PLANNING_REFRESH_SECONDS', 15)),
     ],
 
     /*
