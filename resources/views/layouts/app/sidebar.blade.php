@@ -39,6 +39,9 @@
                         <flux:sidebar.item icon="users" :href="route('admin.users')" :current="request()->routeIs('admin.users')" wire:navigate>
                             {{ __('navigation.users') }}
                         </flux:sidebar.item>
+                        <flux:sidebar.item icon="circle-stack" :href="route('admin.snapshots')" :current="request()->routeIs('admin.snapshots')" wire:navigate>
+                            {{ __('navigation.snapshots') }}
+                        </flux:sidebar.item>
                     </flux:sidebar.group>
                 </flux:sidebar.nav>
             @endcan

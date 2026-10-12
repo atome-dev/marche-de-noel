@@ -88,6 +88,22 @@ class SnapshotStore
         return $paths;
     }
 
+    /**
+     * Snapshots with their date and size, newest first.
+     *
+     * @return list<array{name: string, path: string, taken_at: CarbonImmutable, size: int}>
+     */
+    public function describe(): array
+    {
+        return array_map(fn (string $path): array => [
+            'name' => basename($path),
+            'path' => $path,
+            // File names carry the time of the snapshot, in the application timezone.
+            'taken_at' => CarbonImmutable::createFromFormat('Y-m-d_H-i-s', substr(basename($path, '.json.gz'), strlen('snapshot-')), config('app.timezone')),
+            'size' => $this->disk()->size($path),
+        ], array_reverse($this->all()));
+    }
+
     public function latest(): ?string
     {
         $paths = $this->all();

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\DownloadSnapshot;
 use App\Http\Controllers\Cookies\ExportOrders;
 use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Planning\PrintPlanning;
+use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\CompleteRegistration;
 use App\Livewire\Auth\Register;
@@ -62,6 +64,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::livewire('users', Users::class)->name('users');
+        Route::livewire('sauvegardes', Snapshots::class)->name('snapshots');
+        Route::get('sauvegardes/{name}', DownloadSnapshot::class)->name('snapshots.download');
     });
 });
 

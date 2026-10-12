@@ -3,10 +3,23 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Features;
 
 abstract class TestCase extends BaseTestCase
 {
+    /**
+     * No test may touch the real storage: the purge, for instance, deletes
+     * the documents and snapshots directories.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('local');
+        Storage::fake('public');
+    }
+
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void
     {
         if (! Features::enabled($feature)) {

@@ -11,6 +11,7 @@ return [
     'my_stands' => 'Mes stands',
     'administration' => 'Administration',
     'users' => 'Utilisateurs',
+    'snapshots' => 'Sauvegardes',
     'school_site' => 'Site de l’école',
     'profile' => 'Mon compte',
     'logout' => 'Se déconnecter',

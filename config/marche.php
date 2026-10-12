@@ -33,6 +33,9 @@ return [
         'max_size_mb' => (int) env('DOCUMENTS_MAX_SIZE_MB', 20),
     ],
 
+    // Fuseau horaire d'affichage des dates techniques (instantanés).
+    'timezone' => env('MARCHE_TIMEZONE', 'Europe/Paris'),
+
     // Instantanés des données (marche:snapshot, toutes les 15 minutes) : durée de conservation en jours.
     'snapshots' => [
         'retention_days' => (int) env('SNAPSHOT_RETENTION_DAYS', 30),
