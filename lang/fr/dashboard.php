@@ -5,6 +5,7 @@ return [
     'greeting' => 'Bonjour :name',
     'intro' => 'Merci pour votre aide ! Retrouvez ici le planning des bénévoles, les recettes des petits gâteaux et toutes les informations utiles.',
     'open' => 'Ouvrir',
+    'tutorial' => 'Première visite ? Voir le mode d’emploi',
 
     'modules' => [
         'planning' => [

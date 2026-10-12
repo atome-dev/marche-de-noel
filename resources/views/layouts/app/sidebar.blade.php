@@ -52,6 +52,9 @@
                 <flux:sidebar.item icon="globe-alt" :href="config('marche.school_url')" target="_blank">
                     {{ __('navigation.school_site') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="question-mark-circle" :href="route('tutorial')" :current="request()->routeIs('tutorial')">
+                    {{ __('tutorial.link') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="shield-check" :href="route('privacy')" :current="request()->routeIs('privacy')">
                     {{ __('privacy.link') }}
                 </flux:sidebar.item>

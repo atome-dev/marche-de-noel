@@ -33,7 +33,10 @@
                         {{ $slot }}
                     </div>
 
-                    <a href="{{ route('privacy') }}" class="text-center text-sm text-zinc-600 underline underline-offset-4">{{ __('privacy.link') }}</a>
+                    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-zinc-600">
+                        <a href="{{ route('tutorial') }}" class="underline underline-offset-4">{{ __('tutorial.link') }}</a>
+                        <a href="{{ route('privacy') }}" class="underline underline-offset-4">{{ __('privacy.link') }}</a>
+                    </div>
                 </div>
             </div>
         </div>

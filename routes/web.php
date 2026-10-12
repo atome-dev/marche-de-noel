@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DownloadSnapshot;
 use App\Http\Controllers\Admin\StopImpersonation;
 use App\Http\Controllers\Cookies\ExportOrders;
 use App\Http\Controllers\Documents\ShowDocument;
+use App\Http\Controllers\Help\ShowTutorial;
 use App\Http\Controllers\Planning\PrintPlanning;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/dashboard')->name('home');
 
 Route::view('donnees-personnelles', 'privacy')->name('privacy');
+Route::get('mode-d-emploi/{guide?}', ShowTutorial::class)->name('tutorial');
 
 Route::middleware('guest')->group(function () {
     Route::livewire('register', Register::class)->name('register');

@@ -187,6 +187,12 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 - Le dessin du flyer habille la page de connexion (affiche entière à côté du formulaire sur ordinateur, bandeau sur mobile) et le haut de la page d'accueil.
 - Deux fichiers à régénérer chaque année depuis le flyer : `public/images/flyer.webp` (affiche entière, 1000 px de large) et `public/images/flyer-banner.webp` (bandeau recadré sur le dessin, sans texte). S'ils sont absents, les pages s'affichent sans visuel.
 
+## Mode d'emploi
+
+- Page `/mode-d-emploi` (`resources/views/tutorial.blade.php`, textes dans `lang/fr/tutorial.php`, étapes dans `App\Http\Controllers\Help\ShowTutorial::GUIDES`) : un téléphone animé déroule huit étapes, avec lecture automatique, pause et navigation. Liée depuis la connexion, l'accueil et le menu.
+- Trois modes d'emploi : bénévoles (public), responsables de stand (`/mode-d-emploi/responsables`, personnes connectées) et administrateurs (`/mode-d-emploi/administrateurs`, administrateurs). Des onglets proposent ceux auxquels la personne a accès.
+- Les écrans sont des captures du site avec des données de démonstration, dans `public/images/tutoriel/{guide}/*.webp` (640 px de large) : ne jamais y faire figurer une vraie personne, ces images sont accessibles sans connexion. À refaire si l'interface ou le nom de l'édition change ; les points « touchez ici » sont des pourcentages de l'écran.
+
 ## Autres contenus
 
 - Journal PDF et bons de commande : nouveaux documents à téléverser chaque année par l'administrateur.

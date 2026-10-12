@@ -28,6 +28,11 @@
             @endif
 
             <p class="mt-4 max-w-xl text-white/85">{{ __('dashboard.intro') }}</p>
+
+            <a href="{{ route('tutorial') }}" class="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold hover:bg-white/25">
+                <flux:icon name="play-circle" variant="mini" />
+                {{ __('dashboard.tutorial') }}
+            </a>
             </div>
         </section>
 
