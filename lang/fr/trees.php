@@ -1,0 +1,163 @@
+<?php
+
+return [
+    'title' => 'Sapins de Noël',
+    'heading' => 'Commander un sapin de Noël',
+    'producer' => 'Producteurs : :producer',
+    'deadline' => 'Date limite de commande : :date',
+    'pickup' => 'Retrait le :date, :hours',
+    'pickup_place' => ':place',
+    'closed' => 'Les commandes de sapins sont closes.',
+    'empty_catalog' => 'Aucun sapin n’est proposé pour le moment.',
+    'unit_price' => ':price l’unité',
+
+    'status' => [
+        'pending' => 'En attente de règlement',
+        'paid' => 'Payée',
+        'picked_up' => 'Retirée',
+        'cancelled' => 'Annulée',
+        'expired' => 'Non prise en compte',
+    ],
+
+    'payment_methods' => [
+        'helloasso' => 'HelloAsso',
+        'cheque' => 'Chèque',
+    ],
+
+    'form' => [
+        'sizes' => 'Vos sapins',
+        'decrease' => 'Un sapin de moins : :size',
+        'increase' => 'Un sapin de plus : :size',
+        'total' => 'Total',
+        'contact' => 'Vos coordonnées',
+        'phone_help' => 'Le producteur ou le responsable du stand peut vous appeler en cas de souci.',
+        'pay_online' => 'Payer en ligne (HelloAsso)',
+        'pay_by_cheque' => 'Payer par chèque',
+        'cheque_help' => 'Imprimez le bon de commande et déposez-le avec un chèque à l’ordre de « :payee » :places.',
+        'no_tree' => 'Choisissez au moins un sapin.',
+    ],
+
+    'mine' => [
+        'heading' => 'Mes commandes',
+        'empty' => 'Vous n’avez pas encore commandé de sapin.',
+        'number' => 'Commande :number',
+        'pay' => 'Payer en ligne',
+        'order_form' => 'Bon de commande (PDF)',
+        'pickup_slip' => 'Bon de retrait (PDF)',
+        'cancel' => 'Annuler',
+        'cancel_confirm' => 'Annuler la commande :number ?',
+        'show_on_pickup' => 'Présentez cet écran ou le bon de retrait le jour du retrait.',
+    ],
+
+    'toasts' => [
+        'placed' => 'Commande :number enregistrée. Un courriel récapitulatif vous a été envoyé.',
+        'cancelled' => 'Commande :number annulée.',
+        'paid' => 'Paiement reçu, merci ! Votre commande :number est confirmée.',
+        'payment_pending' => 'Le paiement de la commande :number n’est pas encore confirmé. Revenez dans quelques minutes.',
+        'payment_aborted' => 'Paiement non effectué. Vous pouvez réessayer ou payer par chèque.',
+        'helloasso_unavailable' => 'Le paiement en ligne est momentanément indisponible. Réessayez plus tard ou payez par chèque.',
+        'cheque_received' => 'Chèque pointé pour la commande :number.',
+        'cheque_unmarked' => 'Pointage du chèque annulé pour la commande :number.',
+        'picked_up' => 'Commande :number retirée.',
+        'pickup_undone' => 'Retrait annulé pour la commande :number.',
+    ],
+
+    'errors' => [
+        'closed' => 'Les commandes de sapins sont closes.',
+        'not_cancellable' => 'Cette commande ne peut plus être annulée.',
+        'not_payable' => 'Cette commande ne peut pas être payée en ligne.',
+    ],
+
+    'helloasso' => [
+        'item_name' => 'Sapins de Noël – commande :number',
+    ],
+
+    'manage' => [
+        'title' => 'Gestion des sapins',
+        'link' => 'Gérer les commandes',
+        'tabs' => [
+            'orders' => 'Commandes',
+            'summary' => 'Synthèse producteur',
+            'pickup' => 'Retrait',
+        ],
+        'search' => 'Nom ou numéro',
+        'filter' => 'Statut',
+        'all' => 'Toutes',
+        'empty' => 'Aucune commande.',
+        'count' => '{0} Aucune commande|{1} 1 commande|[2,*] :count commandes',
+        'customer' => 'Client',
+        'details' => 'Sapins',
+        'payment' => 'Paiement',
+        'mark_cheque' => 'Chèque reçu',
+        'unmark_cheque' => 'Annuler le pointage',
+        'cancel' => 'Annuler la commande',
+        'cancel_confirm' => 'Annuler la commande :number de :name ? Un paiement HelloAsso se rembourse depuis HelloAsso.',
+        'guest' => [
+            'open' => 'Nouvelle commande pour une personne sans compte',
+            'heading' => 'Commande pour une personne sans compte',
+            'cheque_received' => 'Chèque déjà reçu',
+            'submit' => 'Enregistrer la commande',
+        ],
+    ],
+
+    'summary' => [
+        'title' => 'Synthèse producteur',
+        'help' => 'Commandes payées uniquement, à transmettre au producteur.',
+        'size' => 'Taille',
+        'quantity' => 'Sapins',
+        'amount' => 'Montant',
+        'total' => 'Total',
+        'pending' => '{0} Aucune commande en attente de règlement.|{1} 1 commande en attente de règlement (:amount), non comptée.|[2,*] :count commandes en attente de règlement (:amount), non comptées.',
+        'orders' => 'Commandes payées',
+        'export_xlsx' => 'Exporter (XLSX)',
+        'export_pdf' => 'Exporter (PDF)',
+        'filename' => 'sapins',
+    ],
+
+    'pickup_list' => [
+        'title' => 'Retrait des sapins',
+        'counter' => ':done / :total retirées',
+        'mark' => 'Retiré',
+        'undo' => 'Annuler le retrait',
+        'print' => 'Version imprimable',
+        'empty' => 'Aucune commande payée.',
+        'picked' => 'Retiré',
+    ],
+
+    'pdf' => [
+        'order_form' => 'Bon de commande',
+        'pickup_slip' => 'Bon de retrait',
+        'number' => 'Commande n° :number',
+        'name' => 'Nom Prénom',
+        'phone' => 'Téléphone',
+        'email' => 'Adresse électronique',
+        'article' => 'Article',
+        'price' => 'Prix',
+        'quantity' => 'Quantité',
+        'total' => 'TOTAL',
+        'deadline' => 'DATE LIMITE DE COMMANDE : :date',
+        'cheque' => 'À retourner avec le règlement par chèque à l’ordre de « :payee » :',
+        'rejected' => 'Toute commande arrivée après la date limite, ou sans règlement, ne sera pas prise en compte.',
+        'pickup' => 'RETRAIT LE :date, :hours',
+        'bring_slip' => 'Munissez-vous de votre bon de retrait.',
+        'paid' => 'Payée le :date (:method)',
+    ],
+
+    'mail' => [
+        'greeting' => 'Bonjour :name,',
+        'salutation' => 'Merci et à bientôt,',
+        'placed' => [
+            'subject' => 'Votre commande de sapins :number',
+            'intro' => 'Nous avons bien enregistré votre commande de sapins de Noël :number :',
+            'pay_online' => 'Vous pouvez la payer en ligne avec HelloAsso depuis le site :',
+            'action' => 'Voir ma commande',
+            'cheque' => 'Vous pouvez aussi imprimer le bon de commande joint et le déposer avec un chèque à l’ordre de « :payee » :places.',
+            'deadline' => 'Attention : une commande non réglée au :date ne sera pas prise en compte.',
+        ],
+        'paid' => [
+            'subject' => 'Commande de sapins :number confirmée',
+            'intro' => 'Votre règlement est bien reçu : la commande :number est confirmée.',
+            'pickup' => 'Retrait le :date, :hours, :place. Présentez le bon de retrait joint ou la page de votre commande sur votre téléphone.',
+        ],
+    ],
+];
