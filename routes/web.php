@@ -39,7 +39,9 @@ Route::view('donnees-personnelles', 'privacy')->name('privacy');
 Route::get('mode-d-emploi/{guide?}', ShowTutorial::class)->name('tutorial');
 
 // Server-to-server call of HelloAsso: no session, no CSRF token (see bootstrap/app.php).
-Route::post('sapins/paiement/notification', PaymentNotification::class)->name('trees.payment.notification');
+Route::post('sapins/paiement/notification', PaymentNotification::class)
+    ->middleware('throttle:60,1')
+    ->name('trees.payment.notification');
 
 Route::middleware('guest')->group(function () {
     Route::livewire('register', Register::class)->name('register');

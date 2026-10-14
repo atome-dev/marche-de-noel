@@ -165,3 +165,13 @@ test('HelloAsso being down makes the notification fail so that it is sent again'
     $this->postJson(route('trees.payment.notification'), ['eventType' => 'Order', 'metadata' => ['tree_order_id' => $this->order->id]])
         ->assertStatus(503);
 });
+
+test('the public notification url is rate limited', function () {
+    Http::fake();
+
+    foreach (range(1, 60) as $call) {
+        $this->postJson(route('trees.payment.notification'), ['eventType' => 'Form']);
+    }
+
+    $this->postJson(route('trees.payment.notification'), ['eventType' => 'Form'])->assertTooManyRequests();
+});
