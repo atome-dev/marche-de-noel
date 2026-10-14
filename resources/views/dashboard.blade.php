@@ -96,7 +96,7 @@
 
             <a href="{{ route('trees.index') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
                 <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
-                    <flux:icon name="sparkles" />
+                    <flux:icon name="trees" />
                 </div>
                 <div>
                     <h2 class="font-display text-lg">{{ __('dashboard.modules.trees.title') }}</h2>
