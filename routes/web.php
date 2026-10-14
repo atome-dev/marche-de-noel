@@ -7,6 +7,9 @@ use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Help\ShowTutorial;
 use App\Http\Controllers\Planning\PrintPlanning;
 use App\Http\Controllers\TreeOrders\DownloadDocument as DownloadTreeOrderDocument;
+use App\Http\Controllers\TreeOrders\PaymentAborted;
+use App\Http\Controllers\TreeOrders\PaymentNotification;
+use App\Http\Controllers\TreeOrders\PaymentReturn;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
@@ -29,6 +32,9 @@ Route::redirect('/', '/dashboard')->name('home');
 
 Route::view('donnees-personnelles', 'privacy')->name('privacy');
 Route::get('mode-d-emploi/{guide?}', ShowTutorial::class)->name('tutorial');
+
+// Server-to-server call of HelloAsso: no session, no CSRF token (see bootstrap/app.php).
+Route::post('sapins/paiement/notification', PaymentNotification::class)->name('trees.payment.notification');
 
 Route::middleware('guest')->group(function () {
     Route::livewire('register', Register::class)->name('register');
@@ -73,6 +79,10 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/', TreeOrderForm::class)->name('index');
         Route::get('commandes/{treeOrder}/bon-de-commande.pdf', [DownloadTreeOrderDocument::class, 'orderForm'])->name('documents.order-form');
         Route::get('commandes/{treeOrder}/bon-de-retrait.pdf', [DownloadTreeOrderDocument::class, 'pickupSlip'])->name('documents.pickup-slip');
+
+        Route::get('paiement/{treeOrder}/retour', PaymentReturn::class)->name('payment.return');
+        Route::get('paiement/{treeOrder}/abandon', PaymentAborted::class)->name('payment.back');
+        Route::get('paiement/{treeOrder}/erreur', PaymentAborted::class)->name('payment.error');
     });
 
     // Reachable while acting as a volunteer: not behind the admin gate.
