@@ -37,7 +37,7 @@ return [
         'download' => 'Télécharger',
         'restore' => 'Restaurer',
         'restore_word' => 'RESTAURER',
-        'restore_confirm' => 'Remplacer TOUTES les données actuelles par celles du :date ? Ce qui a été saisi depuis sera perdu (l’état actuel est d’abord sauvegardé). Tapez :word pour confirmer.',
+        'restore_confirm' => 'Remplacer TOUTES les données actuelles par celles du :date ? Ce qui a été saisi depuis sera perdu (l’état actuel est d’abord sauvegardé).',
         'restored' => 'Données du :date restaurées.',
         'not_found' => 'Cet instantané n’existe plus.',
         'count' => '{1} :count instantané|[2,*] :count instantanés',

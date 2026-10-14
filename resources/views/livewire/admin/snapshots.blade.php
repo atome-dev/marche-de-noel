@@ -47,7 +47,7 @@
                 <div class="ms-auto flex items-center gap-1">
                     <flux:button size="sm" variant="ghost" icon="arrow-down-tray" :href="route('admin.snapshots.download', $snapshot['name'])" :aria-label="__('admin.snapshots.download')" />
                     <flux:button size="sm" icon="arrow-uturn-left" wire:click="restore('{{ $snapshot['name'] }}')"
-                        wire:confirm.prompt="{{ __('admin.snapshots.restore_confirm', ['date' => $date, 'word' => __('admin.snapshots.restore_word')]) }}|{{ __('admin.snapshots.restore_word') }}">
+                        wire:confirm.prompt="{{ __('admin.snapshots.restore_confirm', ['date' => $date]) }}|{{ __('admin.snapshots.restore_word') }}">
                         {{ __('admin.snapshots.restore') }}
                     </flux:button>
                 </div>
