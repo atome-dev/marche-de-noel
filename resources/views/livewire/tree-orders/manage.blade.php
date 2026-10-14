@@ -64,6 +64,8 @@
                 <div class="flex flex-wrap gap-2 md:justify-end">
                     @if (! $order->isCancelled() && ! $order->isPaid())
                         <flux:button size="sm" variant="primary" icon="banknotes" wire:click="markCheque({{ $order->id }})">{{ __('trees.manage.mark_cheque') }}</flux:button>
+                        <flux:button size="sm" icon="credit-card" wire:click="markHelloAsso({{ $order->id }})"
+                            wire:confirm="{{ __('trees.manage.mark_helloasso_confirm', ['number' => $order->number, 'amount' => Money::format($order->total_cents)]) }}">{{ __('trees.manage.mark_helloasso') }}</flux:button>
                     @elseif ($order->paid_by !== null && ! $order->isCancelled() && ! $order->isPickedUp())
                         <flux:button size="sm" variant="ghost" icon="arrow-uturn-left" wire:click="unmarkPayment({{ $order->id }})">{{ __('trees.manage.unmark_payment') }}</flux:button>
                     @endif
@@ -71,10 +73,6 @@
                     <flux:dropdown position="bottom" align="end">
                         <flux:button size="sm" variant="ghost" icon="ellipsis-horizontal" :aria-label="__('actions.more')" />
                         <flux:menu>
-                            @if (! $order->isCancelled() && ! $order->isPaid())
-                                <flux:menu.item icon="credit-card" wire:click="markHelloAsso({{ $order->id }})"
-                                    wire:confirm="{{ __('trees.manage.mark_helloasso_confirm', ['number' => $order->number, 'amount' => Money::format($order->total_cents)]) }}">{{ __('trees.manage.mark_helloasso') }}</flux:menu.item>
-                            @endif
                             <flux:menu.item icon="document-text" :href="route('trees.documents.order-form', $order)">{{ __('trees.mine.order_form') }}</flux:menu.item>
                             @if ($order->isPaid() && ! $order->isCancelled())
                                 <flux:menu.item icon="ticket" :href="route('trees.documents.pickup-slip', $order)">{{ __('trees.mine.pickup_slip') }}</flux:menu.item>
