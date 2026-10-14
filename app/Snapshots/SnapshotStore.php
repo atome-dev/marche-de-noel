@@ -13,7 +13,7 @@ use RuntimeException;
 
 /**
  * Snapshots of the functional data (accounts, stands, planning, recipes,
- * orders, raffle, documents), stored as gzipped JSON on the private disk.
+ * orders, raffle, documents, tree orders), stored as gzipped JSON on the private disk.
  *
  * Uploaded files (photos, PDFs, documents) are not part of a snapshot.
  */
@@ -50,6 +50,8 @@ class SnapshotStore
         'ingredient_orders',
         'raffle_prizes',
         'documents',
+        'tree_orders',
+        'tree_order_lines',
     ];
 
     /**

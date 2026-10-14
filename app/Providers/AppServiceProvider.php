@@ -70,6 +70,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-raffle', fn (User $user): bool => $user->managedStands()
             ->where('type', StandType::Raffle)
             ->exists());
+
+        // Tree orders: cheques, orders for people without an account, summary and pickup.
+        Gate::define('manage-tree-orders', fn (User $user): bool => $user->managedStands()
+            ->where('type', StandType::TreeOrder)
+            ->exists());
     }
 
     /**

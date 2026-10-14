@@ -56,7 +56,7 @@ return [
     'Repas du samedi soir' => StandType::Generic,
     'Repos des mamans et des bébés' => StandType::Generic,
     'Salon de thé' => StandType::Generic,
-    'Sapins du Morvan' => StandType::Generic,
+    'Sapins du Morvan' => StandType::TreeOrder,
     'Soupes, frites, hot-dogs' => StandType::Generic,
     'Spectacle de Marionnettes - conte animé' => StandType::Generic,
     'Tombola' => StandType::Raffle,

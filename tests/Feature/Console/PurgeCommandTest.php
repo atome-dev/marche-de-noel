@@ -9,6 +9,7 @@ use App\Models\Registration;
 use App\Models\SchoolClass;
 use App\Models\Slot;
 use App\Models\Stand;
+use App\Models\TreeOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -85,4 +86,16 @@ test('commitments and orders are deleted but recipes are kept', function () {
     expect(Recipe::count())->toBe(1)
         ->and(RecipeCategory::count())->toBe(1)
         ->and($recipe->ingredients()->count())->toBe(1);
+});
+
+test('tree orders and their lines are deleted', function () {
+    TreeOrder::factory()->for($this->user)->withLine('moyen', 2, 3500)->create();
+    TreeOrder::factory()->guest()->withLine('lutins', 1, 2700)->create();
+
+    $this->artisan('marche:purge')
+        ->expectsQuestion(__('commands.purge.confirm', ['word' => __('commands.purge.word')]), __('commands.purge.word'))
+        ->assertSuccessful();
+
+    $this->assertDatabaseCount('tree_orders', 0);
+    $this->assertDatabaseCount('tree_order_lines', 0);
 });

@@ -6,6 +6,7 @@ use App\Models\RafflePrize;
 use App\Models\Registration;
 use App\Models\Slot;
 use App\Models\Stand;
+use App\Models\TreeOrder;
 use App\Models\User;
 use App\Snapshots\SnapshotStore;
 use GuzzleHttp\Client;
@@ -28,6 +29,7 @@ beforeEach(function () {
     Registration::factory()->for($this->slot)->for($this->user)->create();
     IngredientOrder::factory()->for(Commitment::factory()->for($this->user))->create();
     RafflePrize::factory()->create(['label' => 'Panier garni']);
+    TreeOrder::factory()->for($this->user)->withLine('moyen', 2, 3500)->create();
 
     $this->snapshots = app(SnapshotStore::class);
 });
@@ -46,7 +48,9 @@ test('a snapshot stores the functional tables as gzipped json', function () {
         ->and($tables['stands'][0]['name'])->toBe('Buvette')
         ->and($tables['registrations'])->toHaveCount(1)
         ->and($tables['ingredient_orders'])->toHaveCount(1)
-        ->and($tables['raffle_prizes'][0]['label'])->toBe('Panier garni');
+        ->and($tables['raffle_prizes'][0]['label'])->toBe('Panier garni')
+        ->and($tables['tree_orders'][0]['total_cents'])->toBe(7000)
+        ->and($tables['tree_order_lines'])->toHaveCount(1);
 });
 
 test('every table of the database is either in the snapshot or known as technical', function () {

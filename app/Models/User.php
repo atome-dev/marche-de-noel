@@ -33,6 +33,7 @@ use Illuminate\Support\Str;
  * @property-read Collection<int, SchoolClass> $schoolClasses
  * @property-read Collection<int, Stand> $managedStands
  * @property-read Collection<int, Registration> $registrations
+ * @property-read Collection<int, TreeOrder> $treeOrders
  */
 #[Fillable(['first_name', 'last_name', 'email', 'phone', 'locale', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -95,6 +96,14 @@ class User extends Authenticatable
     public function commitments(): HasMany
     {
         return $this->hasMany(Commitment::class);
+    }
+
+    /**
+     * @return HasMany<TreeOrder, $this>
+     */
+    public function treeOrders(): HasMany
+    {
+        return $this->hasMany(TreeOrder::class);
     }
 
     public function isAdmin(): bool
