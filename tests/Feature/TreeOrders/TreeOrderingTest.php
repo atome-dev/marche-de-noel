@@ -114,7 +114,7 @@ test('recording a cheque marks the order paid and sends the paid mail', function
 
     Mail::assertSent(TreeOrderPaid::class, fn (TreeOrderPaid $mail) => $mail->hasTo('camille@example.com'));
 
-    $this->ordering->unmarkCheque($order);
+    $this->ordering->unmarkPayment($order);
     expect($order->fresh()->only(['paid_at', 'paid_by', 'payment_method']))
         ->toBe(['paid_at' => null, 'paid_by' => null, 'payment_method' => null]);
 });
@@ -143,7 +143,7 @@ test('a helloasso payment is recorded once and mailed once', function () {
 test('a helloasso payment cannot be unmarked by hand', function () {
     $order = TreeOrder::factory()->for($this->user)->paid(TreePaymentMethod::HelloAsso)->create();
 
-    $this->ordering->unmarkCheque($order);
+    $this->ordering->unmarkPayment($order);
 })->throws(InvalidArgumentException::class);
 
 test('only paid orders can be picked up', function () {
@@ -167,3 +167,34 @@ test('the mails carry the order form and the pickup slip', function () {
     (new TreeOrderPlaced($order))->assertSeeInHtml($order->number);
     (new TreeOrderPaid($order))->assertSeeInHtml($order->number);
 });
+
+test('a manager records a HelloAsso payment seen in the HelloAsso back office', function () {
+    $order = TreeOrder::factory()->for($this->user)->create(['customer_email' => 'camille@example.com']);
+    $this->travelTo('2026-12-01 10:00:00');
+
+    $this->ordering->markHelloAssoReceived($order, $this->manager);
+
+    $order->refresh();
+    expect($order->isPaid())->toBeTrue()
+        ->and($order->payment_method)->toBe(TreePaymentMethod::HelloAsso)
+        ->and($order->paid_by)->toBe($this->manager->id);
+
+    Mail::assertSent(TreeOrderPaid::class, fn (TreeOrderPaid $mail) => $mail->hasTo('camille@example.com'));
+
+    $this->ordering->unmarkPayment($order);
+    expect($order->fresh()->isPaid())->toBeFalse();
+});
+
+test('a paid or cancelled order cannot be recorded as paid on HelloAsso', function () {
+    $paid = TreeOrder::factory()->paid()->create();
+    $cancelled = TreeOrder::factory()->cancelled()->create();
+
+    expect(fn () => $this->ordering->markHelloAssoReceived($paid, $this->manager))->toThrow(InvalidArgumentException::class)
+        ->and(fn () => $this->ordering->markHelloAssoReceived($cancelled, $this->manager))->toThrow(InvalidArgumentException::class);
+});
+
+test('a picked up order keeps its payment', function () {
+    $order = TreeOrder::factory()->paid()->pickedUp()->create(['paid_by' => $this->manager->id]);
+
+    $this->ordering->unmarkPayment($order);
+})->throws(InvalidArgumentException::class);

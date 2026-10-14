@@ -68,7 +68,7 @@ test('a cheque is recorded and the family is told', function () {
         ->and($order->fresh()->paid_by)->toBe($this->manager->id);
     Mail::assertSent(TreeOrderPaid::class);
 
-    Livewire::test(Manage::class)->call('unmarkCheque', $order->id);
+    Livewire::test(Manage::class)->call('unmarkPayment', $order->id);
     expect($order->fresh()->isPaid())->toBeFalse();
 });
 
@@ -96,7 +96,7 @@ test('volunteers cannot call the management actions', function (string $action) 
     $this->actingAs(User::factory()->create());
 
     Livewire::test(Manage::class)->assertForbidden();
-})->with(['markCheque', 'cancelOrder']);
+})->with(['markCheque', 'markHelloAsso', 'cancelOrder']);
 
 test('managers enter an order for someone without an account, even after the deadline', function () {
     $this->travelTo('2026-12-01 10:00:00');
@@ -133,4 +133,31 @@ test('the guest order form shows its total', function () {
         ->assertSee("89\u{00A0}€", false)
         ->set('guestQuantities.moyen', '')
         ->assertSet('guestTotalCents', 5400);
+});
+
+test('a HelloAsso payment is recorded by hand from the management page', function () {
+    $order = TreeOrder::factory()->create();
+
+    Livewire::test(Manage::class)
+        ->assertSee(__('trees.manage.mark_helloasso'))
+        ->call('markHelloAsso', $order->id);
+
+    expect($order->fresh()->payment_method)->toBe(TreePaymentMethod::HelloAsso)
+        ->and($order->fresh()->paid_by)->toBe($this->manager->id);
+
+    Livewire::test(Manage::class)
+        ->assertSee(__('trees.manage.unmark_payment'))
+        ->call('unmarkPayment', $order->id);
+
+    expect($order->fresh()->isPaid())->toBeFalse();
+});
+
+test('an automatic HelloAsso payment cannot be undone from the management page', function () {
+    $order = TreeOrder::factory()->paid(TreePaymentMethod::HelloAsso)->create();
+
+    Livewire::test(Manage::class)
+        ->assertDontSee(__('trees.manage.unmark_payment'))
+        ->call('unmarkPayment', $order->id);
+
+    expect($order->fresh()->isPaid())->toBeTrue();
 });

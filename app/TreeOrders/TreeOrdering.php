@@ -81,22 +81,25 @@ class TreeOrdering
 
     public function markChequeReceived(TreeOrder $order, User $manager): void
     {
-        if ($order->isCancelled() || $order->isPaid()) {
-            throw new InvalidArgumentException("Order [{$order->id}] cannot be marked as paid.");
-        }
-
-        $order->forceFill([
-            'payment_method' => TreePaymentMethod::Cheque,
-            'paid_at' => now(),
-            'paid_by' => $manager->id,
-        ])->save();
-
-        $this->mail($order, new TreeOrderPaid($order));
+        $this->recordPayment($order, $manager, TreePaymentMethod::Cheque);
     }
 
-    public function unmarkCheque(TreeOrder $order): void
+    /**
+     * A payment the manager sees in the HelloAsso back office but the site
+     * missed (for instance, paid in an older browser tab).
+     */
+    public function markHelloAssoReceived(TreeOrder $order, User $manager): void
     {
-        if ($order->payment_method !== TreePaymentMethod::Cheque || $order->isPickedUp()) {
+        $this->recordPayment($order, $manager, TreePaymentMethod::HelloAsso);
+    }
+
+    /**
+     * Undo a payment recorded by a manager. Payments confirmed by HelloAsso
+     * itself are never undone by hand.
+     */
+    public function unmarkPayment(TreeOrder $order): void
+    {
+        if (! $order->isPaid() || $order->paid_by === null || $order->isPickedUp()) {
             throw new InvalidArgumentException("Payment of order [{$order->id}] cannot be undone.");
         }
 
@@ -208,6 +211,21 @@ class TreeOrdering
         }
 
         return $lines;
+    }
+
+    private function recordPayment(TreeOrder $order, User $manager, TreePaymentMethod $method): void
+    {
+        if ($order->isCancelled() || $order->isPaid()) {
+            throw new InvalidArgumentException("Order [{$order->id}] cannot be marked as paid.");
+        }
+
+        $order->forceFill([
+            'payment_method' => $method,
+            'paid_at' => now(),
+            'paid_by' => $manager->id,
+        ])->save();
+
+        $this->mail($order, new TreeOrderPaid($order));
     }
 
     private function ensureOpen(): void

@@ -18,7 +18,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 
 /**
- * Tree orders for the tree stand managers: cheques, cancellations and
+ * Tree orders for the tree stand managers: payments, cancellations and
  * orders for people without an account.
  *
  * @property-read Collection<int, TreeOrder> $orders
@@ -59,12 +59,20 @@ class Manage extends Component
         $this->attempt(fn () => $ordering->markChequeReceived($order, Auth::user()), __('trees.toasts.cheque_received', ['number' => $order->number]));
     }
 
-    public function unmarkCheque(int $orderId, TreeOrdering $ordering): void
+    public function markHelloAsso(int $orderId, TreeOrdering $ordering): void
     {
         $this->authorize('manage-tree-orders');
         $order = TreeOrder::query()->findOrFail($orderId);
 
-        $this->attempt(fn () => $ordering->unmarkCheque($order), __('trees.toasts.cheque_unmarked', ['number' => $order->number]));
+        $this->attempt(fn () => $ordering->markHelloAssoReceived($order, Auth::user()), __('trees.toasts.helloasso_received', ['number' => $order->number]));
+    }
+
+    public function unmarkPayment(int $orderId, TreeOrdering $ordering): void
+    {
+        $this->authorize('manage-tree-orders');
+        $order = TreeOrder::query()->findOrFail($orderId);
+
+        $this->attempt(fn () => $ordering->unmarkPayment($order), __('trees.toasts.payment_unmarked', ['number' => $order->number]));
     }
 
     public function cancelOrder(int $orderId, TreeOrdering $ordering): void
