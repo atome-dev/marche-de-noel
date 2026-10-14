@@ -45,3 +45,12 @@ test('the admin menu is only shown to administrators', function () {
         ->get(route('dashboard'))
         ->assertSee(route('admin.users'));
 });
+
+test('confirmations open the site dialog instead of the browser one', function () {
+    $this->actingAs(User::factory()->create())
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertSee('data-confirm-dialog', escape: false)
+        ->assertSee(__('actions.confirm_title'))
+        ->assertSee('data-confirm-prompt', escape: false);
+});

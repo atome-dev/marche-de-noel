@@ -92,6 +92,10 @@
             </flux:toast.group>
         @endpersist
 
+        @persist('confirm-dialog')
+            @include('partials.confirm-dialog')
+        @endpersist
+
         @fluxScripts
     </body>
 </html>
