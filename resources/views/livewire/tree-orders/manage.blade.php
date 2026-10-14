@@ -24,7 +24,9 @@
         </flux:modal.trigger>
     </div>
 
-    <p class="text-sm text-zinc-600">{{ trans_choice('trees.manage.count', $this->orders->count(), ['count' => $this->orders->count()]) }}</p>
+    @if ($this->orders->isNotEmpty())
+        <p class="text-sm text-zinc-600">{{ trans_choice('trees.manage.count', $this->orders->count(), ['count' => $this->orders->count()]) }}</p>
+    @endif
 
     <div class="space-y-3">
         @forelse ($this->orders as $order)

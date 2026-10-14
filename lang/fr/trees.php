@@ -79,7 +79,7 @@ return [
         'link' => 'Gérer les commandes',
         'tabs' => [
             'orders' => 'Commandes',
-            'summary' => 'Synthèse producteur',
+            'summary' => 'Synthèse',
             'pickup' => 'Retrait',
         ],
         'search' => 'Nom ou numéro',
@@ -95,7 +95,7 @@ return [
         'cancel' => 'Annuler la commande',
         'cancel_confirm' => 'Annuler la commande :number de :name ? Un paiement HelloAsso se rembourse depuis HelloAsso.',
         'guest' => [
-            'open' => 'Nouvelle commande pour une personne sans compte',
+            'open' => 'Commande sans compte',
             'heading' => 'Commande pour une personne sans compte',
             'cheque_received' => 'Chèque déjà reçu',
             'submit' => 'Enregistrer la commande',
