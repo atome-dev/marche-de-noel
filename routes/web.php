@@ -22,6 +22,7 @@ use App\Livewire\Planning\Board;
 use App\Livewire\Raffle\Index as RaffleIndex;
 use App\Livewire\Stands\Index as StandsIndex;
 use App\Livewire\Stands\StandForm;
+use App\Livewire\TreeOrders\OrderForm as TreeOrderForm;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -69,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
 
     Route::prefix('sapins')->name('trees.')->group(function () {
+        Route::livewire('/', TreeOrderForm::class)->name('index');
         Route::get('commandes/{treeOrder}/bon-de-commande.pdf', [DownloadTreeOrderDocument::class, 'orderForm'])->name('documents.order-form');
         Route::get('commandes/{treeOrder}/bon-de-retrait.pdf', [DownloadTreeOrderDocument::class, 'pickupSlip'])->name('documents.pickup-slip');
     });
