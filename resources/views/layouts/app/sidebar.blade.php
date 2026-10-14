@@ -23,6 +23,9 @@
                 <flux:sidebar.item icon="gift" :href="route('raffle.index')" :current="request()->routeIs('raffle.*')" wire:navigate>
                     {{ __('navigation.raffle') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="sparkles" :href="route('trees.index')" :current="request()->routeIs('trees.*')" wire:navigate>
+                    {{ __('navigation.trees') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="document-text" :href="route('documents.index')" :current="request()->routeIs('documents.*')" wire:navigate>
                     {{ __('navigation.documents') }}
                 </flux:sidebar.item>

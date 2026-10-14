@@ -30,6 +30,10 @@ return [
             'title' => 'Tombola',
             'text' => 'Les lots et les tickets gagnants.',
         ],
+        'trees' => [
+            'title' => 'Sapins de Noël',
+            'text' => 'Commandez votre sapin Nordmann, à payer en ligne ou par chèque.',
+        ],
         'documents' => [
             'title' => 'Documents',
             'text' => 'Journal et bons de commande.',

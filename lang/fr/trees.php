@@ -30,6 +30,8 @@ return [
         'increase' => 'Un sapin de plus : :size',
         'total' => 'Total',
         'contact' => 'Vos coordonnées',
+        'name' => 'Nom',
+        'phone' => 'Téléphone',
         'phone_help' => 'Le producteur ou le responsable du stand peut vous appeler en cas de souci.',
         'pay_online' => 'Payer en ligne (HelloAsso)',
         'pay_by_cheque' => 'Payer par chèque',
