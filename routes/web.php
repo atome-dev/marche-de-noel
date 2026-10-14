@@ -7,9 +7,11 @@ use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Help\ShowTutorial;
 use App\Http\Controllers\Planning\PrintPlanning;
 use App\Http\Controllers\TreeOrders\DownloadDocument as DownloadTreeOrderDocument;
+use App\Http\Controllers\TreeOrders\ExportTreeOrders;
 use App\Http\Controllers\TreeOrders\PaymentAborted;
 use App\Http\Controllers\TreeOrders\PaymentNotification;
 use App\Http\Controllers\TreeOrders\PaymentReturn;
+use App\Http\Controllers\TreeOrders\PrintPickupList;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
@@ -25,7 +27,10 @@ use App\Livewire\Planning\Board;
 use App\Livewire\Raffle\Index as RaffleIndex;
 use App\Livewire\Stands\Index as StandsIndex;
 use App\Livewire\Stands\StandForm;
+use App\Livewire\TreeOrders\Manage as TreeOrdersManage;
 use App\Livewire\TreeOrders\OrderForm as TreeOrderForm;
+use App\Livewire\TreeOrders\Pickup as TreeOrdersPickup;
+use App\Livewire\TreeOrders\Summary as TreeOrdersSummary;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('home');
@@ -83,6 +88,15 @@ Route::middleware('auth')->group(function () {
         Route::get('paiement/{treeOrder}/retour', PaymentReturn::class)->name('payment.return');
         Route::get('paiement/{treeOrder}/abandon', PaymentAborted::class)->name('payment.back');
         Route::get('paiement/{treeOrder}/erreur', PaymentAborted::class)->name('payment.error');
+
+        Route::middleware('can:manage-tree-orders')->prefix('gestion')->group(function () {
+            Route::livewire('/', TreeOrdersManage::class)->name('manage');
+            Route::livewire('synthese', TreeOrdersSummary::class)->name('summary');
+            Route::get('synthese/export.xlsx', [ExportTreeOrders::class, 'xlsx'])->name('summary.xlsx');
+            Route::get('synthese/export.pdf', [ExportTreeOrders::class, 'pdf'])->name('summary.pdf');
+            Route::livewire('retrait', TreeOrdersPickup::class)->name('pickup');
+            Route::get('retrait/impression', PrintPickupList::class)->name('pickup.print');
+        });
     });
 
     // Reachable while acting as a volunteer: not behind the admin gate.
