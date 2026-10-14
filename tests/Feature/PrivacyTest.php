@@ -26,3 +26,11 @@ test('the menu links to the privacy page', function () {
         ->assertOk()
         ->assertSee(route('privacy'));
 });
+
+test('the privacy page describes the tree orders and HelloAsso', function () {
+    $this->get(route('privacy'))
+        ->assertOk()
+        ->assertSee('Les sapins de Noël')
+        ->assertSee('HelloAsso')
+        ->assertSee('Les responsables du stand des sapins');
+});

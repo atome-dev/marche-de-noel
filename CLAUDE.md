@@ -11,7 +11,7 @@ Priorité absolue au mobile-first : la plupart des bénévoles utilisent un tél
 - Laravel 13, Blade, Livewire 4, Flux UI Pro, Tailwind, Pest, MySQL.
 - Déploiement avec Forge sur un serveur personnel.
 - Pas d'API pour le moment.
-- Pas de paiement.
+- Pas de paiement, sauf le paiement en ligne des sapins via HelloAsso (API Checkout).
 - Courriels via Mailjet, déjà configuré dans `.env`.
 - Les tests Pest unitaires **et** fonctionnels sont obligatoires pour tout code.
 - Livewire 4 en mode **classique uniquement** : pas de single-file component (SFC). Chaque composant comporte deux fichiers :
@@ -79,7 +79,7 @@ Prévoir notamment les variables suivantes, avec des valeurs d'exemple adaptées
 - Prévoir un Enum ou un type de stand avec des fonctionnalités propres à chaque type, notamment :
   - « Petits gâteaux » : les responsables éditent les recettes.
   - « Tombola » : les responsables éditent les lots et saisissent les gagnants.
-  - « Commande de sapins ».
+  - « Commande de sapins » : les responsables gèrent les commandes de sapins.
   - Autres stands génériques.
 - Un stand peut ne pas apparaître dans le planning si son nombre de bénévoles est nul.
 - L'administrateur crée le stand et désigne un ou plusieurs responsables.
@@ -184,6 +184,16 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 - La purge efface les lots.
 - Restent à définir : photo, donateur, annulation de la validation ; ne rien inventer.
 
+## Sapins de Noël
+
+- Page `/sapins` : toute personne connectée commande des sapins Nordmann (plusieurs commandes indépendantes possibles, jamais modifiées après création). Tailles, tarifs, date limite, retrait, ordre du chèque et textes sont dans `config/trees.php` (versionné, à mettre à jour chaque année) ; seuls les identifiants HelloAsso sont dans `.env` (`HELLOASSO_CLIENT_ID`, `HELLOASSO_CLIENT_SECRET`, `HELLOASSO_ORGANIZATION_SLUG`, `HELLOASSO_SANDBOX`).
+- Deux règlements : en ligne avec HelloAsso, ou bon de commande PDF imprimé et chèque déposé à l'école. Sans identifiants HelloAsso, seul le chèque est proposé.
+- Le paiement HelloAsso n'est jamais cru sur parole : le retour du navigateur et la notification serveur (`POST /sapins/paiement/notification`, sans CSRF, à déclarer dans le back-office HelloAsso) relisent le *checkout intent* et vérifient la commande, le montant et l'état « Authorized ». Le passage à « payée » est idempotent.
+- Statuts calculés : en attente de règlement, payée, retirée, annulée, non prise en compte (en attente après la date limite, incluse jusqu'à minuit). Après la date limite, les familles ne peuvent plus commander, payer en ligne ni annuler ; les responsables peuvent encore pointer un chèque et saisir une commande pour une personne sans compte.
+- Courriels : récapitulatif à la création (bon de commande joint) et confirmation au paiement (bon de retrait joint).
+- Responsables d'un stand de type « Commande de sapins » et administrateur (`manage-tree-orders`) : `/sapins/gestion` (commandes, pointage des chèques, annulation, saisie pour un tiers), synthèse producteur avec exports XLSX et PDF (commandes payées uniquement), et retrait le jour J avec version imprimable.
+- Une commande garde le libellé et le prix du moment. La suppression d'un compte conserve ses commandes de sapins (nécessaires pour remettre un sapin réglé) jusqu'à la purge, qui efface toutes les commandes.
+
 ## Visuel de l'année (flyer)
 
 - Le dessin du flyer habille la page de connexion (affiche entière à côté du formulaire sur ordinateur, bandeau sur mobile) et le haut de la page d'accueil.
@@ -200,7 +210,6 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 - Journal PDF et bons de commande : nouveaux documents à téléverser chaque année par l'administrateur.
 - Page `/documents` : tous les connectés ouvrent les documents ; seul l'administrateur ajoute, classe et supprime. Un document a un titre et un fichier (PDF, Word, Excel, OpenDocument ou image), limité à `DOCUMENTS_MAX_SIZE_MB`.
 - Les fichiers sont sur le disque privé et servis uniquement aux personnes connectées. La purge efface les documents et leurs fichiers.
-- Commande de sapins : fonctionnalité à définir plus tard, hors périmètre de la première livraison.
 
 ## Périmètre de livraison et ordre de développement
 
@@ -210,7 +219,7 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 4. **Tombola**.
 5. **Documents et finitions**.
 
-Les sapins et tous les points « à définir » sont hors de la première livraison.
+Tous les points « à définir » sont hors de la première livraison.
 
 Pour chaque étape, écrire les tests Pest avant de passer à la suivante et valider l'interface sur téléphone.
 
@@ -219,7 +228,6 @@ Pour chaque étape, écrire les tests Pest avant de passer à la suivante et val
 Ne pas inventer les réponses; poser la question lorsque nécessaire :
 
 - détail de la tombola;
-- commande de sapins;
 - impact fonctionnel des rôles référent, professeur et intervenant externe;
 - mise en avant des recettes peu utilisées;
 - traductions dans les autres langues.
