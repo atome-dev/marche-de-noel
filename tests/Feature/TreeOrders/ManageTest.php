@@ -123,3 +123,14 @@ test('a guest order needs a name, a phone and a tree', function () {
 
     expect(TreeOrder::count())->toBe(0);
 });
+
+test('the guest order form shows its total', function () {
+    Livewire::test(Manage::class)
+        ->assertSeeHtml('data-guest-total')
+        ->set('guestQuantities.lutins', 2)
+        ->set('guestQuantities.moyen', 1)
+        ->assertSet('guestTotalCents', 8900)
+        ->assertSee("89\u{00A0}€", false)
+        ->set('guestQuantities.moyen', '')
+        ->assertSet('guestTotalCents', 5400);
+});

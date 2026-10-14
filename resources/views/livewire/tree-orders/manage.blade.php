@@ -103,11 +103,16 @@
                     <div class="flex items-center justify-between gap-3" wire:key="guest-size-{{ $size->key }}">
                         <span class="text-sm">{{ $size->name }} <span class="text-zinc-500">({{ $size->height }}, {{ Money::format($size->priceCents) }})</span></span>
                         <div class="w-24 shrink-0">
-                            <flux:input type="number" min="0" :max="$maxQuantity" wire:model="guestQuantities.{{ $size->key }}" :aria-label="$size->name" />
+                            <flux:input type="number" min="0" :max="$maxQuantity" wire:model.live.debounce.300ms="guestQuantities.{{ $size->key }}" :aria-label="$size->name" />
                         </div>
                     </div>
                 @endforeach
                 <flux:error name="guestQuantities" />
+
+                <div class="flex items-center justify-between rounded-xl bg-brand-ink px-4 py-2 text-white">
+                    <span class="font-semibold">{{ __('trees.form.total') }}</span>
+                    <span class="text-lg font-bold tabular-nums" data-guest-total>{{ Money::format($this->guestTotalCents) }}</span>
+                </div>
             </div>
 
             <flux:checkbox wire:model="guestChequeReceived" :label="__('trees.manage.guest.cheque_received')" />

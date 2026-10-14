@@ -23,6 +23,7 @@ use Livewire\Component;
  *
  * @property-read Collection<int, TreeOrder> $orders
  * @property-read array<string, TreeSize> $sizes
+ * @property-read int $guestTotalCents
  */
 class Manage extends Component
 {
@@ -135,6 +136,15 @@ class Manage extends Component
     public function sizes(): array
     {
         return app(TreeCatalog::class)->sizes();
+    }
+
+    /**
+     * Total of the guest order being typed, from the current prices.
+     */
+    #[Computed]
+    public function guestTotalCents(): int
+    {
+        return collect($this->sizes)->sum(fn (TreeSize $size) => $size->priceCents * max(0, (int) ($this->guestQuantities[$size->key] ?? 0)));
     }
 
     public function render(): View
