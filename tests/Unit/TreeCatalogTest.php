@@ -11,13 +11,13 @@ uses(TestCase::class);
 beforeEach(function () {
     config([
         'marche.timezone' => 'Europe/Paris',
-        'marche.trees.sizes' => [
-            'lutins|Le sapin des lutins|80/100 cm|27',
-            'moyen|Le sapin moyen|125/150 cm|35.5',
+        'trees.sizes' => [
+            ['key' => 'lutins', 'name' => 'Le sapin des lutins', 'height' => '80/100 cm', 'price' => 27],
+            ['key' => 'moyen', 'name' => 'Le sapin moyen', 'height' => '125/150 cm', 'price' => 35.5],
         ],
-        'marche.trees.deadline' => '2026-11-29',
-        'marche.trees.pickup.date' => '2026-12-05',
-        'marche.trees.max_quantity' => 10,
+        'trees.deadline' => '2026-11-29',
+        'trees.pickup.date' => '2026-12-05',
+        'trees.max_quantity' => 10,
     ]);
 
     $this->catalog = new TreeCatalog;
@@ -36,10 +36,10 @@ test('sizes are read from the configuration, prices in cents', function () {
 test('malformed sizes are skipped without breaking the catalogue', function () {
     Log::spy();
 
-    config(['marche.trees.sizes' => [
-        'lutins|Le sapin des lutins|80/100 cm',
-        'grand|Le grand sapin|150/175 cm|quarante',
-        'moyen|Le sapin moyen|125/150 cm|35',
+    config(['trees.sizes' => [
+        ['key' => 'lutins', 'name' => 'Le sapin des lutins', 'height' => '80/100 cm'],
+        ['key' => 'grand', 'name' => 'Le grand sapin', 'height' => '150/175 cm', 'price' => 'quarante'],
+        ['key' => 'moyen', 'name' => 'Le sapin moyen', 'height' => '125/150 cm', 'price' => 35],
     ]]);
 
     expect(array_keys($this->catalog->sizes()))->toBe(['moyen']);
@@ -56,7 +56,7 @@ test('the deadline day stays open until midnight, Paris time', function () {
 });
 
 test('orders never close without a deadline', function () {
-    config(['marche.trees.deadline' => null]);
+    config(['trees.deadline' => null]);
 
     expect($this->catalog->deadline())->toBeNull()
         ->and($this->catalog->isClosed())->toBeFalse();
@@ -65,6 +65,6 @@ test('orders never close without a deadline', function () {
 test('the pickup date is read in the market timezone', function () {
     expect($this->catalog->pickupDate()->toDateString())->toBe('2026-12-05');
 
-    config(['marche.trees.pickup.date' => null]);
+    config(['trees.pickup.date' => null]);
     expect($this->catalog->pickupDate())->toBeNull();
 });

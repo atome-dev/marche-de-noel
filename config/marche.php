@@ -98,45 +98,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Sapins de Noël
-    |--------------------------------------------------------------------------
-    */
-
-    'trees' => [
-        // Tailles « clé|nom|hauteur|prix en euros », séparées par des virgules.
-        'sizes' => $splitList(env('TREE_SIZES', '')),
-
-        // Quantité maximale par taille et par commande.
-        'max_quantity' => (int) env('TREE_MAX_QUANTITY', 10),
-
-        // Date limite des commandes (AAAA-MM-JJ), incluse jusqu'à minuit.
-        'deadline' => env('TREE_ORDER_DEADLINE'),
-
-        'pickup' => [
-            'date' => env('TREE_PICKUP_DATE'),
-            'hours' => env('TREE_PICKUP_HOURS', ''),
-            'place' => env('TREE_PICKUP_PLACE', ''),
-        ],
-
-        'cheque' => [
-            'payee' => env('TREE_CHEQUE_PAYEE', ''),
-            'drop_points' => $splitList(env('TREE_CHEQUE_DROP_POINTS', '')),
-        ],
-
-        'producer' => env('TREE_PRODUCER', ''),
-        'description' => env('TREE_DESCRIPTION', ''),
-    ],
-
-    // Paiement en ligne des sapins (API Checkout HelloAsso).
-    'helloasso' => [
-        'client_id' => env('HELLOASSO_CLIENT_ID'),
-        'client_secret' => env('HELLOASSO_CLIENT_SECRET'),
-        'organization_slug' => env('HELLOASSO_ORGANIZATION_SLUG'),
-        'sandbox' => (bool) env('HELLOASSO_SANDBOX', true),
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Développement
     |--------------------------------------------------------------------------
     |

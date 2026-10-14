@@ -6,6 +6,7 @@ use App\Http\Controllers\Cookies\ExportOrders;
 use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Help\ShowTutorial;
 use App\Http\Controllers\Planning\PrintPlanning;
+use App\Http\Controllers\TreeOrders\DownloadDocument as DownloadTreeOrderDocument;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
@@ -66,6 +67,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
+
+    Route::prefix('sapins')->name('trees.')->group(function () {
+        Route::get('commandes/{treeOrder}/bon-de-commande.pdf', [DownloadTreeOrderDocument::class, 'orderForm'])->name('documents.order-form');
+        Route::get('commandes/{treeOrder}/bon-de-retrait.pdf', [DownloadTreeOrderDocument::class, 'pickupSlip'])->name('documents.pickup-slip');
+    });
 
     // Reachable while acting as a volunteer: not behind the admin gate.
     Route::post('agir-en-tant-que/quitter', StopImpersonation::class)->name('impersonation.stop');

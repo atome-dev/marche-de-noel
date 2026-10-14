@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 beforeEach(function () {
-    config(['marche.trees.deadline' => '2026-11-29', 'marche.timezone' => 'Europe/Paris']);
+    config(['trees.deadline' => '2026-11-29', 'marche.timezone' => 'Europe/Paris']);
     $this->travelTo('2026-11-20 10:00:00');
 });
 
