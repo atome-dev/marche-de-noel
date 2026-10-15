@@ -28,6 +28,7 @@ class ShowTutorial extends Controller
                 'gateaux' => [27.3, 52.4],
                 'je-prevois' => [20.8, 49.9],
                 'commande' => [43.6, 49.9],
+                'sapins' => [50, 79.6],
                 'accueil' => null,
             ],
         ],
@@ -42,6 +43,7 @@ class ShowTutorial extends Controller
                 'inscrits' => null,
                 'impression' => null,
                 'stands-particuliers' => [34, 24.1],
+                'sapins' => [33.2, 83.4],
             ],
         ],
         'administrateurs' => [

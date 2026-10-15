@@ -21,7 +21,7 @@ return [
     'guides' => [
         'benevoles' => [
             'name' => 'Bénévoles',
-            'intro' => 'Le site en huit étapes, de la création de votre compte à la commande des ingrédients.',
+            'intro' => 'Le site en neuf étapes, de la création de votre compte à la commande de votre sapin.',
             'steps' => [
                 'compte' => [
                     'title' => 'Créez votre compte',
@@ -50,6 +50,10 @@ return [
                 'commande' => [
                     'title' => 'Commandez les ingrédients',
                     'text' => 'Après validation, un bouton apparaît pour chaque ingrédient de l’achat groupé. La quantité est calculée d’après vos kilos. Vous pouvez annuler jusqu’à la date butoir indiquée.',
+                ],
+                'sapins' => [
+                    'title' => 'Commandez un sapin',
+                    'text' => 'Dans « Sapins de Noël », choisissez vos sapins avec + et −, puis payez en ligne avec HelloAsso, ou imprimez le bon de commande et déposez-le avec un chèque. Vos commandes s’affichent en dessous ; le jour du retrait, présentez le bon de retrait ou votre téléphone.',
                 ],
                 'accueil' => [
                     'title' => 'Et aussi…',
@@ -91,8 +95,12 @@ return [
                     'text' => 'Le bouton « Imprimer » du planning produit la feuille de votre stand, créneau par créneau, avec les noms et les téléphones. Pratique à afficher le jour du marché.',
                 ],
                 'stands-particuliers' => [
-                    'title' => 'Petits gâteaux et tombola',
-                    'text' => 'Deux stands donnent des droits en plus. Les responsables des petits gâteaux gèrent les recettes et le tableau des commandes d’ingrédients, avec ses exports. Ceux de la tombola saisissent les lots, puis les tickets gagnants.',
+                    'title' => 'Stands particuliers',
+                    'text' => 'Trois stands donnent des droits en plus. Les responsables des petits gâteaux gèrent les recettes et le tableau des commandes d’ingrédients, avec ses exports. Ceux de la tombola saisissent les lots, puis les tickets gagnants. Ceux des sapins gèrent les commandes (étape suivante).',
+                ],
+                'sapins' => [
+                    'title' => 'Commandes de sapins',
+                    'text' => 'Les responsables du stand des sapins touchent « Gérer les commandes » : ils pointent les chèques reçus (ou un paiement HelloAsso que le site n’a pas vu), saisissent les commandes papier, envoient la synthèse au producteur et cochent les sapins retirés le jour J.',
                 ],
             ],
         ],
