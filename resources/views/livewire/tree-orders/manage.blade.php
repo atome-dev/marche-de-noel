@@ -63,7 +63,7 @@
 
                 <div class="flex flex-wrap gap-2 md:justify-end">
                     @if (! $order->isCancelled() && ! $order->isPaid())
-                        <flux:button size="sm" variant="primary" icon="banknotes" wire:click="markCheque({{ $order->id }})">{{ __('trees.manage.mark_cheque') }}</flux:button>
+                        <flux:button size="sm" icon="banknotes" wire:click="markCheque({{ $order->id }})">{{ __('trees.manage.mark_cheque') }}</flux:button>
                         <flux:button size="sm" icon="credit-card" wire:click="markHelloAsso({{ $order->id }})"
                             wire:confirm="{{ __('trees.manage.mark_helloasso_confirm', ['number' => $order->number, 'amount' => Money::format($order->total_cents)]) }}">{{ __('trees.manage.mark_helloasso') }}</flux:button>
                     @elseif ($order->paid_by !== null && ! $order->isCancelled() && ! $order->isPickedUp())
