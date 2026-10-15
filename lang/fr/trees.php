@@ -122,7 +122,7 @@ return [
     'pickup_list' => [
         'title' => 'Retrait des sapins',
         'counter' => ':done / :total retirées',
-        'mark' => 'Retiré',
+        'mark' => 'Valider le retrait',
         'undo' => 'Annuler le retrait',
         'print' => 'Version imprimable',
         'empty' => 'Aucune commande payée.',
