@@ -63,16 +63,19 @@
                 <flux:heading size="lg" level="2">{{ __('trees.form.sizes') }}</flux:heading>
 
                 @foreach ($this->sizes as $size)
-                    <div class="flex items-center gap-3 rounded-2xl border border-brand-line bg-white p-4" wire:key="size-{{ $size->key }}">
+                    <div class="flex items-center gap-2 rounded-2xl border border-brand-line bg-white py-3 ps-4 pe-2 sm:gap-3 sm:p-4" wire:key="size-{{ $size->key }}">
                         <div class="min-w-0 flex-1">
-                            <p class="font-semibold">{{ $size->name }}</p>
-                            <p class="text-sm text-zinc-600">{{ $size->height }} · <span class="font-semibold text-brand-ink">{{ Money::format($size->priceCents) }}</span></p>
+                            <p class="font-semibold leading-snug">{{ $size->name }}</p>
+                            <p class="flex flex-wrap gap-x-2 text-sm text-zinc-600">
+                                <span class="whitespace-nowrap">{{ $size->height }}</span>
+                                <span class="whitespace-nowrap font-semibold text-brand-ink">{{ Money::format($size->priceCents) }}</span>
+                            </p>
                         </div>
 
-                        <div class="flex shrink-0 items-center gap-2">
+                        <div class="flex shrink-0 items-center sm:gap-2">
                             <flux:button type="button" variant="ghost" icon="minus" wire:click="decrement('{{ $size->key }}')"
                                 :disabled="($quantities[$size->key] ?? 0) <= 0" :aria-label="__('trees.form.decrease', ['size' => $size->name])" />
-                            <span class="w-6 text-center text-lg font-bold tabular-nums" aria-live="polite">{{ $quantities[$size->key] ?? 0 }}</span>
+                            <span class="w-5 text-center text-lg font-bold tabular-nums sm:w-6" aria-live="polite">{{ $quantities[$size->key] ?? 0 }}</span>
                             <flux:button type="button" variant="ghost" icon="plus" wire:click="increment('{{ $size->key }}')"
                                 :disabled="($quantities[$size->key] ?? 0) >= $maxQuantity" :aria-label="__('trees.form.increase', ['size' => $size->name])" />
                         </div>
