@@ -75,6 +75,16 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // Appels de HelloAsso sur /helloasso (contenu reçu et réponse du site) :
+        // storage/logs/helloasso-AAAA-MM-JJ.log, conservé HELLOASSO_LOG_DAYS jours.
+        'helloasso' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/helloasso.log'),
+            'level' => 'info',
+            'max_files' => (int) env('HELLOASSO_LOG_DAYS', 14),
+            'replace_placeholders' => true,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

@@ -1,6 +1,6 @@
 @php
     $title = __('privacy.title');
-    $replacements = ['email' => config('marche.privacy.contact_email'), 'market' => config('marche.name'), 'days' => config('marche.snapshots.retention_days')];
+    $replacements = ['email' => config('marche.privacy.contact_email'), 'market' => config('marche.name'), 'days' => config('marche.snapshots.retention_days'), 'helloasso_days' => config('logging.channels.helloasso.max_files')];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

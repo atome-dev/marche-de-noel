@@ -12,6 +12,7 @@ use App\Http\Controllers\TreeOrders\PaymentAborted;
 use App\Http\Controllers\TreeOrders\PaymentNotification;
 use App\Http\Controllers\TreeOrders\PaymentReturn;
 use App\Http\Controllers\TreeOrders\PrintPickupList;
+use App\Http\Middleware\LogHelloAssoCall;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
@@ -44,8 +45,9 @@ Route::post('sapins/paiement/notification', PaymentNotification::class)
     ->name('trees.payment.notification');
 
 // Same notification, at the address declared in the HelloAsso back office.
-Route::post('helloasso', PaymentNotification::class)
-    ->middleware('throttle:60,1')
+// Every call (GET or POST) is logged in storage/logs/helloasso-AAAA-MM-JJ.log.
+Route::match(['get', 'post'], 'helloasso', PaymentNotification::class)
+    ->middleware([LogHelloAssoCall::class, 'throttle:60,1'])
     ->name('trees.payment.notification.helloasso');
 
 Route::middleware('guest')->group(function () {
