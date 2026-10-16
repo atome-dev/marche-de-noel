@@ -29,6 +29,7 @@ class ShowTutorial extends Controller
                 'je-prevois' => [20.8, 49.9],
                 'commande' => [43.6, 49.9],
                 'sapins' => [50, 79.6],
+                'concert' => [64.7, 64.2],
                 'accueil' => null,
             ],
         ],
@@ -44,6 +45,7 @@ class ShowTutorial extends Controller
                 'impression' => null,
                 'stands-particuliers' => [34, 24.1],
                 'sapins' => [33.2, 83.4],
+                'concert' => null,
             ],
         ],
         'administrateurs' => [

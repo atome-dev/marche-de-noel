@@ -208,7 +208,7 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 
 ## Mode d'emploi
 
-- Page `/mode-d-emploi` (`resources/views/tutorial.blade.php`, textes dans `lang/fr/tutorial.php`, étapes dans `App\Http\Controllers\Help\ShowTutorial::GUIDES`) : un téléphone animé déroule les étapes (neuf pour les bénévoles et les responsables, huit pour les administrateurs), avec lecture automatique, pause et navigation. Liée depuis la connexion, l'accueil et le menu.
+- Page `/mode-d-emploi` (`resources/views/tutorial.blade.php`, textes dans `lang/fr/tutorial.php`, étapes dans `App\Http\Controllers\Help\ShowTutorial::GUIDES`) : un téléphone animé déroule les étapes (dix pour les bénévoles et les responsables, huit pour les administrateurs), avec lecture automatique, pause et navigation. Liée depuis la connexion, l'accueil et le menu.
 - Trois modes d'emploi : bénévoles (public), responsables de stand (`/mode-d-emploi/responsables`, personnes connectées) et administrateurs (`/mode-d-emploi/administrateurs`, administrateurs). Des onglets proposent ceux auxquels la personne a accès.
 - Les écrans sont des captures du site avec des données de démonstration, dans `public/images/tutoriel/{guide}/*.webp` (640 px de large) : ne jamais y faire figurer une vraie personne, ces images sont accessibles sans connexion. À refaire si l'interface ou le nom de l'édition change ; les points « touchez ici » sont des pourcentages de l'écran.
 

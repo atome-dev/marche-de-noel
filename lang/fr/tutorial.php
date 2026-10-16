@@ -55,6 +55,10 @@ return [
                     'title' => 'Commandez un sapin',
                     'text' => 'Dans « Sapins de Noël », choisissez vos sapins avec + et −, puis payez en ligne avec HelloAsso, ou imprimez le bon de commande et déposez-le avec un chèque. Vos commandes s’affichent en dessous ; le jour du retrait, présentez le bon de retrait ou votre téléphone.',
                 ],
+                'concert' => [
+                    'title' => 'Vos billets du concert',
+                    'text' => 'Dans « Concert », réservez vos billets dans la billetterie HelloAsso, avec la même adresse électronique que sur le site. Ils s’affichent ensuite dans « Mes billets » : touchez « Ouvrir mon billet » pour présenter son QR code à l’entrée.',
+                ],
                 'accueil' => [
                     'title' => 'Et aussi…',
                     'text' => 'L’accueil mène à tout le reste : la tombola avec ses lots et ses tickets gagnants, et les documents de l’école. « Mon compte », en haut à droite, sert à modifier votre profil ou votre mot de passe.',
@@ -96,11 +100,15 @@ return [
                 ],
                 'stands-particuliers' => [
                     'title' => 'Stands particuliers',
-                    'text' => 'Trois stands donnent des droits en plus. Les responsables des petits gâteaux gèrent les recettes et le tableau des commandes d’ingrédients, avec ses exports. Ceux de la tombola saisissent les lots, puis les tickets gagnants. Ceux des sapins gèrent les commandes (étape suivante).',
+                    'text' => 'Quatre stands donnent des droits en plus. Les responsables des petits gâteaux gèrent les recettes et le tableau des commandes d’ingrédients, avec ses exports. Ceux de la tombola saisissent les lots, puis les tickets gagnants. Ceux des sapins et du concert ont leur propre écran (étapes suivantes).',
                 ],
                 'sapins' => [
                     'title' => 'Commandes de sapins',
                     'text' => 'Les responsables du stand des sapins touchent « Gérer les commandes » : ils pointent les chèques reçus et les paiements visibles dans HelloAsso, saisissent les commandes papier, envoient la synthèse au producteur et cochent les sapins retirés le jour J.',
+                ],
+                'concert' => [
+                    'title' => 'Billets du concert',
+                    'text' => 'Les responsables du concert touchent « Gérer les billets » sur la page Concert : billets et recette par tarif, liste des spectateurs, et le soir du concert, les entrées contrôlées par l’application HelloAsso, actualisées toutes les 30 secondes.',
                 ],
             ],
         ],
