@@ -5,6 +5,7 @@ use App\Livewire\Cookies\Index;
 use App\Livewire\Cookies\Show;
 use App\Models\Commitment;
 use App\Models\Recipe;
+use App\Models\RecipeCategory;
 use App\Models\RecipeIngredient;
 use App\Models\SchoolClass;
 use App\Models\Stand;
@@ -94,7 +95,10 @@ describe('recipes list', function () {
         });
 
         test('managers of the cookies stand see the total announced for each recipe', function () {
-            Recipe::factory()->create(['title' => 'Sablés délaissés']);
+            // Families are sorted by position: the second one comes after, whatever the factory draws.
+            Recipe::factory()
+                ->for(RecipeCategory::factory()->state(['position' => $this->recipe->category->position + 1]), 'category')
+                ->create(['title' => 'Sablés délaissés']);
 
             Livewire::actingAs($this->manager)->test(Index::class)
                 ->assertSeeInOrder([
