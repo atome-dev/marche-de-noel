@@ -34,6 +34,7 @@ return [
         'phone' => 'Téléphone',
         'phone_help' => 'Le producteur ou le responsable du stand peut vous appeler en cas de souci.',
         'pay_online' => 'Payer en ligne (HelloAsso)',
+        'pay_on_shop' => 'Commander et payer sur HelloAsso',
         'pay_by_cheque' => 'Payer par chèque',
         'cheque_help' => 'Imprimez le bon de commande et déposez-le avec un chèque à l’ordre de « :payee » :places.',
         'no_tree' => 'Choisissez au moins un sapin.',
@@ -69,6 +70,14 @@ return [
         'closed' => 'Les commandes de sapins sont closes.',
         'not_cancellable' => 'Cette commande ne peut plus être annulée.',
         'not_payable' => 'Cette commande ne peut pas être payée en ligne.',
+    ],
+
+    'shop' => [
+        'heading' => 'Payer sur HelloAsso',
+        'intro' => 'Commande :number enregistrée. Dans la boutique HelloAsso, choisissez les mêmes sapins :',
+        'pay_as' => 'Payez au nom de :name, pour que le responsable retrouve votre commande.',
+        'open' => 'Ouvrir la boutique HelloAsso',
+        'validation' => 'Un responsable valide votre commande dès réception du paiement. Vous recevrez alors un courriel de confirmation avec le bon de retrait.',
     ],
 
     'helloasso' => [
@@ -155,6 +164,8 @@ return [
             'subject' => 'Votre commande de sapins :number',
             'intro' => 'Nous avons bien enregistré votre commande de sapins de Noël :number :',
             'pay_online' => 'Vous pouvez la payer en ligne avec HelloAsso depuis le site :',
+            'shop' => 'Vous pouvez la payer en ligne dans la boutique HelloAsso : choisissez-y les mêmes sapins et payez au nom de :name. Un responsable validera votre commande dès réception du paiement.',
+            'shop_action' => 'Ouvrir la boutique HelloAsso',
             'action' => 'Voir ma commande',
             'cheque' => 'Vous pouvez aussi imprimer le bon de commande joint et le déposer avec un chèque à l’ordre de « :payee » :places.',
             'deadline' => 'Attention : une commande non réglée au :date ne sera pas prise en compte.',

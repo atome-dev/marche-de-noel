@@ -54,8 +54,11 @@ return [
     'description' => 'Sapins Nordmann de 1er choix, fraîchement coupés, en provenance du Morvan. Livrés bûchés et sous filet. Exposé à la chaleur dans les logements, le Nordmann est le sapin qui garde le mieux ses aiguilles.',
 
     /*
-    | Paiement en ligne avec HelloAsso (API Checkout), identifiants dans .env.
-    | Sans identifiants, seul le paiement par chèque est proposé.
+    | Paiement en ligne avec HelloAsso. Avec les identifiants de l'API (.env),
+    | le paiement est confirmé automatiquement (API Checkout). Sinon, avec
+    | l'adresse de la boutique HelloAsso de l'année, la famille paie dans la
+    | boutique et un responsable pointe « Payé sur HelloAsso ». Sans l'un ni
+    | l'autre, seul le paiement par chèque est proposé.
     */
 
     'helloasso' => [
@@ -64,6 +67,8 @@ return [
         'organization_slug' => env('HELLOASSO_ORGANIZATION_SLUG'),
         // true : environnement de test (api.helloasso-sandbox.com).
         'sandbox' => (bool) env('HELLOASSO_SANDBOX', true),
+        // Boutique de l'année, à recréer chaque année sur HelloAsso.
+        'shop_url' => 'https://www.helloasso.com/associations/association-libre-ecole-rudolf-steiner/boutiques/sapins-de-noel-2026',
     ],
 
 ];

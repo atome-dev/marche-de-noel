@@ -102,7 +102,7 @@
             <div class="flex flex-col gap-3 sm:flex-row">
                 @if ($this->onlinePayment)
                     <flux:button type="button" variant="primary" icon="credit-card" class="w-full sm:flex-1" wire:click="orderAndPay">
-                        {{ __('trees.form.pay_online') }}
+                        {{ $this->shopUrl !== null ? __('trees.form.pay_on_shop') : __('trees.form.pay_online') }}
                     </flux:button>
                 @endif
                 <flux:button type="submit" :variant="$this->onlinePayment ? 'outline' : 'primary'" icon="document-text" class="w-full sm:flex-1">
@@ -160,4 +160,38 @@
             <p class="text-sm text-zinc-600">{{ __('trees.mine.empty') }}</p>
         @endforelse
     </div>
+
+    @if ($this->shopUrl !== null)
+        <flux:modal name="helloasso-shop" class="w-full max-w-lg">
+            @if ($order = $this->shopOrder)
+                <div class="space-y-4">
+                    <div>
+                        <flux:heading size="lg">{{ __('trees.shop.heading') }}</flux:heading>
+                        <flux:subheading>{{ __('trees.shop.intro', ['number' => $order->number]) }}</flux:subheading>
+                    </div>
+
+                    <ul class="space-y-1 rounded-2xl border border-brand-line bg-brand-sand/60 p-4 text-sm">
+                        @foreach ($order->lines as $line)
+                            <li class="flex justify-between gap-3">
+                                <span>{{ $line->quantity }} × {{ $line->label }} <span class="text-zinc-500">({{ $line->height }})</span></span>
+                                <span class="tabular-nums">{{ Money::format($line->amountCents()) }}</span>
+                            </li>
+                        @endforeach
+                        <li class="flex justify-between gap-3 border-t border-brand-line pt-1 font-semibold">
+                            <span>{{ __('trees.form.total') }}</span>
+                            <span class="tabular-nums">{{ Money::format($order->total_cents) }}</span>
+                        </li>
+                    </ul>
+
+                    <flux:callout icon="information-circle" :heading="__('trees.shop.pay_as', ['name' => $order->customer_name])" />
+
+                    <flux:button variant="primary" icon:trailing="arrow-top-right-on-square" class="w-full" :href="$this->shopUrl" target="_blank" rel="noopener">
+                        {{ __('trees.shop.open') }}
+                    </flux:button>
+
+                    <p class="text-sm text-zinc-600">{{ __('trees.shop.validation') }}</p>
+                </div>
+            @endif
+        </flux:modal>
+    @endif
 </section>

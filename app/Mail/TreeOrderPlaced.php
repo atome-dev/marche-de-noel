@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\TreeOrder;
+use App\TreeOrders\HelloAsso\HelloAssoShop;
 use App\TreeOrders\TreeCatalog;
 use App\TreeOrders\TreeOrderDocuments;
 use Illuminate\Bus\Queueable;
@@ -35,6 +36,7 @@ class TreeOrderPlaced extends Mailable
             with: [
                 'deadline' => app(TreeCatalog::class)->deadline(),
                 'onlinePayment' => $this->order->user_id !== null,
+                'shopUrl' => $this->order->user_id !== null ? app(HelloAssoShop::class)->url() : null,
             ],
         );
     }

@@ -5,7 +5,13 @@
 
 @include('mail.partials.tree-order-lines')
 
-@if ($onlinePayment)
+@if ($shopUrl)
+{{ __('trees.mail.placed.shop', ['name' => $order->customer_name]) }}
+
+<x-mail::button :url="$shopUrl">
+{{ __('trees.mail.placed.shop_action') }}
+</x-mail::button>
+@elseif ($onlinePayment)
 {{ __('trees.mail.placed.pay_online') }}
 
 <x-mail::button :url="route('trees.index')">

@@ -100,7 +100,7 @@ return [
                 ],
                 'sapins' => [
                     'title' => 'Commandes de sapins',
-                    'text' => 'Les responsables du stand des sapins touchent « Gérer les commandes » : ils pointent les chèques reçus (ou un paiement HelloAsso que le site n’a pas vu), saisissent les commandes papier, envoient la synthèse au producteur et cochent les sapins retirés le jour J.',
+                    'text' => 'Les responsables du stand des sapins touchent « Gérer les commandes » : ils pointent les chèques reçus et les paiements visibles dans HelloAsso, saisissent les commandes papier, envoient la synthèse au producteur et cochent les sapins retirés le jour J.',
                 ],
             ],
         ],

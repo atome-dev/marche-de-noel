@@ -24,7 +24,7 @@ return [
                 'Votre compte' => 'Prénom, nom, adresse électronique, mot de passe (jamais stocké en clair) et langue. Un administrateur peut créer votre compte pour vous inviter, par exemple comme responsable d’un stand : il reste inutilisable tant que vous n’avez pas suivi le lien reçu par courriel. Le téléphone et les classes de vos enfants sont facultatifs. Nous n’enregistrons ni le nom ni le nombre de vos enfants.',
                 'Le planning des stands' => 'Les créneaux sur lesquels vous vous inscrivez et, si vous en écrivez un, le message destiné au responsable du stand. Un responsable peut aussi inscrire sur un créneau le nom d’une personne qui n’a pas de compte.',
                 'Les petits gâteaux' => 'Les recettes que vous prévoyez de réaliser, les quantités annoncées et vos commandes d’ingrédients.',
-                'Les sapins de Noël' => 'Vos commandes de sapins : nom, téléphone, adresse électronique, tailles et quantités, mode et date de règlement, retrait du sapin. Un responsable peut aussi enregistrer la commande papier d’une personne qui n’a pas de compte. Si vous payez en ligne, le paiement est réalisé sur le site de HelloAsso : le site du marché ne reçoit et ne conserve aucune donnée bancaire, seulement les numéros du paiement.',
+                'Les sapins de Noël' => 'Vos commandes de sapins : nom, téléphone, adresse électronique, tailles et quantités, mode et date de règlement, retrait du sapin. Un responsable peut aussi enregistrer la commande papier d’une personne qui n’a pas de compte. Si vous payez en ligne, le paiement est réalisé sur le site de HelloAsso : le site du marché ne reçoit et ne conserve aucune donnée bancaire, au plus les numéros du paiement.',
                 'Données techniques' => 'Tant que vous êtes connecté, votre adresse IP et le type de votre navigateur sont associés à votre session, pour assurer la sécurité du compte. Ils sont effacés à l’expiration de la session.',
             ],
         ],
@@ -50,7 +50,7 @@ return [
             'title' => 'Qui a accès à vos données',
             'paragraphs' => [
                 'Aucune donnée n’est vendue ni transmise à des tiers à des fins commerciales.',
-                'Les données sont hébergées par OVH, dont le siège social est situé 2 rue Kellermann, 59053 Roubaix (France). Les courriels du site sont acheminés par Mailjet, qui reçoit à cette fin votre adresse électronique. Le paiement en ligne des sapins est assuré par HelloAsso (SAS HelloAsso, Bordeaux), qui reçoit votre adresse électronique, le numéro et le montant de la commande ; vos coordonnées bancaires sont saisies directement chez HelloAsso.',
+                'Les données sont hébergées par OVH, dont le siège social est situé 2 rue Kellermann, 59053 Roubaix (France). Les courriels du site sont acheminés par Mailjet, qui reçoit à cette fin votre adresse électronique. Le paiement en ligne des sapins est assuré par HelloAsso (SAS HelloAsso, Bordeaux), qui reçoit les informations saisies pour le paiement (nom, adresse électronique, sapins choisis, montant) ; vos coordonnées bancaires sont saisies directement chez HelloAsso.',
             ],
             'items' => [
                 'Les autres bénévoles connectés' => 'Ils voient votre prénom et l’initiale de votre nom (« Camille M. ») sur les créneaux où vous êtes inscrit. Ils ne voient jamais votre téléphone ni votre adresse électronique.',

@@ -2,11 +2,13 @@
 
 namespace App\Livewire\TreeOrders;
 
+use App\Enums\TreeOrderStatus;
 use App\Exceptions\HelloAssoUnavailable;
 use App\Exceptions\TreeOrdersClosed;
 use App\Models\TreeOrder;
 use App\TreeOrders\HelloAsso\HelloAssoCheckout;
 use App\TreeOrders\HelloAsso\HelloAssoClient;
+use App\TreeOrders\HelloAsso\HelloAssoShop;
 use App\TreeOrders\TreeCatalog;
 use App\TreeOrders\TreeOrdering;
 use App\TreeOrders\TreeSize;
@@ -27,6 +29,8 @@ use Livewire\Component;
  * @property-read Collection<int, TreeOrder> $orders
  * @property-read bool $isClosed
  * @property-read bool $onlinePayment
+ * @property-read string|null $shopUrl
+ * @property-read TreeOrder|null $shopOrder
  */
 class OrderForm extends Component
 {
@@ -34,6 +38,9 @@ class OrderForm extends Component
     public array $quantities = [];
 
     public string $phone = '';
+
+    /** Order to pay in the HelloAsso shop, shown in a modal. */
+    public ?int $shopOrderId = null;
 
     public function mount(): void
     {
@@ -73,7 +80,7 @@ class OrderForm extends Component
         $order = $this->place();
 
         if ($order !== null) {
-            $this->startPayment($order, $checkout);
+            $this->shopUrl !== null ? $this->showShop($order) : $this->startPayment($order, $checkout);
         }
     }
 
@@ -82,7 +89,7 @@ class OrderForm extends Component
         $order = TreeOrder::query()->findOrFail($orderId);
         $this->authorize('update', $order);
 
-        $this->startPayment($order, $checkout);
+        $this->shopUrl !== null ? $this->showShop($order) : $this->startPayment($order, $checkout);
     }
 
     public function cancel(int $orderId, TreeOrdering $ordering): void
@@ -133,7 +140,19 @@ class OrderForm extends Component
     #[Computed]
     public function onlinePayment(): bool
     {
-        return app(HelloAssoClient::class)->isConfigured();
+        return app(HelloAssoClient::class)->isConfigured() || $this->shopUrl !== null;
+    }
+
+    #[Computed]
+    public function shopUrl(): ?string
+    {
+        return app(HelloAssoShop::class)->url();
+    }
+
+    #[Computed]
+    public function shopOrder(): ?TreeOrder
+    {
+        return $this->shopOrderId === null ? null : $this->orders->firstWhere('id', $this->shopOrderId);
     }
 
     public function render(): View
@@ -189,6 +208,23 @@ class OrderForm extends Component
         } catch (TreeOrdersClosed|InvalidArgumentException $exception) {
             Flux::toast(variant: 'danger', text: $exception->getMessage());
         }
+    }
+
+    /**
+     * The shop knows nothing of the order: the family reproduces it there,
+     * then a manager records the payment.
+     */
+    private function showShop(TreeOrder $order): void
+    {
+        if ($order->status() !== TreeOrderStatus::Pending) {
+            Flux::toast(variant: 'danger', text: __('trees.errors.not_payable'));
+
+            return;
+        }
+
+        $this->shopOrderId = $order->id;
+        unset($this->shopOrder);
+        Flux::modal('helloasso-shop')->show();
     }
 
     private function resetQuantities(): void
