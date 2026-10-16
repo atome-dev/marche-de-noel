@@ -138,6 +138,15 @@ test('the notification confirms the payment once, whatever the number of calls',
     Mail::assertSentCount(1);
 });
 
+test('the notification is also received at the address declared to HelloAsso', function () {
+    fakeCheckout(paidCheckout());
+
+    $this->postJson('/helloasso', ['eventType' => 'Order', 'data' => ['id' => 777], 'metadata' => ['tree_order_id' => $this->order->id]])
+        ->assertOk();
+
+    expect($this->order->fresh()->isPaid())->toBeTrue();
+});
+
 test('a notification never trusts its own content', function () {
     fakeCheckout(null);
 

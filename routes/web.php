@@ -43,6 +43,11 @@ Route::post('sapins/paiement/notification', PaymentNotification::class)
     ->middleware('throttle:60,1')
     ->name('trees.payment.notification');
 
+// Same notification, at the address declared in the HelloAsso back office.
+Route::post('helloasso', PaymentNotification::class)
+    ->middleware('throttle:60,1')
+    ->name('trees.payment.notification.helloasso');
+
 Route::middleware('guest')->group(function () {
     Route::livewire('register', Register::class)->name('register');
 

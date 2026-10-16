@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // HelloAsso notifications come from its servers, without a CSRF token.
         $middleware->preventRequestForgery(except: [
             'sapins/paiement/notification',
+            'helloasso',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
