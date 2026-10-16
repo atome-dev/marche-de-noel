@@ -61,7 +61,7 @@ class ConcertTickets
     public function tickets(): TicketList
     {
         /** @var array{fetched_at: int, stale: bool, tickets: list<array<string, mixed>>}|null $cached */
-        $cached = Cache::get(self::TICKETS_KEY);
+        $cached = $this->cached(self::TICKETS_KEY, ['fetched_at', 'stale', 'tickets']);
 
         if ($cached !== null && $cached['fetched_at'] > now()->getTimestamp() - $this->cacheSeconds()) {
             return $this->toList($cached);
@@ -107,7 +107,7 @@ class ConcertTickets
     public function event(): ?array
     {
         /** @var array{fetched_at: int, form: array<string, mixed>}|null $cached */
-        $cached = Cache::get(self::EVENT_KEY);
+        $cached = $this->cached(self::EVENT_KEY, ['fetched_at', 'form']);
 
         if (($cached === null || $cached['fetched_at'] <= now()->getTimestamp() - self::EVENT_SECONDS) && ! Cache::has(self::EVENT_FAILED_KEY)) {
             try {
@@ -128,6 +128,20 @@ class ConcertTickets
         Cache::forget(self::TICKETS_FAILED_KEY);
         Cache::forget(self::EVENT_KEY);
         Cache::forget(self::EVENT_FAILED_KEY);
+    }
+
+    /**
+     * A cache entry missing one of the keys (left by an older version of the
+     * site, for instance) counts as no entry.
+     *
+     * @param  list<string>  $keys
+     * @return array<string, mixed>|null
+     */
+    private function cached(string $key, array $keys): ?array
+    {
+        $cached = Cache::get($key);
+
+        return is_array($cached) && array_diff($keys, array_keys($cached)) === [] ? $cached : null;
     }
 
     private function cacheSeconds(): int

@@ -172,3 +172,14 @@ test('a tier without label or price does not break the event', function () {
 
     expect(app(ConcertTickets::class)->event()['tiers'])->toBe([['label' => '', 'priceCents' => 0]]);
 });
+
+test('a cache entry left by an older version is read again from HelloAsso', function () {
+    fakeTicketing([helloAssoTicket()]);
+    Cache::put('concert.event', ['title' => 'Ancien format']);
+    Cache::put('concert.tickets', ['fetched_at' => now()->getTimestamp(), 'items' => [helloAssoTicket()]]);
+
+    $tickets = app(ConcertTickets::class);
+
+    expect($tickets->event()['title'])->toBe('Orchestre des élèves')
+        ->and($tickets->tickets()->tickets)->toHaveCount(1);
+});
