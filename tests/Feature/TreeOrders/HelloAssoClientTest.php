@@ -113,3 +113,30 @@ test('a refused token becomes HelloAssoUnavailable', function () {
 
     $this->client->fetchCheckout(5);
 })->throws(HelloAssoUnavailable::class);
+
+test('the event form is read', function () {
+    fakeHelloAsso([
+        'api.helloasso-sandbox.com/v5/organizations/ecole-steiner/forms/Event/concert/public' => Http::response(['title' => 'Orchestre des élèves']),
+    ]);
+
+    expect($this->client->fetchEventForm('concert'))->toBe(['title' => 'Orchestre des élèves']);
+});
+
+test('every page of the event tickets is read', function () {
+    fakeHelloAsso([
+        'api.helloasso-sandbox.com/v5/organizations/ecole-steiner/forms/Event/concert/items*' => Http::sequence()
+            ->push(['data' => [['id' => 1], ['id' => 2]], 'pagination' => ['totalPages' => 2, 'pageIndex' => 1]])
+            ->push(['data' => [['id' => 3]], 'pagination' => ['totalPages' => 2, 'pageIndex' => 2]]),
+    ]);
+
+    expect(array_column($this->client->fetchEventItems('concert'), 'id'))->toBe([1, 2, 3]);
+
+    Http::assertSent(fn (Request $request) => str_contains($request->url(), '/items')
+        && $request['withDetails'] === 'true' && (int) $request['pageSize'] === 100 && (int) $request['pageIndex'] === 2);
+});
+
+test('an unknown ticketing makes the event calls fail', function () {
+    fakeHelloAsso(['api.helloasso-sandbox.com/v5/*' => Http::response([], 404)]);
+
+    $this->client->fetchEventItems('inconnu');
+})->throws(HelloAssoUnavailable::class);

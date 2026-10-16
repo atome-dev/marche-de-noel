@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * The few calls of the HelloAsso API v5 used by the tree orders: an OAuth2
- * token (client credentials), then creating and reading checkout intents.
+ * token (client credentials), creating and reading checkout intents, and
+ * reading the event ticketing of the concert.
  */
 class HelloAssoClient
 {
@@ -62,6 +63,45 @@ class HelloAssoClient
     public function fetchCheckout(int $checkoutId): array
     {
         return $this->send(fn (PendingRequest $request) => $request->get($this->organizationUrl('checkout-intents/'.$checkoutId)));
+    }
+
+    /**
+     * Public description of an event ticketing (title, date, place, prices).
+     *
+     * @return array<string, mixed>
+     *
+     * @throws HelloAssoUnavailable
+     */
+    public function fetchEventForm(string $formSlug): array
+    {
+        return $this->send(fn (PendingRequest $request) => $request->get($this->organizationUrl('forms/Event/'.$formSlug.'/public')));
+    }
+
+    /**
+     * Every ticket sold by an event ticketing, with its payer and payments.
+     *
+     * @return list<array<string, mixed>>
+     *
+     * @throws HelloAssoUnavailable
+     */
+    public function fetchEventItems(string $formSlug): array
+    {
+        $items = [];
+        $page = 1;
+
+        do {
+            $response = $this->send(fn (PendingRequest $request) => $request->get($this->organizationUrl('forms/Event/'.$formSlug.'/items'), [
+                'withDetails' => 'true',
+                'pageSize' => 100,
+                'pageIndex' => $page,
+            ]));
+
+            $items = [...$items, ...array_values((array) ($response['data'] ?? []))];
+            $totalPages = (int) ($response['pagination']['totalPages'] ?? 1);
+            $page++;
+        } while ($page <= $totalPages);
+
+        return $items;
     }
 
     public function baseUrl(): string
