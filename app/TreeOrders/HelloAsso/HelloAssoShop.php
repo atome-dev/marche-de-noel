@@ -19,6 +19,17 @@ class HelloAssoShop
     {
         $url = config('trees.helloasso.shop_url');
 
-        return filled($url) && ! $this->client->isConfigured() ? (string) $url : null;
+        return filled($url) && ! $this->client->isConfigured() ? rtrim((string) $url, '/') : null;
+    }
+
+    /**
+     * Shop widget embedded in the payment page of an order, when the shop is
+     * displayed in an iframe rather than opened with a link.
+     */
+    public function widgetUrl(): ?string
+    {
+        $url = $this->url();
+
+        return $url !== null && config('trees.helloasso.shop_display') === 'iframe' ? $url.'/widget' : null;
     }
 }

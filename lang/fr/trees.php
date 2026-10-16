@@ -77,6 +77,8 @@ return [
         'intro' => 'Commande :number enregistrée. Dans la boutique HelloAsso, choisissez les mêmes sapins :',
         'pay_as' => 'Payez au nom de :name, pour que le responsable retrouve votre commande.',
         'open' => 'Ouvrir la boutique HelloAsso',
+        'back' => 'Retour à mes commandes',
+        'widget_title' => 'Boutique HelloAsso des sapins de Noël',
         'validation' => 'Un responsable valide votre commande dès réception du paiement. Vous recevrez alors un courriel de confirmation avec le bon de retrait.',
     ],
 

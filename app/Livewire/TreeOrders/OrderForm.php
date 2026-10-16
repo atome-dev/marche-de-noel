@@ -222,6 +222,12 @@ class OrderForm extends Component
             return;
         }
 
+        if (app(HelloAssoShop::class)->widgetUrl() !== null) {
+            $this->redirectRoute('trees.shop-payment', $order);
+
+            return;
+        }
+
         $this->shopOrderId = $order->id;
         unset($this->shopOrder);
         Flux::modal('helloasso-shop')->show();

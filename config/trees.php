@@ -69,6 +69,9 @@ return [
         'sandbox' => (bool) env('HELLOASSO_SANDBOX', true),
         // Boutique de l'année, à recréer chaque année sur HelloAsso.
         'shop_url' => 'https://www.helloasso.com/associations/association-libre-ecole-rudolf-steiner/boutiques/sapins-de-noel-2026',
+        // « link » : fenêtre récapitulative et lien vers la boutique (nouvel onglet) ;
+        // « iframe » : page de paiement du site avec le widget de la boutique intégré.
+        'shop_display' => 'iframe',
     ],
 
 ];

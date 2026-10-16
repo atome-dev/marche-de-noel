@@ -12,6 +12,7 @@ use App\Http\Controllers\TreeOrders\PaymentAborted;
 use App\Http\Controllers\TreeOrders\PaymentNotification;
 use App\Http\Controllers\TreeOrders\PaymentReturn;
 use App\Http\Controllers\TreeOrders\PrintPickupList;
+use App\Http\Controllers\TreeOrders\ShopPayment;
 use App\Http\Middleware\LogHelloAssoCall;
 use App\Livewire\Admin\Snapshots;
 use App\Livewire\Admin\Users;
@@ -93,6 +94,8 @@ Route::middleware('auth')->group(function () {
         Route::livewire('/', TreeOrderForm::class)->name('index');
         Route::get('commandes/{treeOrder}/bon-de-commande.pdf', [DownloadTreeOrderDocument::class, 'orderForm'])->name('documents.order-form');
         Route::get('commandes/{treeOrder}/bon-de-retrait.pdf', [DownloadTreeOrderDocument::class, 'pickupSlip'])->name('documents.pickup-slip');
+
+        Route::get('commandes/{treeOrder}/paiement', ShopPayment::class)->name('shop-payment');
 
         Route::get('paiement/{treeOrder}/retour', PaymentReturn::class)->name('payment.return');
         Route::get('paiement/{treeOrder}/abandon', PaymentAborted::class)->name('payment.back');

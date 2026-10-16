@@ -105,3 +105,59 @@ test('the summary mail of a guest order does not link to the shop', function () 
 
     (new TreeOrderPlaced($order))->assertDontSeeInHtml(SHOP_URL);
 });
+
+describe('shop displayed in an iframe', function () {
+    beforeEach(function () {
+        config(['trees.helloasso.shop_display' => 'iframe']);
+    });
+
+    test('ordering online opens the payment page of the order', function () {
+        Livewire::test(OrderForm::class)
+            ->set('quantities.lutins', 1)
+            ->call('orderAndPay')
+            ->assertRedirect(route('trees.shop-payment', TreeOrder::query()->sole()));
+    });
+
+    test('a pending order opens its payment page again', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+
+        Livewire::test(OrderForm::class)
+            ->call('pay', $order->id)
+            ->assertRedirect(route('trees.shop-payment', $order));
+    });
+
+    test('the payment page shows the order and the shop widget', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create(['customer_name' => 'Camille Martin']);
+
+        $this->get(route('trees.shop-payment', $order))
+            ->assertOk()
+            ->assertSee($order->number)
+            ->assertSee(__('trees.shop.pay_as', ['name' => 'Camille Martin']))
+            ->assertSee('src="'.SHOP_URL.'/widget"', false);
+    });
+
+    test('the payment page belongs to the family of the order', function () {
+        $order = TreeOrder::factory()->withLine('lutins', 1, 2700)->create();
+
+        $this->get(route('trees.shop-payment', $order))->assertForbidden();
+    });
+
+    test('a paid order has no payment page', function () {
+        $order = TreeOrder::factory()->for($this->user)->paid()->withLine('lutins', 1, 2700)->create();
+
+        $this->get(route('trees.shop-payment', $order))->assertRedirect(route('trees.index'));
+    });
+
+    test('there is no payment page after the deadline', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+        $this->travelTo('2026-11-30 10:00:00');
+
+        $this->get(route('trees.shop-payment', $order))->assertRedirect(route('trees.index'));
+    });
+});
+
+test('there is no payment page when the shop is shown as a link', function () {
+    $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+
+    $this->get(route('trees.shop-payment', $order))->assertRedirect(route('trees.index'));
+});
