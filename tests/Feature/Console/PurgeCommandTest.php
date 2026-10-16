@@ -11,6 +11,7 @@ use App\Models\Slot;
 use App\Models\Stand;
 use App\Models\TreeOrder;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
@@ -98,4 +99,14 @@ test('tree orders and their lines are deleted', function () {
 
     $this->assertDatabaseCount('tree_orders', 0);
     $this->assertDatabaseCount('tree_order_lines', 0);
+});
+
+test('the purge forgets the concert tickets', function () {
+    Cache::put('concert.tickets', ['fetched_at' => 1, 'items' => []]);
+
+    $this->artisan('marche:purge')
+        ->expectsQuestion(__('commands.purge.confirm', ['word' => __('commands.purge.word')]), __('commands.purge.word'))
+        ->assertSuccessful();
+
+    expect(Cache::has('concert.tickets'))->toBeFalse();
 });

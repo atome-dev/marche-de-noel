@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Concert\ConcertTickets;
 use App\Models\Document;
 use App\Snapshots\SnapshotStore;
 use Illuminate\Console\Attributes\Description;
@@ -70,6 +71,9 @@ class Purge extends Command
 
         // Snapshots hold personal data: they go with the rest.
         Storage::disk(SnapshotStore::DISK)->deleteDirectory(SnapshotStore::DIRECTORY);
+
+        // Concert tickets are only cached, whatever the cache store.
+        app(ConcertTickets::class)->forget();
 
         $this->info(__('commands.purge.done'));
         $this->line(__('commands.purge.next_steps'));

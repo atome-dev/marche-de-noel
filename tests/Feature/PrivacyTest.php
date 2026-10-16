@@ -34,3 +34,7 @@ test('the privacy page describes the tree orders and HelloAsso', function () {
         ->assertSee('HelloAsso')
         ->assertSee('Les responsables du stand des sapins');
 });
+
+test('the privacy page explains the concert tickets', function () {
+    $this->get(route('privacy'))->assertOk()->assertSee('Le concert');
+});

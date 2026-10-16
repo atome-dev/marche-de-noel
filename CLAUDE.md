@@ -194,6 +194,13 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 - Responsables d'un stand de type « Commande de sapins » et administrateur (`manage-tree-orders`) : `/sapins/gestion` (commandes, pointage des chèques, pointage manuel « Payé sur HelloAsso » quand le site a manqué un paiement visible dans le back-office HelloAsso, annulation, saisie pour un tiers ; seuls les pointages faits par un responsable s'annulent), synthèse producteur avec exports XLSX et PDF (commandes payées uniquement), et retrait le jour J avec version imprimable.
 - Une commande garde le libellé et le prix du moment. La suppression d'un compte conserve ses commandes de sapins (nécessaires pour remettre un sapin réglé) jusqu'à la purge, qui efface toutes les commandes.
 
+## Concert
+
+- Billets vendus dans la billetterie HelloAsso de l'année (formulaire « Event ») : billets à QR code et contrôle à l'entrée avec l'application HelloAsso. Paramètres dans `config/concert.php` (versionné : `form_slug`, `url`, `display` `link`/`iframe`, `cache_seconds`) ; clés API partagées avec les sapins.
+- Page `/concert` (connectés) : informations, billetterie, « Mes billets » (rapprochés par l'adresse électronique du payeur, lien vers le billet HelloAsso, badge « Contrôlé »). Sans clés API : billetterie seule.
+- Stand de type « Concert » et droit `manage-concert` : `/concert/gestion` (billets et recette par tarif, entrées contrôlées, spectateurs avec recherche, actualisation toutes les 30 s).
+- Lecture en direct avec cache (`App\Concert\ConcertTickets`, tableaux seulement) : aucune donnée de billet en base, rien dans les instantanés ; la dernière liste est servie si HelloAsso ne répond pas. Une notification `/helloasso` de la billetterie vide le cache ; la purge aussi.
+
 ## Visuel de l'année (flyer)
 
 - Le dessin du flyer habille la page de connexion (affiche entière à côté du formulaire sur ordinateur, bandeau sur mobile) et le haut de la page d'accueil.
