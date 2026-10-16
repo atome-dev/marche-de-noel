@@ -20,6 +20,9 @@ class HelloAssoClient
 {
     private const TOKEN_CACHE_KEY = 'helloasso.token';
 
+    /** Reads shown in a page wait less than a payment. */
+    private const READ_TIMEOUT = 5;
+
     public function isConfigured(): bool
     {
         return filled(config('trees.helloasso.client_id'))
@@ -74,7 +77,7 @@ class HelloAssoClient
      */
     public function fetchEventForm(string $formSlug): array
     {
-        return $this->send(fn (PendingRequest $request) => $request->get($this->organizationUrl('forms/Event/'.$formSlug.'/public')));
+        return $this->send(fn (PendingRequest $request) => $request->get($this->organizationUrl('forms/Event/'.$formSlug.'/public')), self::READ_TIMEOUT);
     }
 
     /**
@@ -94,9 +97,14 @@ class HelloAssoClient
                 'withDetails' => 'true',
                 'pageSize' => 100,
                 'pageIndex' => $page,
-            ]));
+            ]), self::READ_TIMEOUT);
 
-            $items = [...$items, ...array_values((array) ($response['data'] ?? []))];
+            // A maintenance page answered with 200 must not pass for an empty list.
+            if (! is_array($response['data'] ?? null)) {
+                throw new HelloAssoUnavailable("Unexpected answer of HelloAsso for the items of [{$formSlug}].");
+            }
+
+            $items = [...$items, ...array_values($response['data'])];
             $totalPages = (int) ($response['pagination']['totalPages'] ?? 1);
             $page++;
         } while ($page <= $totalPages);
@@ -115,10 +123,10 @@ class HelloAssoClient
      *
      * @throws HelloAssoUnavailable
      */
-    private function send(callable $call): array
+    private function send(callable $call, int $timeout = 15): array
     {
         try {
-            return (array) $call(Http::withToken($this->token())->acceptJson()->timeout(15))->throw()->json();
+            return (array) $call(Http::withToken($this->token())->acceptJson()->timeout($timeout))->throw()->json();
         } catch (ConnectionException|RequestException $exception) {
             throw new HelloAssoUnavailable($exception->getMessage(), previous: $exception);
         }

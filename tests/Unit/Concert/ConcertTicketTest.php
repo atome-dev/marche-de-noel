@@ -24,7 +24,21 @@ test('unprocessed and refunded tickets are ignored', function (array $overrides)
     'not processed' => [['state' => 'Canceled']],
     'refunded payment' => [['payments' => [['state' => 'Refunded']]]],
     'refund operation' => [['payments' => [['refundOperations' => [['id' => 1]]]]]],
+    'donation, not a ticket' => [['type' => 'Donation']],
+    'missing id' => [['id' => null]],
+    'bad date' => [['order' => ['date' => 'pas une date']]],
 ]);
+
+test('an item that is not an array is ignored', function () {
+    expect(ConcertTicket::fromHelloAsso(['id' => 1, 'state' => 'Processed', 'type' => 'Registration', 'payments' => 'x', 'order' => 'y']))->toBeNull();
+});
+
+test('a ticket survives a round trip through the cache as an array', function () {
+    $ticket = ConcertTicket::fromHelloAsso(helloAssoTicket(['isScanned' => true]));
+
+    expect(ConcertTicket::fromArray($ticket->toArray()))->toEqual($ticket)
+        ->and($ticket->toArray())->not->toHaveKey('qrCode');
+});
 
 test('the tickets of a payer are found whatever the case and spaces', function () {
     $list = new TicketList([

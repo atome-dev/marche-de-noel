@@ -36,5 +36,5 @@ test('the privacy page describes the tree orders and HelloAsso', function () {
 });
 
 test('the privacy page explains the concert tickets', function () {
-    $this->get(route('privacy'))->assertOk()->assertSee('Le concert');
+    $this->get(route('privacy'))->assertOk()->assertSee('Le concert')->assertSee('24 heures au plus');
 });
