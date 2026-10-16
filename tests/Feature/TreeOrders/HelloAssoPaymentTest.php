@@ -184,3 +184,23 @@ test('the public notification url is rate limited', function () {
 
     $this->postJson(route('trees.payment.notification'), ['eventType' => 'Form'])->assertTooManyRequests();
 });
+
+test('a notification of the concert ticketing refreshes the tickets', function () {
+    config(['concert.form_slug' => 'orchestre']);
+    Cache::put('concert.tickets', ['fetched_at' => now()->getTimestamp(), 'items' => []]);
+
+    $this->postJson('/helloasso', ['eventType' => 'Order', 'data' => ['formType' => 'Event', 'formSlug' => 'orchestre']])->assertOk();
+
+    expect(Cache::has('concert.tickets'))->toBeFalse()
+        ->and($this->order->fresh()->isPaid())->toBeFalse();
+});
+
+test('a notification of another event is ignored', function () {
+    config(['concert.form_slug' => 'orchestre']);
+    Cache::put('concert.tickets', ['fetched_at' => now()->getTimestamp(), 'items' => []]);
+
+    $this->postJson('/helloasso', ['eventType' => 'Order', 'data' => ['formType' => 'Event', 'formSlug' => 'autre']])->assertOk();
+
+    expect(Cache::has('concert.tickets'))->toBeTrue();
+    Http::assertNothingSent();
+});
