@@ -19,6 +19,7 @@ use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
 use App\Livewire\Auth\CompleteRegistration;
 use App\Livewire\Auth\Register;
+use App\Livewire\Concert\Manage as ConcertManage;
 use App\Livewire\Concert\Show as ConcertShow;
 use App\Livewire\Cookies\Categories as CookieCategories;
 use App\Livewire\Cookies\Index as CookiesIndex;
@@ -92,6 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('tombola', RaffleIndex::class)->name('raffle.index');
 
     Route::livewire('concert', ConcertShow::class)->name('concert.index');
+    Route::livewire('concert/gestion', ConcertManage::class)->middleware('can:manage-concert')->name('concert.manage');
 
     Route::prefix('sapins')->name('trees.')->group(function () {
         Route::livewire('/', TreeOrderForm::class)->name('index');
