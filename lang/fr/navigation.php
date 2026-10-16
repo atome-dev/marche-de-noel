@@ -7,6 +7,7 @@ return [
     'cookies' => 'Les petits gâteaux',
     'raffle' => 'Tombola',
     'trees' => 'Sapins de Noël',
+    'concert' => 'Concert',
     'documents' => 'Documents',
     'stands' => 'Stands',
     'my_stands' => 'Mes stands',

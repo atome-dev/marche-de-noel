@@ -26,6 +26,9 @@
                 <flux:sidebar.item icon="trees" :href="route('trees.index')" :current="request()->routeIs('trees.*')" wire:navigate>
                     {{ __('navigation.trees') }}
                 </flux:sidebar.item>
+                <flux:sidebar.item icon="musical-note" :href="route('concert.index')" :current="request()->routeIs('concert.*')" wire:navigate>
+                    {{ __('navigation.concert') }}
+                </flux:sidebar.item>
                 <flux:sidebar.item icon="document-text" :href="route('documents.index')" :current="request()->routeIs('documents.*')" wire:navigate>
                     {{ __('navigation.documents') }}
                 </flux:sidebar.item>
