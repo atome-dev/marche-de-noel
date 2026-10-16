@@ -14,6 +14,10 @@ test('names accepted by HelloAsso are sent', function (string $firstName, string
     ['Jérôme', 'Müller'],
 ]);
 
+test('curly apostrophes, typed by phone keyboards, are sent as straight ones', function () {
+    expect(HelloAssoPayerName::fields('Anne-Lou', 'D’Arc'))->toBe(['firstName' => 'Anne-Lou', 'lastName' => "D'Arc"]);
+});
+
 test('surrounding spaces are removed', function () {
     expect(HelloAssoPayerName::fields('  Camille ', ' Martin  '))->toBe(['firstName' => 'Camille', 'lastName' => 'Martin']);
 });

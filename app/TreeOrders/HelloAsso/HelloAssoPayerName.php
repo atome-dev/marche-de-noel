@@ -4,8 +4,9 @@ namespace App\TreeOrders\HelloAsso;
 
 /**
  * First and last name of the payer sent to HelloAsso, which refuses the whole
- * checkout when a name breaks its rules. Names are never altered: when one
- * of them would be refused, none is sent and HelloAsso asks the payer.
+ * checkout when a name breaks its rules. Names are never altered, except for
+ * curly apostrophes (phone keyboards) sent as straight ones: when one of
+ * them would be refused, none is sent and HelloAsso asks the payer.
  */
 class HelloAssoPayerName
 {
@@ -28,14 +29,19 @@ class HelloAssoPayerName
      */
     public static function fields(string $firstName, string $lastName): array
     {
-        $firstName = trim($firstName);
-        $lastName = trim($lastName);
+        $firstName = self::normalize($firstName);
+        $lastName = self::normalize($lastName);
 
         if (! self::isAccepted($firstName) || ! self::isAccepted($lastName) || mb_strtolower($firstName) === mb_strtolower($lastName)) {
             return [];
         }
 
         return ['firstName' => $firstName, 'lastName' => $lastName];
+    }
+
+    private static function normalize(string $name): string
+    {
+        return trim(str_replace(['’', '‘', 'ʼ'], "'", $name));
     }
 
     private static function isAccepted(string $name): bool
