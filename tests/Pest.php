@@ -44,7 +44,27 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * A ticket as returned by the HelloAsso items endpoint (withDetails=true).
+ *
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
+function helloAssoTicket(array $overrides = []): array
 {
-    // ..
+    return array_replace_recursive([
+        'id' => 110885,
+        'name' => 'Adulte',
+        'tierId' => 24279,
+        'amount' => 1000,
+        'state' => 'Processed',
+        'type' => 'Registration',
+        'user' => ['firstName' => 'Camille', 'lastName' => 'Martin'],
+        'payer' => ['firstName' => 'Camille', 'lastName' => 'Martin', 'email' => 'camille@example.org'],
+        'order' => ['id' => 100115, 'date' => '2026-10-16T23:32:36+02:00', 'formSlug' => 'orchestre-des-eleves', 'formType' => 'Event'],
+        'payments' => [['id' => 72031, 'state' => 'Authorized', 'refundOperations' => []]],
+        'ticketUrl' => 'https://www.helloasso-sandbox.com/ticket?ticketId=110885',
+        'qrCode' => 'MTEwODg1',
+        'isScanned' => false,
+    ], $overrides);
 }
