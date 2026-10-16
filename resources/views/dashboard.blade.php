@@ -105,6 +105,17 @@
                 </div>
             </a>
 
+            <a href="{{ route('concert.index') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
+                    <flux:icon name="musical-note" />
+                </div>
+                <div>
+                    <h2 class="font-display text-lg">{{ __('dashboard.modules.concert.title') }}</h2>
+                    <p class="text-sm text-zinc-600">{{ __('dashboard.modules.concert.text') }}</p>
+                    <span class="mt-2 inline-block text-sm font-semibold text-brand-green">{{ __('dashboard.open') }} →</span>
+                </div>
+            </a>
+
             <a href="{{ route('documents.index') }}" wire:navigate class="flex items-start gap-4 rounded-2xl border border-brand-line bg-white p-5 transition hover:border-brand-green hover:shadow-sm">
                 <div class="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-sand text-brand-green">
                     <flux:icon name="document-text" />

@@ -71,3 +71,11 @@ describe('planning figures', function () {
             ->assertDontSee('Le planning en chiffres');
     });
 });
+
+test('the dashboard links to the concert', function () {
+    $this->actingAs(User::factory()->create())
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertSee(__('dashboard.modules.concert.title'))
+        ->assertSee(route('concert.index'));
+});

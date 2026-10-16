@@ -34,6 +34,10 @@ return [
             'title' => 'Sapins de Noël',
             'text' => 'Commandez votre sapin Nordmann, à payer en ligne ou par chèque.',
         ],
+        'concert' => [
+            'title' => 'Concert des élèves',
+            'text' => 'Réservez vos billets et retrouvez-les ici.',
+        ],
         'documents' => [
             'title' => 'Documents',
             'text' => 'Journal et bons de commande.',
