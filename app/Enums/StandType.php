@@ -11,6 +11,7 @@ enum StandType: string
     case Cookies = 'cookies';
     case Raffle = 'raffle';
     case TreeOrder = 'tree_order';
+    case Concert = 'concert';
 
     public function label(): string
     {

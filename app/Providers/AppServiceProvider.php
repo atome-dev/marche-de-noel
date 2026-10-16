@@ -75,6 +75,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-tree-orders', fn (User $user): bool => $user->managedStands()
             ->where('type', StandType::TreeOrder)
             ->exists());
+
+        // Concert: ticket sales and entries read from the HelloAsso ticketing.
+        Gate::define('manage-concert', fn (User $user): bool => $user->managedStands()
+            ->where('type', StandType::Concert)
+            ->exists());
     }
 
     /**

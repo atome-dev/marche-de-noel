@@ -29,7 +29,7 @@ return [
     'Carterie & calendriers de l\'Avent' => StandType::Generic,
     'Choco-végé' => StandType::Generic,
     'Chorale des petits lutins' => StandType::Generic,
-    'Concert du Grand Orchestre de l\'école' => StandType::Generic,
+    'Concert du Grand Orchestre de l\'école' => StandType::Concert,
     'Confiserie' => StandType::Generic,
     'Couronnes de l’Avent' => StandType::Generic,
     'Crêpes' => StandType::Generic,

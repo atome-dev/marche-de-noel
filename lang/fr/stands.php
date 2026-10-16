@@ -6,6 +6,7 @@ return [
         'cookies' => 'Petits gâteaux',
         'raffle' => 'Tombola',
         'tree_order' => 'Commande de sapins',
+        'concert' => 'Concert',
     ],
 
     'inactive' => 'Désactivé',
