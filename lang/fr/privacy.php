@@ -50,7 +50,7 @@ return [
             'title' => 'Qui a accès à vos données',
             'paragraphs' => [
                 'Aucune donnée n’est vendue ni transmise à des tiers à des fins commerciales.',
-                'Les données sont hébergées par OVH, dont le siège social est situé 2 rue Kellermann, 59053 Roubaix (France). Les courriels du site sont acheminés par Mailjet, qui reçoit à cette fin votre adresse électronique. Le paiement en ligne des sapins est assuré par HelloAsso (SAS HelloAsso, Bordeaux), qui reçoit les informations saisies pour le paiement (nom, adresse électronique, sapins choisis, montant) ; vos coordonnées bancaires sont saisies directement chez HelloAsso.',
+                'Les données sont hébergées par OVH, dont le siège social est situé 2 rue Kellermann, 59053 Roubaix (France). Les courriels du site sont acheminés par Mailjet, qui reçoit à cette fin votre adresse électronique. Le paiement en ligne des sapins est assuré par HelloAsso (SAS HelloAsso, Bordeaux), qui reçoit vos nom, prénom et adresse électronique, ainsi que les informations du paiement (numéro de commande ou sapins choisis, montant) ; vos coordonnées bancaires sont saisies directement chez HelloAsso.',
             ],
             'items' => [
                 'Les autres bénévoles connectés' => 'Ils voient votre prénom et l’initiale de votre nom (« Camille M. ») sur les créneaux où vous êtes inscrit. Ils ne voient jamais votre téléphone ni votre adresse électronique.',

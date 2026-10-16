@@ -60,8 +60,22 @@ test('a checkout intent is created for the exact amount, with the order in its m
         && $request['returnUrl'] === 'https://site/retour'
         && $request['backUrl'] === 'https://site/abandon'
         && $request['errorUrl'] === 'https://site/erreur'
-        && $request['payer']['email'] === 'camille@example.com'
+        && $request['payer'] === ['email' => 'camille@example.com', 'firstName' => 'Camille', 'lastName' => 'Martin']
         && $request['metadata'] === ['tree_order_id' => $order->id, 'number' => $order->number]);
+});
+
+test('a name refused by HelloAsso is left to the payer', function () {
+    fakeHelloAsso([
+        'api.helloasso-sandbox.com/v5/organizations/ecole-steiner/checkout-intents' => Http::response(['id' => 987, 'redirectUrl' => 'https://pay.example/987']),
+    ]);
+
+    $user = User::factory()->create(['first_name' => 'Zoé2', 'last_name' => 'Martin', 'email' => 'zoe@example.com']);
+    $order = TreeOrder::factory()->for($user)->withLine('moyen', 1, 3500)->create(['customer_email' => 'zoe@example.com']);
+
+    $this->client->createCheckout($order, 'https://site/retour', 'https://site/abandon', 'https://site/erreur');
+
+    Http::assertSent(fn (Request $request) => str_ends_with($request->url(), '/checkout-intents')
+        && $request['payer'] === ['email' => 'zoe@example.com']);
 });
 
 test('the token is requested once for several calls', function () {

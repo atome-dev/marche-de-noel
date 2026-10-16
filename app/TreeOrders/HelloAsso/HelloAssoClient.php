@@ -41,8 +41,11 @@ class HelloAssoClient
             'errorUrl' => $errorUrl,
             'returnUrl' => $returnUrl,
             'containsDonation' => false,
-            // Names are left to HelloAsso: its strict name rules would refuse some checkouts.
-            'payer' => array_filter(['email' => $order->customer_email]),
+            // Names breaking the strict rules of HelloAsso are left to the payer.
+            'payer' => [
+                ...array_filter(['email' => $order->customer_email]),
+                ...($order->user ? HelloAssoPayerName::fields((string) $order->user->first_name, (string) $order->user->last_name) : []),
+            ],
             'metadata' => ['tree_order_id' => $order->id, 'number' => $order->number],
         ]));
 
