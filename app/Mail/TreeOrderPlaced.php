@@ -36,7 +36,7 @@ class TreeOrderPlaced extends Mailable
             with: [
                 'deadline' => app(TreeCatalog::class)->deadline(),
                 'onlinePayment' => $this->order->user_id !== null,
-                'shopUrl' => $this->order->user_id !== null ? app(HelloAssoShop::class)->url() : null,
+                'shopUrl' => $this->order->user_id !== null && app(HelloAssoShop::class)->replacesApi() ? app(HelloAssoShop::class)->url() : null,
             ],
         );
     }

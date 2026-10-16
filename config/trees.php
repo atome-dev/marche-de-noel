@@ -72,6 +72,9 @@ return [
         // « link » : fenêtre récapitulative et lien vers la boutique (nouvel onglet) ;
         // « iframe » : page de paiement du site avec le widget de la boutique intégré.
         'shop_display' => 'iframe',
+        // true : la boutique est proposée en plus de l'API quand les deux sont
+        // configurées (pour comparer). false : l'API seule.
+        'shop_with_api' => true,
     ],
 
 ];

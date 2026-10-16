@@ -102,7 +102,12 @@
             <div class="flex flex-col gap-3 sm:flex-row">
                 @if ($this->onlinePayment)
                     <flux:button type="button" variant="primary" icon="credit-card" class="w-full sm:flex-1" wire:click="orderAndPay">
-                        {{ $this->shopUrl !== null ? __('trees.form.pay_on_shop') : __('trees.form.pay_online') }}
+                        {{ $this->apiPayment ? __('trees.form.pay_online') : __('trees.form.pay_on_shop') }}
+                    </flux:button>
+                @endif
+                @if ($this->apiPayment && $this->shopUrl !== null)
+                    <flux:button type="button" variant="outline" icon="building-storefront" class="w-full sm:flex-1" wire:click="orderAndPayInShop">
+                        {{ __('trees.form.pay_in_shop') }}
                     </flux:button>
                 @endif
                 <flux:button type="submit" :variant="$this->onlinePayment ? 'outline' : 'primary'" icon="document-text" class="w-full sm:flex-1">
@@ -144,6 +149,9 @@
                     <div class="flex flex-wrap gap-2">
                         @if ($this->onlinePayment)
                             <flux:button size="sm" variant="primary" icon="credit-card" wire:click="pay({{ $order->id }})">{{ __('trees.mine.pay') }}</flux:button>
+                        @endif
+                        @if ($this->apiPayment && $this->shopUrl !== null)
+                            <flux:button size="sm" icon="building-storefront" wire:click="payInShop({{ $order->id }})">{{ __('trees.mine.pay_in_shop') }}</flux:button>
                         @endif
                         <flux:button size="sm" icon="arrow-down-tray" :href="route('trees.documents.order-form', $order)">{{ __('trees.mine.order_form') }}</flux:button>
                         <flux:button size="sm" variant="ghost" icon="x-mark" wire:click="cancel({{ $order->id }})"

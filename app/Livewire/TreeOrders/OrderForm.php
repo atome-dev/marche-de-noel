@@ -29,6 +29,7 @@ use Livewire\Component;
  * @property-read Collection<int, TreeOrder> $orders
  * @property-read bool $isClosed
  * @property-read bool $onlinePayment
+ * @property-read bool $apiPayment
  * @property-read string|null $shopUrl
  * @property-read TreeOrder|null $shopOrder
  */
@@ -80,7 +81,23 @@ class OrderForm extends Component
         $order = $this->place();
 
         if ($order !== null) {
-            $this->shopUrl !== null ? $this->showShop($order) : $this->startPayment($order, $checkout);
+            $this->apiPayment ? $this->startPayment($order, $checkout) : $this->showShop($order);
+        }
+    }
+
+    /**
+     * The HelloAsso shop, offered beside the API payment for comparison.
+     */
+    public function orderAndPayInShop(): void
+    {
+        if ($this->shopUrl === null) {
+            return;
+        }
+
+        $order = $this->place();
+
+        if ($order !== null) {
+            $this->showShop($order);
         }
     }
 
@@ -89,7 +106,17 @@ class OrderForm extends Component
         $order = TreeOrder::query()->findOrFail($orderId);
         $this->authorize('update', $order);
 
-        $this->shopUrl !== null ? $this->showShop($order) : $this->startPayment($order, $checkout);
+        $this->apiPayment ? $this->startPayment($order, $checkout) : $this->showShop($order);
+    }
+
+    public function payInShop(int $orderId): void
+    {
+        $order = TreeOrder::query()->findOrFail($orderId);
+        $this->authorize('update', $order);
+
+        if ($this->shopUrl !== null) {
+            $this->showShop($order);
+        }
     }
 
     public function cancel(int $orderId, TreeOrdering $ordering): void
@@ -140,7 +167,13 @@ class OrderForm extends Component
     #[Computed]
     public function onlinePayment(): bool
     {
-        return app(HelloAssoClient::class)->isConfigured() || $this->shopUrl !== null;
+        return $this->apiPayment || $this->shopUrl !== null;
+    }
+
+    #[Computed]
+    public function apiPayment(): bool
+    {
+        return app(HelloAssoClient::class)->isConfigured();
     }
 
     #[Computed]

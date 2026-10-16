@@ -13,13 +13,26 @@ class HelloAssoShop
 
     /**
      * The API, when configured, is preferred: its payments are confirmed
-     * automatically.
+     * automatically. The shop is then offered beside it only to compare
+     * both (trees.helloasso.shop_with_api).
      */
     public function url(): ?string
     {
         $url = config('trees.helloasso.shop_url');
 
-        return filled($url) && ! $this->client->isConfigured() ? rtrim((string) $url, '/') : null;
+        if (blank($url) || ($this->client->isConfigured() && ! config('trees.helloasso.shop_with_api'))) {
+            return null;
+        }
+
+        return rtrim((string) $url, '/');
+    }
+
+    /**
+     * The shop is the only online payment: the API is not configured.
+     */
+    public function replacesApi(): bool
+    {
+        return $this->url() !== null && ! $this->client->isConfigured();
     }
 
     /**

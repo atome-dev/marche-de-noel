@@ -161,3 +161,72 @@ test('there is no payment page when the shop is shown as a link', function () {
 
     $this->get(route('trees.shop-payment', $order))->assertRedirect(route('trees.index'));
 });
+
+describe('shop offered alongside the API', function () {
+    beforeEach(function () {
+        config([
+            'trees.helloasso.client_id' => 'id',
+            'trees.helloasso.client_secret' => 'secret',
+            'trees.helloasso.organization_slug' => 'ecole',
+            'trees.helloasso.shop_display' => 'iframe',
+            'trees.helloasso.shop_with_api' => true,
+        ]);
+    });
+
+    test('both online payments are offered', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+
+        Livewire::test(OrderForm::class)
+            ->assertSee(__('trees.form.pay_online'))
+            ->assertSee(__('trees.form.pay_in_shop'))
+            ->assertSee(__('trees.mine.pay_in_shop'));
+
+        expect(app(HelloAssoShop::class)->url())->toBe(SHOP_URL);
+        $this->get(route('trees.shop-payment', $order))->assertOk();
+    });
+
+    test('the shop button records the order and opens its payment page', function () {
+        Livewire::test(OrderForm::class)
+            ->set('quantities.lutins', 1)
+            ->call('orderAndPayInShop')
+            ->assertRedirect(route('trees.shop-payment', TreeOrder::query()->sole()));
+    });
+
+    test('the API button still goes to the HelloAsso checkout', function () {
+        Http::fake([
+            '*/oauth2/token' => Http::response(['access_token' => 'token', 'expires_in' => 1800]),
+            '*/checkout-intents' => Http::response(['id' => 654, 'redirectUrl' => 'https://pay.example/654']),
+        ]);
+
+        Livewire::test(OrderForm::class)
+            ->set('quantities.lutins', 1)
+            ->call('orderAndPay')
+            ->assertRedirect('https://pay.example/654');
+    });
+
+    test('a pending order can be paid in the shop', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+
+        Livewire::test(OrderForm::class)
+            ->call('payInShop', $order->id)
+            ->assertRedirect(route('trees.shop-payment', $order));
+    });
+
+    test('the summary mail keeps the API payment only', function () {
+        $order = TreeOrder::factory()->for($this->user)->withLine('lutins', 1, 2700)->create();
+
+        (new TreeOrderPlaced($order))->assertDontSeeInHtml(SHOP_URL);
+    });
+});
+
+test('with the API and without the comparison setting, the shop is not offered', function () {
+    config(['trees.helloasso.client_id' => 'id', 'trees.helloasso.client_secret' => 'secret', 'trees.helloasso.organization_slug' => 'ecole']);
+
+    Livewire::test(OrderForm::class)
+        ->assertSee(__('trees.form.pay_online'))
+        ->assertDontSee(__('trees.form.pay_in_shop'))
+        ->set('quantities.lutins', 1)
+        ->call('orderAndPayInShop');
+
+    expect(TreeOrder::count())->toBe(0);
+});
