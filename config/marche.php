@@ -23,6 +23,9 @@ return [
 
     'school_url' => env('MARCHE_SCHOOL_URL', 'https://ecole-steiner-verrieres.org/'),
 
+    // Bandeau orange « site en phase de tests » sur toutes les pages, à couper à l'ouverture officielle.
+    'test_phase' => (bool) env('MARCHE_TEST_PHASE', false),
+
     // Adresse de contact affichée sur la page « Données personnelles ».
     'privacy' => [
         'contact_email' => env('MARCHE_PRIVACY_CONTACT_EMAIL', 'accueil@ecole-steiner-verrieres.org'),

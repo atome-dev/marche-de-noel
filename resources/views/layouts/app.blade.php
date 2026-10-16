@@ -1,5 +1,12 @@
 <x-layouts::app.sidebar :title="$title ?? null">
     <flux:main>
+        @if (config('marche.test_phase'))
+            {{-- Full width, over the padding of flux:main --}}
+            <div class="-mx-6 -mt-6 mb-6 lg:-mx-8 lg:-mt-8">
+                @include('partials.test-phase-banner')
+            </div>
+        @endif
+
         @if (session()->has(\App\Auth\Impersonation::SESSION_KEY))
             <form method="POST" action="{{ route('impersonation.stop') }}" data-impersonation-banner
                 class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 print:hidden">

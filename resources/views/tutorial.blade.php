@@ -35,6 +35,7 @@
         </style>
     </head>
     <body class="min-h-screen bg-brand-cream font-sans text-brand-ink antialiased">
+        @include('partials.test-phase-banner')
         <main class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8 sm:py-12">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
                 <x-app-logo-icon class="size-10" />

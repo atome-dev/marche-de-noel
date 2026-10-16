@@ -54,3 +54,19 @@ test('confirmations open the site dialog instead of the browser one', function (
         ->assertSee(__('actions.confirm_title'))
         ->assertSee('data-confirm-prompt', escape: false);
 });
+
+test('the test phase banner is shown on every page while enabled', function () {
+    config(['marche.test_phase' => true]);
+
+    $this->get(route('login'))->assertSee(__('layout.test_phase'));
+    $this->get(route('privacy'))->assertSee(__('layout.test_phase'));
+    $this->get(route('tutorial'))->assertSee(__('layout.test_phase'));
+    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertSee(__('layout.test_phase'));
+});
+
+test('the test phase banner is hidden once the site is open', function () {
+    config(['marche.test_phase' => false]);
+
+    $this->get(route('login'))->assertDontSee(__('layout.test_phase'));
+    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertDontSee(__('layout.test_phase'));
+});

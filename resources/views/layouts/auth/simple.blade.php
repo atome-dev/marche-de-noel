@@ -9,6 +9,7 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-brand-cream font-sans text-brand-ink antialiased">
+        @include('partials.test-phase-banner')
         <div @class(['min-h-svh', 'lg:grid lg:grid-cols-2' => $flyer])>
             @if ($flyer)
                 {{-- Affiche du marché (ordinateur) --}}
