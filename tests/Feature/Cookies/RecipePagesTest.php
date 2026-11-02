@@ -182,6 +182,28 @@ describe('recipe page', function () {
         $this->assertDatabaseCount('ingredient_orders', 0);
     });
 
+    test('the pickup notice appears only while an ingredient is ordered', function () {
+        config(['marche.orders.pickup_period' => 'le week-end du 21 et 22 novembre']);
+        $notice = __('cookies.show.pickup', ['period' => 'le week-end du 21 et 22 novembre']);
+
+        Livewire::test(Show::class, ['recipe' => $this->recipe])
+            ->call('saveCommitment')
+            ->assertDontSee($notice)
+            ->call('order', 'poudre-damande')
+            ->assertSee($notice)
+            ->call('cancelOrder', 'poudre-damande')
+            ->assertDontSee($notice);
+    });
+
+    test('the pickup notice is hidden when no pickup period is configured', function () {
+        config(['marche.orders.pickup_period' => null]);
+
+        Livewire::test(Show::class, ['recipe' => $this->recipe])
+            ->call('saveCommitment')
+            ->call('order', 'poudre-damande')
+            ->assertDontSee('Vous pourrez récupérer');
+    });
+
     test('changing the quantity cancels the orders', function () {
         Livewire::test(Show::class, ['recipe' => $this->recipe])
             ->call('saveCommitment')

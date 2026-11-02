@@ -92,6 +92,10 @@ return [
         // Date butoir des commandes d'ingrédients (AAAA-MM-JJ HH:MM).
         'deadline' => env('ORDER_DEADLINE'),
 
+        // Période de retrait des ingrédients, affichée sous les commandes
+        // (« … récupérer les ingrédients commandés à l'école, <période>. »).
+        'pickup_period' => env('ORDER_PICKUP_PERIOD'),
+
         // Ingrédients commandables, séparés par des virgules.
         'ingredients' => $splitList(env('ORDER_INGREDIENTS', '')),
 

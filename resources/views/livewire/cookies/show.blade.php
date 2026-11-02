@@ -93,6 +93,10 @@
                         @endif
                     </div>
                 @endforeach
+
+                @if (filled(config('marche.orders.pickup_period')) && collect($this->orderables)->whereNotNull('ordered')->isNotEmpty())
+                    <p class="text-sm text-zinc-600">{{ __('cookies.show.pickup', ['period' => config('marche.orders.pickup_period')]) }}</p>
+                @endif
             </div>
         @endif
     </div>

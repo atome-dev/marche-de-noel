@@ -5,7 +5,7 @@ return [
 
     'index' => [
         'heading' => 'Les petits gâteaux',
-        'description' => 'Choisissez vos recettes : chaque famille réalise autant de gâteaux qu’elle le souhaite.',
+        'description' => '',
         'create' => 'Nouvelle recette',
         'empty' => 'Aucune recette pour le moment.',
         'mine' => 'Les recettes de vos classes',
@@ -17,10 +17,10 @@ return [
         'info' => [
             'heading' => 'Informations importantes',
             'intro' => 'Chaque année, le stand des petits gâteaux est très attendu et fait le bonheur de tous nos visiteurs !',
-            'quantity_label' => 'Quantité libre :',
-            'quantity' => 'chaque famille réalise autant de gâteaux qu’elle le souhaite, en priorité les recettes de ses classes afin d’assurer un grand choix.',
+            'quantity_label' => 'Quantité :',
+            'quantity' => 'chaque famille réalise au minimum 1kg de gâteaux par enfant, en priorisant les recettes de ses classes afin d’assurer un grand choix.',
             'orders_label' => 'Ingrédients fournis par l’école :',
-            'orders' => 'certaines recettes en demandent de grandes quantités. L’école vous fournit sur demande :ingredients.',
+            'orders' => 'certaines recettes en demandent de grandes quantités. L’école vous fournit sur demande :ingredients (bouton "Commander" après validation de la quantité prévue).',
             'orders_until' => 'À commander jusqu’au :date !',
             'orders_closed' => 'Les commandes sont closes.',
             'and' => 'et',
@@ -43,6 +43,7 @@ return [
         'deadline' => 'Commandes possibles jusqu’au :date.',
         'order' => 'Commander : :ingredient',
         'ordered' => 'Commandé',
+        'pickup' => 'Vous pourrez récupérer les ingrédients commandés à l’école, :period.',
         'ingredients' => 'Ingrédients',
         'instructions' => 'Préparation',
         'video' => 'Vidéo',
