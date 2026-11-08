@@ -1,8 +1,9 @@
 <x-layouts::app.sidebar :title="$title ?? null">
     <flux:main>
-        @if (config('marche.test_phase'))
+        @if (config('marche.test_phase') || app(\App\Support\InfoBanner::class)->message())
             {{-- Full width, over the padding of flux:main --}}
             <div class="-mx-6 -mt-6 mb-6 lg:-mx-8 lg:-mt-8">
+                @include('partials.info-banner')
                 @include('partials.test-phase-banner')
             </div>
         @endif

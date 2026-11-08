@@ -26,6 +26,15 @@ return [
     // Bandeau orange « site en phase de tests » sur toutes les pages, à couper à l'ouverture officielle.
     'test_phase' => (bool) env('MARCHE_TEST_PHASE', false),
 
+    // Bandeau d'information en tête de toutes les pages (par exemple avant une
+    // maintenance). Vide : pas de bandeau. Début et fin facultatifs, au format
+    // AAAA-MM-JJ HH:MM (MARCHE_TIMEZONE) : affiché à partir du début, masqué à la fin.
+    'info_banner' => [
+        'message' => env('BANDEAU_MESSAGE'),
+        'start' => env('BANDEAU_DEBUT'),
+        'end' => env('BANDEAU_FIN'),
+    ],
+
     // Adresse de contact affichée sur la page « Données personnelles ».
     'privacy' => [
         'contact_email' => env('MARCHE_PRIVACY_CONTACT_EMAIL', 'accueil@ecole-steiner-verrieres.org'),

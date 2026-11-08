@@ -70,3 +70,19 @@ test('the test phase banner is hidden once the site is open', function () {
     $this->get(route('login'))->assertDontSee(__('layout.test_phase'));
     $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertDontSee(__('layout.test_phase'));
 });
+
+test('the information banner is shown on every page during its period', function () {
+    config(['marche.info_banner' => ['message' => 'Site en maintenance samedi de 8h à 10h', 'start' => null, 'end' => null]]);
+
+    $this->get(route('login'))->assertSee('Site en maintenance samedi de 8h à 10h')->assertSee('data-info-banner', escape: false);
+    $this->get(route('privacy'))->assertSee('Site en maintenance samedi de 8h à 10h');
+    $this->get(route('tutorial'))->assertSee('Site en maintenance samedi de 8h à 10h');
+    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertSee('Site en maintenance samedi de 8h à 10h');
+});
+
+test('the information banner is hidden outside its period', function () {
+    config(['marche.info_banner' => ['message' => 'Site en maintenance', 'start' => null, 'end' => now(config('marche.timezone'))->subMinute()->format('Y-m-d H:i')]]);
+
+    $this->get(route('login'))->assertDontSee('data-info-banner', escape: false);
+    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertDontSee('data-info-banner', escape: false);
+});
