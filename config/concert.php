@@ -14,10 +14,10 @@
 return [
 
     // Identifiant de la billetterie (formulaire HelloAsso de type « Event »).
-    'form_slug' => 'orchestre-des-eleves',
+    'form_slug' => 'concert-du-marche-de-noel',
 
     // Adresse publique de la billetterie (lien et widget).
-    'url' => 'https://www.helloasso-sandbox.com/associations/association-fictive-pour-tester-l-api/evenements/orchestre-des-eleves',
+    'url' => 'https://www.helloasso.com/associations/association-libre-ecole-rudolf-steiner/evenements/concert-du-marche-de-noel',
 
     // « link » : bouton vers la billetterie (nouvel onglet) ; « iframe » : widget intégré.
     'display' => 'iframe',

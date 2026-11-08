@@ -3,6 +3,8 @@
     $deadline = $catalog->deadline();
     $pickupDate = $catalog->pickupDate();
     $dropPoints = config('trees.cheque.drop_points');
+    $shop = app(\App\TreeOrders\HelloAsso\HelloAssoShop::class);
+    $shopUrl = $order->user_id !== null && $shop->replacesApi() ? $shop->url() : null;
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -56,8 +58,11 @@
     @if ($deadline)
         <p class="strong" style="margin-top: 10px;">{{ __('trees.pdf.deadline', ['date' => $deadline->locale(app()->getLocale())->translatedFormat('l j F Y')]) }}</p>
     @endif
+    @if ($shopUrl)
+        <p>{{ __('trees.pdf.shop', ['name' => $order->customer_name]) }}<br><a href="{{ $shopUrl }}">{{ $shopUrl }}</a></p>
+    @endif
     @if (filled(config('trees.cheque.payee')))
-        <p>{{ __('trees.pdf.cheque', ['payee' => config('trees.cheque.payee')]) }}</p>
+        <p>{{ __($shopUrl ? 'trees.pdf.cheque_or_shop' : 'trees.pdf.cheque', ['payee' => config('trees.cheque.payee')]) }}</p>
         <ul>
             @foreach ($dropPoints as $place)
                 <li>{{ $place }}</li>

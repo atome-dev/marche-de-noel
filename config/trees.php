@@ -74,7 +74,7 @@ return [
         'shop_display' => 'iframe',
         // true : la boutique est proposée en plus de l'API quand les deux sont
         // configurées (pour comparer). false : l'API seule.
-        'shop_with_api' => true,
+        'shop_with_api' => false,
     ],
 
 ];

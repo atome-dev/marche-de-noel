@@ -56,6 +56,26 @@ test('the order form shows the order details', function () {
         ->toContain(Money::format(7000));
 });
 
+test('the order form offers the HelloAsso shop when it replaces the API', function () {
+    config(['trees.helloasso' => [
+        'client_id' => null, 'client_secret' => null, 'organization_slug' => null,
+        'sandbox' => true, 'shop_url' => 'https://www.helloasso.com/boutique-sapins',
+    ]]);
+
+    $html = view('tree-orders.order-form-pdf', ['order' => $this->order->load('lines')])->render();
+
+    expect($html)->toContain(__('trees.pdf.shop', ['name' => $this->order->customer_name]))
+        ->toContain('https://www.helloasso.com/boutique-sapins');
+});
+
+test('the order form does not mention the shop without a shop address', function () {
+    config(['trees.helloasso.client_id' => null, 'trees.helloasso.shop_url' => '']);
+
+    $html = view('tree-orders.order-form-pdf', ['order' => $this->order->load('lines')])->render();
+
+    expect($html)->not->toContain('helloasso.com');
+});
+
 test('amounts are formatted in euros', function () {
     expect(Money::format(2700))->toBe("27\u{00A0}€")
         ->and(Money::format(3550))->toBe("35,50\u{00A0}€")
