@@ -42,6 +42,17 @@ class InfoBanner
     }
 
     /**
+     * End of the banner period when it is still to come: the expected return
+     * of the site, shown on the maintenance page.
+     */
+    public function returnAt(): ?CarbonImmutable
+    {
+        $end = $this->date('end');
+
+        return $end instanceof CarbonImmutable && $end->isFuture() ? $end : null;
+    }
+
+    /**
      * @return CarbonImmutable|false|null null when not set, false when malformed
      */
     private function date(string $bound): CarbonImmutable|false|null

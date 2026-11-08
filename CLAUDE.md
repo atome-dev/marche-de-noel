@@ -38,6 +38,7 @@ Priorité absolue au mobile-first : la plupart des bénévoles utilisent un tél
 - Chaque année, redéfinir dans `.env` le mot de passe temporaire, les dates, les heures et les autres paramètres annuels.
 - Phase de tests : `MARCHE_TEST_PHASE=true` affiche en tête de toutes les pages (connexion, données personnelles et mode d'emploi compris) un bandeau orange « site en phase de tests, saisies effacées à l'ouverture officielle » (`resources/views/partials/test-phase-banner.blade.php`, `lang/fr/layout.php`). À l'ouverture : purge, puis `false`.
 - Bandeau d'information (maintenance…) : `BANDEAU_MESSAGE` affiche un bandeau rouge en tête de toutes les pages, aux mêmes endroits que celui de la phase de tests (`resources/views/partials/info-banner.blade.php`, `App\Support\InfoBanner`). `BANDEAU_DEBUT` et `BANDEAU_FIN` (facultatifs, `Y-m-d H:i`, heure de `MARCHE_TIMEZONE`) limitent la période ; une date mal écrite masque le bandeau.
+- Page de maintenance (`php artisan down`) : `resources/views/errors/503.blade.php`, textes dans `lang/fr/errors.php` ; elle se recharge chaque minute et annonce le retour à `BANDEAU_FIN` si cette date est à venir.
 
 ## Variables `.env` à prévoir
 
