@@ -12,6 +12,8 @@ return [
         'title_placeholder' => 'Journal du marché',
         'file' => 'Fichier',
         'file_help' => 'PDF, Word, Excel, OpenDocument ou image, :max Mo au maximum.',
+        'server_limit_heading' => 'Limite d’envoi du serveur trop basse',
+        'server_limit' => 'Le serveur refuse les fichiers de plus de :server Mo, alors que :configured Mo sont prévus (DOCUMENTS_MAX_SIZE_MB). Augmentez upload_max_filesize et post_max_size dans la configuration PHP (sur Forge : PHP → Max File Upload Size).',
         'uploading' => 'Envoi du fichier…',
         'add' => 'Ajouter',
         'move_up' => 'Monter',

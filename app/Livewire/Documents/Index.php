@@ -3,6 +3,7 @@
 namespace App\Livewire\Documents;
 
 use App\Models\Document;
+use App\Support\UploadLimit;
 use Flux\Flux;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,6 +20,7 @@ use Livewire\WithFileUploads;
  *
  * @property-read Collection<int, Document> $documents
  * @property-read bool $canManage
+ * @property-read UploadLimit $uploadLimit
  */
 class Index extends Component
 {
@@ -91,6 +93,12 @@ class Index extends Component
     public function canManage(): bool
     {
         return Gate::allows('admin');
+    }
+
+    #[Computed]
+    public function uploadLimit(): UploadLimit
+    {
+        return app(UploadLimit::class);
     }
 
     public function render(): View

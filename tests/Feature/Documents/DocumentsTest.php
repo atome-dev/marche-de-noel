@@ -3,6 +3,7 @@
 use App\Livewire\Documents\Index;
 use App\Models\Document;
 use App\Models\User;
+use App\Support\UploadLimit;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -128,4 +129,32 @@ test('the purge deletes the documents and their files', function () {
 
 test('large files are labelled in megabytes', function () {
     expect(Document::factory()->make(['size' => 3_460_301])->sizeLabel())->toBe('3,3 Mo');
+});
+
+test('the form announces the configured size when the server allows it', function () {
+    config(['marche.documents.max_size_mb' => 20]);
+    $this->partialMock(UploadLimit::class, fn ($mock) => $mock->shouldReceive('serverBytes')->andReturn(64 * 1024 * 1024));
+    $this->actingAs(User::factory()->admin()->create());
+
+    Livewire::test(Index::class)
+        ->assertSee(__('documents.form.file_help', ['max' => 20]))
+        ->assertDontSee('data-upload-limit-warning', escape: false);
+});
+
+test('the form announces the server limit and warns administrators when PHP allows less', function () {
+    config(['marche.documents.max_size_mb' => 20]);
+    $this->partialMock(UploadLimit::class, fn ($mock) => $mock->shouldReceive('serverBytes')->andReturn(2 * 1024 * 1024));
+    $this->actingAs(User::factory()->admin()->create());
+
+    Livewire::test(Index::class)
+        ->assertSee(__('documents.form.file_help', ['max' => 2]))
+        ->assertSee('data-upload-limit-warning', escape: false)
+        ->assertSee(__('documents.form.server_limit', ['server' => 2, 'configured' => 20]));
+});
+
+test('volunteers see no upload limit warning', function () {
+    $this->partialMock(UploadLimit::class, fn ($mock) => $mock->shouldReceive('serverBytes')->andReturn(2 * 1024 * 1024));
+    $this->actingAs(User::factory()->create());
+
+    Livewire::test(Index::class)->assertDontSee('data-upload-limit-warning', escape: false);
 });

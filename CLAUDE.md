@@ -218,7 +218,7 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 ## Autres contenus
 
 - Journal PDF et bons de commande : nouveaux documents à téléverser chaque année par l'administrateur.
-- Page `/documents` : tous les connectés ouvrent les documents ; seul l'administrateur ajoute, classe et supprime. Un document a un titre et un fichier (PDF, Word, Excel, OpenDocument ou image), limité à `DOCUMENTS_MAX_SIZE_MB`.
+- Page `/documents` : tous les connectés ouvrent les documents ; seul l'administrateur ajoute, classe et supprime. Un document a un titre et un fichier (PDF, Word, Excel, OpenDocument ou image), limité à `DOCUMENTS_MAX_SIZE_MB`. Le formulaire annonce la plus petite des limites entre ce réglage et celui de PHP (`upload_max_filesize`, `post_max_size`, `App\Support\UploadLimit`) et avertit l'administrateur quand PHP est plus restrictif.
 - Les fichiers sont sur le disque privé et servis uniquement aux personnes connectées. La purge efface les documents et leurs fichiers.
 
 ## Périmètre de livraison et ordre de développement

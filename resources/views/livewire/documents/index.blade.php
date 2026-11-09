@@ -37,11 +37,17 @@
         <form wire:submit="add" class="space-y-4 rounded-2xl border border-brand-line bg-white p-4 sm:p-6">
             <flux:heading size="lg" level="2" class="font-display">{{ __('documents.form.heading') }}</flux:heading>
 
+            @if ($this->uploadLimit->isReducedByServer())
+                <flux:callout variant="warning" icon="exclamation-triangle" data-upload-limit-warning
+                    :heading="__('documents.form.server_limit_heading')"
+                    :text="__('documents.form.server_limit', ['server' => $this->uploadLimit->serverMegabytes(), 'configured' => $this->uploadLimit->configuredMegabytes()])" />
+            @endif
+
             <flux:input wire:model="title" :label="__('documents.form.title')" :placeholder="__('documents.form.title_placeholder')" />
 
             <flux:input type="file" wire:model="file" :label="__('documents.form.file')"
                 accept=".{{ implode(',.', \App\Livewire\Documents\Index::EXTENSIONS) }}"
-                :description="__('documents.form.file_help', ['max' => config('marche.documents.max_size_mb')])" />
+                :description="__('documents.form.file_help', ['max' => $this->uploadLimit->megabytes()])" />
             <div wire:loading wire:target="file" class="text-sm text-zinc-500">{{ __('documents.form.uploading') }}</div>
 
             <flux:button type="submit" variant="primary" icon="plus" wire:loading.attr="disabled" wire:target="file">{{ __('documents.form.add') }}</flux:button>
