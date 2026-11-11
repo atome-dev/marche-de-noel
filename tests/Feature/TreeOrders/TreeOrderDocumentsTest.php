@@ -6,6 +6,7 @@ use App\Models\Stand;
 use App\Models\TreeOrder;
 use App\Models\User;
 use App\Support\Money;
+use App\TreeOrders\TreeCatalog;
 
 beforeEach(function () {
     $this->owner = User::factory()->create();
@@ -80,4 +81,26 @@ test('amounts are formatted in euros', function () {
     expect(Money::format(2700))->toBe("27\u{00A0}€")
         ->and(Money::format(3550))->toBe("35,50\u{00A0}€")
         ->and(Money::format(123400))->toBe("1\u{202F}234\u{00A0}€");
+});
+
+test('every connected person downloads the blank order form', function () {
+    $this->get(route('trees.documents.blank-order-form'))->assertRedirect(route('login'));
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('trees.documents.blank-order-form'))
+        ->assertOk()
+        ->assertHeader('content-type', 'application/pdf')
+        ->assertDownload('bon-de-commande-sapins.pdf');
+});
+
+test('the blank order form lists the sizes and prices without any number', function () {
+    config(['trees.sizes' => [['key' => 'moyen', 'name' => 'Le sapin moyen', 'height' => '125/150 cm', 'price' => 35]]]);
+
+    $html = view('tree-orders.blank-order-form-pdf', ['sizes' => app(TreeCatalog::class)->sizes()])->render();
+
+    expect($html)->toContain('Le sapin moyen')
+        ->toContain(Money::format(3500))
+        ->toContain(__('trees.pdf.first_name'))
+        ->toContain(__('trees.pdf.pickup_slip'))
+        ->not->toContain('S-0');
 });

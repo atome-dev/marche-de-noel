@@ -33,7 +33,9 @@ class Manage extends Component
     #[Url(as: 'q')]
     public string $search = '';
 
-    public string $guestName = '';
+    public string $guestFirstName = '';
+
+    public string $guestLastName = '';
 
     public string $guestPhone = '';
 
@@ -42,7 +44,8 @@ class Manage extends Component
     /** @var array<string, int> size key => number of trees */
     public array $guestQuantities = [];
 
-    public bool $guestChequeReceived = false;
+    /** Paper orders are usually handed in with their payment. */
+    public bool $guestChequeReceived = true;
 
     public function mount(): void
     {
@@ -88,7 +91,8 @@ class Manage extends Component
         $this->authorize('manage-tree-orders');
 
         $validated = $this->validate([
-            'guestName' => ['required', 'string', 'max:255'],
+            'guestFirstName' => ['required', 'string', 'max:120'],
+            'guestLastName' => ['required', 'string', 'max:120'],
             'guestPhone' => ['required', 'string', 'max:30'],
             'guestEmail' => ['nullable', 'email', 'max:255'],
             'guestQuantities' => ['array', function (string $attribute, mixed $value, Closure $fail): void {
@@ -99,7 +103,8 @@ class Manage extends Component
             'guestQuantities.*' => ['integer', 'min:0', 'max:'.app(TreeCatalog::class)->maxQuantity()],
             'guestChequeReceived' => ['boolean'],
         ], attributes: [
-            'guestName' => __('trees.form.name'),
+            'guestFirstName' => __('trees.form.first_name'),
+            'guestLastName' => __('trees.form.name'),
             'guestPhone' => __('trees.form.phone'),
             'guestEmail' => __('fields.email'),
         ]);
@@ -107,13 +112,13 @@ class Manage extends Component
         $order = $ordering->placeForGuest(
             Auth::user(),
             $validated['guestQuantities'],
-            $validated['guestName'],
+            trim($validated['guestFirstName']).' '.trim($validated['guestLastName']),
             $validated['guestPhone'],
             $validated['guestEmail'] ?: null,
             $validated['guestChequeReceived'],
         );
 
-        $this->reset('guestName', 'guestPhone', 'guestEmail', 'guestChequeReceived');
+        $this->reset('guestFirstName', 'guestLastName', 'guestPhone', 'guestEmail', 'guestChequeReceived');
         $this->guestQuantities = array_map(fn () => 0, $this->sizes);
         unset($this->orders);
 

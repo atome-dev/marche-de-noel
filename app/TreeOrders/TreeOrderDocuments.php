@@ -21,6 +21,21 @@ class TreeOrderDocuments
             ->setPaper('a4');
     }
 
+    /**
+     * Unnumbered form filled in by hand, handed in with the payment; the
+     * buyer keeps the pickup slip at the bottom.
+     */
+    public function blankOrderForm(): DomPdf
+    {
+        return Pdf::loadView('tree-orders.blank-order-form-pdf', ['sizes' => app(TreeCatalog::class)->sizes()])
+            ->setPaper('a4');
+    }
+
+    public function blankOrderFormFilename(): string
+    {
+        return self::ORDER_FORM.'-sapins.pdf';
+    }
+
     public function pickupSlip(TreeOrder $order): DomPdf
     {
         return Pdf::loadView('tree-orders.pickup-slip-pdf', ['order' => $order->loadMissing('lines')])

@@ -18,6 +18,7 @@
                 @endforeach
             </flux:select>
         </div>
+        <flux:button icon="document-arrow-down" variant="ghost" :href="route('trees.documents.blank-order-form')">{{ __('trees.form.blank_order_form') }}</flux:button>
         <flux:modal.trigger name="guest-order">
             <flux:button icon="plus">{{ __('trees.manage.guest.open') }}</flux:button>
         </flux:modal.trigger>
@@ -95,9 +96,12 @@
         <form wire:submit="createGuestOrder" class="space-y-4">
             <flux:heading size="lg">{{ __('trees.manage.guest.heading') }}</flux:heading>
 
-            <flux:input wire:model="guestName" :label="__('trees.form.name')" required />
+            <div class="grid gap-3 sm:grid-cols-2">
+                <flux:input wire:model="guestFirstName" :label="__('trees.form.first_name')" required />
+                <flux:input wire:model="guestLastName" :label="__('trees.form.name')" required />
+            </div>
             <flux:input wire:model="guestPhone" type="tel" :label="__('trees.form.phone')" required />
-            <flux:input wire:model="guestEmail" type="email" :label="__('fields.email')" />
+            <flux:input wire:model="guestEmail" type="email" :label="__('fields.email')" :description="__('trees.manage.guest.email_help')" />
 
             <div class="space-y-2">
                 @foreach ($this->sizes as $size)

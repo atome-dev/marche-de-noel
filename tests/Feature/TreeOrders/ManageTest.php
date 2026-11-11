@@ -102,26 +102,42 @@ test('managers enter an order for someone without an account, even after the dea
     $this->travelTo('2026-12-01 10:00:00');
 
     Livewire::test(Manage::class)
-        ->set('guestName', 'Mamie Jeanne')
+        ->set('guestFirstName', 'Jeanne')
+        ->set('guestLastName', 'Martin')
         ->set('guestPhone', '01 23 45 67 89')
         ->set('guestQuantities.lutins', 1)
-        ->set('guestChequeReceived', true)
         ->call('createGuestOrder')
         ->assertHasNoErrors()
-        ->assertSee('Mamie Jeanne');
+        ->assertSee('Jeanne Martin');
 
     $order = TreeOrder::query()->sole();
     expect($order->user_id)->toBeNull()
+        ->and($order->customer_name)->toBe('Jeanne Martin')
+        ->and($order->customer_email)->toBeNull()
         ->and($order->isPaid())->toBeTrue()
+        ->and($order->payment_method)->toBe(TreePaymentMethod::Cheque)
         ->and($order->total_cents)->toBe(2700);
 });
 
 test('a guest order needs a name, a phone and a tree', function () {
     Livewire::test(Manage::class)
         ->call('createGuestOrder')
-        ->assertHasErrors(['guestName', 'guestPhone', 'guestQuantities']);
+        ->assertHasErrors(['guestFirstName', 'guestLastName', 'guestPhone', 'guestQuantities']);
 
     expect(TreeOrder::count())->toBe(0);
+});
+
+test('a guest order can stay unpaid', function () {
+    Livewire::test(Manage::class)
+        ->set('guestFirstName', 'Jeanne')
+        ->set('guestLastName', 'Martin')
+        ->set('guestPhone', '01 23 45 67 89')
+        ->set('guestQuantities.lutins', 1)
+        ->set('guestChequeReceived', false)
+        ->call('createGuestOrder')
+        ->assertHasNoErrors();
+
+    expect(TreeOrder::query()->sole()->isPaid())->toBeFalse();
 });
 
 test('the guest order form shows its total', function () {

@@ -21,6 +21,11 @@ class DownloadDocument extends Controller
             ->download($documents->filename($treeOrder, TreeOrderDocuments::ORDER_FORM));
     }
 
+    public function blankOrderForm(TreeOrderDocuments $documents): Response
+    {
+        return $documents->blankOrderForm()->download($documents->blankOrderFormFilename());
+    }
+
     public function pickupSlip(TreeOrder $treeOrder, TreeOrderDocuments $documents): Response
     {
         Gate::authorize('view', $treeOrder);

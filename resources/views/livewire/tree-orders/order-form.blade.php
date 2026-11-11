@@ -121,6 +121,13 @@
         </form>
     @endif
 
+    @unless ($this->isClosed)
+        <div class="flex flex-col gap-2 rounded-2xl border border-dashed border-brand-line p-4 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-zinc-600">{{ __('trees.form.blank_order_form_help') }}</p>
+            <flux:button size="sm" icon="document-arrow-down" :href="route('trees.documents.blank-order-form')" class="shrink-0">{{ __('trees.form.blank_order_form') }}</flux:button>
+        </div>
+    @endunless
+
     <div class="space-y-3">
         <flux:heading size="lg" level="2">{{ __('trees.mine.heading') }}</flux:heading>
 

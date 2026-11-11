@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('sapins')->name('trees.')->group(function () {
         Route::livewire('/', TreeOrderForm::class)->name('index');
+        Route::get('bon-de-commande-vierge.pdf', [DownloadTreeOrderDocument::class, 'blankOrderForm'])->name('documents.blank-order-form');
         Route::get('commandes/{treeOrder}/bon-de-commande.pdf', [DownloadTreeOrderDocument::class, 'orderForm'])->name('documents.order-form');
         Route::get('commandes/{treeOrder}/bon-de-retrait.pdf', [DownloadTreeOrderDocument::class, 'pickupSlip'])->name('documents.pickup-slip');
 
