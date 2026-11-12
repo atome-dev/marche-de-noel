@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Concert\ConcertTickets;
 use App\Models\Document;
+use App\Models\Score;
 use App\Snapshots\SnapshotStore;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
@@ -28,6 +29,7 @@ class Purge extends Command
         'tree_order_lines',
         'tree_orders',
         'documents',
+        'scores',
         'raffle_prizes',
         'ingredient_orders',
         'commitments',
@@ -68,6 +70,9 @@ class Purge extends Command
 
         // Yearly documents are uploaded again by the administrator.
         Storage::disk(Document::DISK)->deleteDirectory(Document::DIRECTORY);
+
+        // So are the scores of the bandstand.
+        Storage::disk(Score::DISK)->deleteDirectory(Score::DIRECTORY);
 
         // Snapshots hold personal data: they go with the rest.
         Storage::disk(SnapshotStore::DISK)->deleteDirectory(SnapshotStore::DIRECTORY);

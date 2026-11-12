@@ -38,6 +38,10 @@ return [
             'title' => 'Concert des élèves',
             'text' => 'Réservez vos billets et retrouvez-les ici.',
         ],
+        'bandstand' => [
+            'title' => 'Kiosque de musique',
+            'text' => 'Venez jouer de la musique : partitions pour s’entraîner.',
+        ],
         'documents' => [
             'title' => 'Documents',
             'text' => 'Journal et bons de commande.',

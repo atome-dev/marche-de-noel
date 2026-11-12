@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'title' => 'Concert',
-    'heading' => 'Concert',
+    'title' => 'Concert des élèves',
+    'heading' => 'Concert des élèves',
     'when' => ':date à :time',
     'prices' => 'Tarifs',
     'book' => 'Réserver mes billets',
-    'widget_title' => 'Billetterie HelloAsso du concert',
+    'widget_title' => 'Billetterie HelloAsso du concert des élèves',
     'not_open' => 'La billetterie n’est pas encore ouverte.',
     'unavailable' => 'Les billets sont momentanément indisponibles. Réessayez dans quelques minutes.',
     'stale' => 'HelloAsso ne répond pas : la liste affichée est la dernière connue.',

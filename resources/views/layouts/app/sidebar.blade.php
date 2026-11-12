@@ -29,6 +29,11 @@
                 <flux:sidebar.item icon="musical-note" :href="route('concert.index')" :current="request()->routeIs('concert.*')" wire:navigate>
                     {{ __('navigation.concert') }}
                 </flux:sidebar.item>
+                @can('see-bandstand-link')
+                    <flux:sidebar.item icon="speaker-wave" :href="route('bandstand.index')" :current="request()->routeIs('bandstand.*')" wire:navigate>
+                        {{ __('navigation.bandstand') }}
+                    </flux:sidebar.item>
+                @endcan
                 <flux:sidebar.item icon="document-text" :href="route('documents.index')" :current="request()->routeIs('documents.*')" wire:navigate>
                     {{ __('navigation.documents') }}
                 </flux:sidebar.item>

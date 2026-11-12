@@ -50,6 +50,7 @@ class SnapshotStore
         'ingredient_orders',
         'raffle_prizes',
         'documents',
+        'scores',
         'tree_orders',
         'tree_order_lines',
     ];

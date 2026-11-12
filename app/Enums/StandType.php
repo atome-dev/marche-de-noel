@@ -12,6 +12,7 @@ enum StandType: string
     case Raffle = 'raffle';
     case TreeOrder = 'tree_order';
     case Concert = 'concert';
+    case Bandstand = 'bandstand';
 
     public function label(): string
     {

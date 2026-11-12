@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DownloadSnapshot;
 use App\Http\Controllers\Admin\StopImpersonation;
+use App\Http\Controllers\Bandstand\ShowScore;
 use App\Http\Controllers\Cookies\ExportOrders;
 use App\Http\Controllers\Documents\ShowDocument;
 use App\Http\Controllers\Help\ShowTutorial;
@@ -19,6 +20,7 @@ use App\Livewire\Admin\Users;
 use App\Livewire\Auth\AcceptInvitation;
 use App\Livewire\Auth\CompleteRegistration;
 use App\Livewire\Auth\Register;
+use App\Livewire\Bandstand\Index as BandstandIndex;
 use App\Livewire\Concert\Manage as ConcertManage;
 use App\Livewire\Concert\Show as ConcertShow;
 use App\Livewire\Cookies\Categories as CookieCategories;
@@ -94,6 +96,9 @@ Route::middleware('auth')->group(function () {
 
     Route::livewire('concert', ConcertShow::class)->name('concert.index');
     Route::livewire('concert/gestion', ConcertManage::class)->middleware('can:manage-concert')->name('concert.manage');
+
+    Route::livewire('kiosque', BandstandIndex::class)->name('bandstand.index');
+    Route::get('kiosque/partitions/{score}', ShowScore::class)->name('bandstand.scores.show');
 
     Route::prefix('sapins')->name('trees.')->group(function () {
         Route::livewire('/', TreeOrderForm::class)->name('index');

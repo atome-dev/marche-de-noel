@@ -46,7 +46,7 @@ return [
         'available' => 'Instantanés disponibles (les plus récents d’abord, heures UTC) :',
         'none' => 'Aucun instantané disponible.',
         'not_found' => 'Instantané introuvable : :name',
-        'warning' => 'ATTENTION : les comptes, stands, créneaux, inscriptions, recettes, commandes, lots et documents actuels vont être remplacés par ceux de l’instantané :name.',
+        'warning' => 'ATTENTION : les comptes, stands, créneaux, inscriptions, recettes, commandes, lots, documents et partitions actuels vont être remplacés par ceux de l’instantané :name.',
         'word' => 'RESTAURER',
         'confirm' => 'Tapez :word pour confirmer',
         'aborted' => 'Restauration annulée : aucune donnée n’a été modifiée.',

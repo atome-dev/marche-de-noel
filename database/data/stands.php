@@ -41,7 +41,7 @@ return [
     'Fromages BIOS' => StandType::Generic,
     'Fruits et légumes bio : ferme de Gisy et Ferme des Loges' => StandType::Generic,
     'Grotte des lutins' => StandType::Generic,
-    'Kiosque à musique' => StandType::Generic,
+    'Kiosque à musique' => StandType::Bandstand,
     'L\'atelier des parents - jouets et décorations' => StandType::Generic,
     'Le verger de Verrières' => StandType::Generic,
     'Librairie IONA' => StandType::Generic,

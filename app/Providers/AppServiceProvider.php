@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\StandType;
+use App\Models\Score;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\PasswordReset;
@@ -80,6 +81,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-concert', fn (User $user): bool => $user->managedStands()
             ->where('type', StandType::Concert)
             ->exists());
+
+        // Bandstand: the scores musicians practise at home.
+        Gate::define('manage-bandstand', fn (User $user): bool => $user->managedStands()
+            ->where('type', StandType::Bandstand)
+            ->exists());
+
+        // The site is already open: links to the bandstand stay hidden from volunteers until a score is online.
+        Gate::define('see-bandstand-link', fn (User $user): bool => Score::query()->exists()
+            || $user->can('manage-bandstand'));
     }
 
     /**

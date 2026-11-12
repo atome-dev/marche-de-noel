@@ -24,7 +24,7 @@ return [
     'snapshots' => [
         'title' => 'Sauvegardes',
         'heading' => 'Sauvegardes',
-        'description' => 'Un instantané des données (comptes, stands, planning, recettes, commandes, tombola, documents) est pris toutes les 15 minutes quand elles ont changé, et conservé :days jours. Les fichiers téléversés n’en font pas partie.',
+        'description' => 'Un instantané des données (comptes, stands, planning, recettes, commandes, tombola, documents, partitions) est pris toutes les 15 minutes quand elles ont changé, et conservé :days jours. Les fichiers téléversés n’en font pas partie.',
         'create' => 'Sauvegarder maintenant',
         'created' => 'Instantané enregistré.',
         'unchanged' => 'Rien n’a changé depuis le dernier instantané.',
@@ -70,6 +70,7 @@ return [
             'ingredient_orders' => 'Commandes',
             'raffle_prizes' => 'Lots',
             'documents' => 'Documents',
+            'scores' => 'Partitions',
         ],
         'more' => 'Seuls les :shown plus récents sont affichés.',
     ],
