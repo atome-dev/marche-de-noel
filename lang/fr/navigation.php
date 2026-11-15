@@ -8,7 +8,7 @@ return [
     'raffle' => 'Tombola',
     'trees' => 'Sapins de Noël',
     'concert' => 'Concert des élèves',
-    'bandstand' => 'Kiosque de musique',
+    'bandstand' => 'Kiosque à musique',
     'documents' => 'Documents',
     'stands' => 'Stands',
     'my_stands' => 'Mes stands',

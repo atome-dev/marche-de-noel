@@ -7,7 +7,7 @@ return [
         'raffle' => 'Tombola',
         'tree_order' => 'Commande de sapins',
         'concert' => 'Concert',
-        'bandstand' => 'Kiosque de musique',
+        'bandstand' => 'Kiosque à musique',
     ],
 
     'inactive' => 'Désactivé',

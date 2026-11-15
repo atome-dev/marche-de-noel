@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'title' => 'Kiosque de musique',
+    'title' => 'Kiosque à musique',
     'description' => 'Pendant le marché, venez jouer de la musique !',
     'presentation' => [
-        'Le kiosque de musique est une activité proposée pendant le marché : jouer de la musique, tout simplement.',
+        'Le kiosque à musique est une activité proposée pendant le marché : jouer de la musique, tout simplement.',
         'Tous les musiciens sont les bienvenus, adultes et enfants.',
         'Les partitions ci-dessous permettent à chacun de s’entraîner à la maison avant le marché.',
     ],

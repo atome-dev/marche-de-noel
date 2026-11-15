@@ -39,7 +39,7 @@ return [
             'text' => 'Réservez vos billets et retrouvez-les ici.',
         ],
         'bandstand' => [
-            'title' => 'Kiosque de musique',
+            'title' => 'Kiosque à musique',
             'text' => 'Venez jouer de la musique : partitions pour s’entraîner.',
         ],
         'documents' => [

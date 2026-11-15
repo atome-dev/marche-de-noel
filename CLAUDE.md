@@ -205,11 +205,11 @@ Dans la maquette, le libellé « Montage » signifie l'installation du stand ava
 - Stand de type « Concert » et droit `manage-concert` : `/concert/gestion` (billets et recette par tarif, entrées contrôlées, spectateurs avec recherche, actualisation toutes les 30 s).
 - Lecture en direct avec cache (`App\Concert\ConcertTickets`, tableaux seulement) : aucune donnée de billet en base, rien dans les instantanés ; la dernière liste est servie si HelloAsso ne répond pas. Une notification `/helloasso` de la billetterie vide le cache ; la purge aussi.
 
-## Kiosque de musique
+## Kiosque à musique
 
 - Page `/kiosque` (connectés, dans le menu sous « Concert ») : présente l'activité (jouer de la musique pendant le marché, tous les musiciens bienvenus, adultes et enfants) et propose des partitions pour s'entraîner à la maison. Texte de présentation fixe dans `lang/fr/bandstand.php`.
 - Une partition a un titre et un fichier (PDF ou image), limité à `DOCUMENTS_MAX_SIZE_MB`. Les fichiers sont sur le disque privé (`scores`) et servis uniquement aux personnes connectées.
-- Stand de type « Kiosque de musique » (`StandType::Bandstand`, stand de référence « Kiosque à musique ») et droit `manage-bandstand` : ses responsables et l'administrateur ajoutent, renomment, classent et suppriment les partitions.
+- Stand de type « Kiosque à musique » (`StandType::Bandstand`, stand de référence « Kiosque à musique ») et droit `manage-bandstand` : ses responsables et l'administrateur ajoutent, renomment, classent et suppriment les partitions.
 - Tant qu'il n'y a aucune partition, le lien vers la page (menu et accueil) n'est montré qu'aux responsables du kiosque et à l'administrateur (`see-bandstand-link`) ; la page reste accessible par son adresse.
 - La purge efface les partitions et leurs fichiers.
 
