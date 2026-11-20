@@ -10,19 +10,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * A volunteer (or a person without account, added by a manager) on a slot.
+ * A volunteer (or a person without account, added by any volunteer) on a slot.
  *
  * @property int $id
  * @property int $slot_id
  * @property int|null $user_id
  * @property string|null $guest_name
+ * @property int|null $added_by_id
  * @property string|null $message
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Slot $slot
  * @property-read User|null $user
  */
-#[Fillable(['user_id', 'guest_name', 'message'])]
+#[Fillable(['user_id', 'guest_name', 'added_by_id', 'message'])]
 class Registration extends Model
 {
     /** @use HasFactory<RegistrationFactory> */
@@ -42,6 +43,15 @@ class Registration extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Whether this person without account was added by the user,
+     * who may then remove them.
+     */
+    public function wasAddedBy(User $user): bool
+    {
+        return $this->isGuest() && $this->added_by_id === $user->id;
     }
 
     public function isGuest(): bool

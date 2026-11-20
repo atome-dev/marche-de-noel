@@ -56,6 +56,7 @@ return [
     'toasts' => [
         'registered' => 'Inscription enregistrée. Merci !',
         'unregistered' => 'Inscription retirée.',
+        'guest_added' => 'Personne inscrite. Merci !',
     ],
 
     'print_page' => [

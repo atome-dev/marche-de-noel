@@ -227,6 +227,80 @@ describe('manager actions', function () {
     });
 });
 
+describe('people without account', function () {
+    test('any volunteer adds a person without account and can remove them', function () {
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->buvetteSlot->id)
+            ->assertSee(__('planning.modal.guest_name'))
+            ->set('guestName', 'Mamie Jeanne')
+            ->call('addGuest')
+            ->assertHasNoErrors();
+
+        $guest = $this->buvetteSlot->registrations()->sole();
+
+        expect($guest->guest_name)->toBe('Mamie Jeanne')
+            ->and($guest->added_by_id)->toBe($this->user->id);
+
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->buvetteSlot->id)
+            ->call('removeRegistration', $guest->id)
+            ->assertOk();
+
+        expect($guest->fresh())->toBeNull();
+    });
+
+    test('a volunteer cannot remove a person without account added by someone else', function () {
+        $guest = Registration::factory()->for($this->buvetteSlot)->guest('Papi Jean')
+            ->create(['added_by_id' => User::factory()->create()->id]);
+
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->buvetteSlot->id)
+            ->call('removeRegistration', $guest->id)
+            ->assertForbidden();
+
+        expect($guest->fresh())->not->toBeNull();
+    });
+
+    test('a volunteer cannot add a person on a slot reserved to others', function () {
+        $this->buvetteSlot->update(['is_reserved' => true, 'reserved_emails' => ['other@example.com']]);
+
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->buvetteSlot->id)
+            ->assertDontSee(__('planning.modal.guest_name'))
+            ->set('guestName', 'Mamie Jeanne')
+            ->call('addGuest')
+            ->assertHasErrors('guestName');
+
+        expect($this->buvetteSlot->registrations()->count())->toBe(0);
+    });
+
+    test('a manager adds a person on a reserved slot of their stand', function () {
+        $this->buvette->managers()->attach($this->user);
+        $this->buvetteSlot->update(['is_reserved' => true, 'reserved_emails' => ['other@example.com']]);
+
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->buvetteSlot->id)
+            ->set('guestName', 'Mamie Jeanne')
+            ->call('addGuest')
+            ->assertHasNoErrors();
+
+        expect($this->buvetteSlot->registrations()->count())->toBe(1);
+    });
+
+    test('nobody adds a person on a full slot', function () {
+        Registration::factory()->for($this->crepesSlot)->create();
+
+        Livewire::test(Board::class)
+            ->call('openSlot', $this->crepesSlot->id)
+            ->assertDontSee(__('planning.modal.guest_name'))
+            ->set('guestName', 'Mamie Jeanne')
+            ->call('addGuest')
+            ->assertHasErrors('guestName');
+
+        expect($this->crepesSlot->registrations()->count())->toBe(1);
+    });
+});
+
 describe('print', function () {
     test('the global planning can be printed', function () {
         $this->get(route('planning.print'))

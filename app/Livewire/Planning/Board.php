@@ -29,6 +29,7 @@ use Livewire\Component;
  * @property-read bool $canManageSelected
  * @property-read Collection<int, Slot> $overlaps
  * @property-read string|null $refusal
+ * @property-read string|null $guestRefusal
  */
 class Board extends Component
 {
@@ -68,7 +69,7 @@ class Board extends Component
         $this->selectedSlotId = $slotId;
         $this->reset('message', 'guestName');
         $this->resetValidation();
-        unset($this->selectedSlot, $this->overlaps, $this->refusal, $this->canManageSelected);
+        unset($this->selectedSlot, $this->overlaps, $this->refusal, $this->guestRefusal, $this->canManageSelected);
 
         abort_if($this->selectedSlot === null, 404);
 
@@ -105,18 +106,16 @@ class Board extends Component
     }
 
     /**
-     * A manager fills a place with a person who has no account.
+     * Any volunteer fills a place with a person who has no account.
      */
     public function addGuest(SlotRegistrar $registrar): void
     {
         $slot = $this->selectedSlotOrFail();
 
-        $this->authorize('update', $slot->stand);
-
         $this->validate(['guestName' => ['required', 'string', 'max:100']]);
 
         try {
-            $registrar->addGuest($slot, trim($this->guestName));
+            $registrar->addGuest($slot, trim($this->guestName), Auth::user(), $this->canManageSelected);
         } catch (RegistrationRefused $exception) {
             $this->addError('guestName', $exception->getMessage());
 
@@ -125,15 +124,24 @@ class Board extends Component
 
         $this->reset('guestName');
         $this->refreshPlanning();
+
+        Flux::toast(variant: 'success', text: __('planning.toasts.guest_added'));
     }
 
+    /**
+     * Managers remove anyone; a volunteer removes the people without
+     * account they added.
+     */
     public function removeRegistration(int $registrationId): void
     {
         $slot = $this->selectedSlotOrFail();
 
-        $this->authorize('update', $slot->stand);
+        $registration = $slot->registrations->find($registrationId);
 
-        $slot->registrations()->whereKey($registrationId)->delete();
+        abort_if($registration === null, 404);
+        abort_unless($this->canManageSelected || $registration->wasAddedBy(Auth::user()), 403);
+
+        $registration->delete();
 
         $this->refreshPlanning();
     }
@@ -261,6 +269,19 @@ class Board extends Component
         return app(SlotRegistrar::class)->refusalFor(Auth::user(), $this->selectedSlot);
     }
 
+    /**
+     * Why the current user cannot add a person without account, if any.
+     */
+    #[Computed]
+    public function guestRefusal(): ?string
+    {
+        if ($this->selectedSlot === null) {
+            return null;
+        }
+
+        return app(SlotRegistrar::class)->guestRefusalFor(Auth::user(), $this->selectedSlot, $this->canManageSelected);
+    }
+
     public function render(): View
     {
         $this->fingerprint = app(PlanningFingerprint::class)->current();
@@ -278,6 +299,6 @@ class Board extends Component
 
     private function refreshPlanning(): void
     {
-        unset($this->allStands, $this->days, $this->grid, $this->selectedSlot, $this->overlaps, $this->refusal, $this->canManageSelected);
+        unset($this->allStands, $this->days, $this->grid, $this->selectedSlot, $this->overlaps, $this->refusal, $this->guestRefusal, $this->canManageSelected);
     }
 }

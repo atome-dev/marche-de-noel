@@ -45,7 +45,7 @@
                                     @endif
                                 @endif
                             </div>
-                            @if ($canManage)
+                            @if ($canManage || $registration->wasAddedBy($user))
                                 <flux:button size="xs" variant="ghost" icon="x-mark"
                                     wire:click="removeRegistration({{ $registration->id }})"
                                     wire:confirm="{{ __('planning.modal.remove_confirm', ['name' => $registration->displayName(true)]) }}"
@@ -86,19 +86,20 @@
                 </form>
             @endif
 
+            {{-- Inscription d'une personne sans compte, ouverte à tous --}}
+            @if ($this->guestRefusal === null)
+                <form wire:submit="addGuest" class="flex items-end gap-2">
+                    <div class="flex-1">
+                        <flux:input wire:model="guestName" size="sm" :label="__('planning.modal.guest_name')" :placeholder="__('planning.modal.guest_placeholder')" />
+                    </div>
+                    <flux:button type="submit" size="sm">{{ __('planning.modal.add_guest') }}</flux:button>
+                </form>
+            @endif
+
             {{-- Actions des responsables --}}
             @if ($canManage)
                 <div class="space-y-3 rounded-lg bg-brand-sand p-3">
                     <flux:heading size="sm">{{ __('planning.modal.manager_heading') }}</flux:heading>
-
-                    @unless ($slot->isFull())
-                        <form wire:submit="addGuest" class="flex items-end gap-2">
-                            <div class="flex-1">
-                                <flux:input wire:model="guestName" size="sm" :label="__('planning.modal.guest_name')" :placeholder="__('planning.modal.guest_placeholder')" />
-                            </div>
-                            <flux:button type="submit" size="sm">{{ __('planning.modal.add_guest') }}</flux:button>
-                        </form>
-                    @endunless
 
                     <div class="flex flex-wrap gap-2">
                         @if ($slot->isRestricted())
