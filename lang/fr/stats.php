@@ -14,10 +14,27 @@ return [
         'none' => '—',
         'empty' => 'Aucun créneau à venir sur le planning.',
         'cell' => ':open / :capacity',
+        'no_manager' => 'Aucun responsable',
         'legend' => [
             'full' => 'Complet',
             'partial' => 'Moins de la moitié des places libres',
             'empty' => 'Plus de la moitié des places libres',
+        ],
+    ],
+    'reminder' => [
+        'all' => 'Relancer les responsables des stands incomplets',
+        'stand' => 'Relancer',
+        'confirm_all' => 'Envoyer :count courriel de relance au responsable du stand incomplet ?|Envoyer :count courriels de relance aux responsables des stands incomplets ?',
+        'confirm_stand' => 'Envoyer un courriel de relance au responsable du stand « :stand » ?|Envoyer un courriel de relance à chaque responsable du stand « :stand » ?',
+        'sent' => ':count courriel de relance envoyé.|:count courriels de relance envoyés.',
+        'mail' => [
+            'subject' => ':name — le planning du stand « :stand » n’est pas complet',
+            'greeting' => 'Bonjour :first_name :last_name,',
+            'intro' => 'le planning de votre stand « :stand » n’est pas complet, merci de relancer les parents de votre classe. Voici le planning actuel :',
+            'slot' => 'Créneau',
+            'places' => 'Inscrits',
+            'volunteers' => 'Bénévoles',
+            'action' => 'Voir le planning du stand',
         ],
     ],
     'cookies' => [

@@ -16,7 +16,7 @@
     @endif
 
     @if ($openPlaces)
-        @include('stats.open-places', ['summary' => $openPlaces])
+        @include('stats.open-places', ['summary' => $openPlaces, 'canRemind' => $canRemind])
     @elseif ($cookies)
         @include('stats.cookies', ['summary' => $cookies])
     @endif

@@ -4,6 +4,8 @@ namespace App\Livewire\Stats;
 
 use App\Cookies\RecipeCommitmentsSummary;
 use App\Planning\OpenPlacesSummary;
+use App\Planning\PlanningReminders;
+use Flux\Flux;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -49,10 +51,25 @@ class Index extends Component
         $this->tab = in_array($tab, $this->tabs(), true) ? $tab : self::TAB_PLANNING;
     }
 
+    /**
+     * Emails the managers of the incomplete stands (administrators only).
+     *
+     * @param  int|null  $standId  a single stand; null for every incomplete stand
+     */
+    public function sendReminders(?int $standId = null): void
+    {
+        $this->authorize('admin');
+
+        $sent = app(PlanningReminders::class)->send(auth()->user(), $standId);
+
+        Flux::toast(variant: 'success', text: trans_choice('stats.reminder.sent', $sent, ['count' => $sent]));
+    }
+
     public function render(): View
     {
         return view('livewire.stats.index', [
             'tabs' => $this->tabs(),
+            'canRemind' => auth()->user()->can('admin'),
             'openPlaces' => $this->tab === self::TAB_PLANNING ? $this->openPlaces() : null,
             'cookies' => $this->tab === self::TAB_COOKIES ? new RecipeCommitmentsSummary : null,
         ])->title(__('stats.title'));

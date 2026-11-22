@@ -55,7 +55,7 @@ return [
             ],
             'items' => [
                 'Les autres bénévoles connectés' => 'Ils voient votre prénom et l’initiale de votre nom (« Camille M. ») sur les créneaux où vous êtes inscrit. Ils ne voient jamais votre téléphone ni votre adresse électronique.',
-                'Les responsables d’un stand' => 'Ils voient le nom complet, le téléphone et le message des personnes inscrites sur leur stand.',
+                'Les responsables d’un stand' => 'Ils voient le nom complet, le téléphone et le message des personnes inscrites sur leur stand. Quand le planning de leur stand n’est pas complet, l’administrateur peut leur envoyer par courriel un rappel avec ce planning et le nom complet des personnes inscrites.',
                 'Les responsables du stand des petits gâteaux' => 'Ils voient les commandes d’ingrédients, avec le nom des familles, pour préparer l’achat groupé.',
                 'Les responsables du stand des sapins' => 'Ils voient toutes les commandes de sapins, avec le nom, le téléphone et l’adresse électronique, pour pointer les règlements, commander au producteur et remettre les sapins.',
                 'Les administrateurs du site' => 'Ils ont accès à l’ensemble des comptes et des inscriptions.',

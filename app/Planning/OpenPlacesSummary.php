@@ -32,7 +32,7 @@ class OpenPlacesSummary
             ->inPlanning()
             ->when($standIds !== null, fn ($query) => $query->whereKey($standIds))
             ->ordered()
-            ->with(['slots' => fn ($slots) => $slots
+            ->with(['managers', 'slots' => fn ($slots) => $slots
                 ->where('date', '>=', $from)
                 ->where('capacity', '>', 0)
                 ->withCount('registrations')])
@@ -64,6 +64,24 @@ class OpenPlacesSummary
     public function rows(): array
     {
         return $this->rows;
+    }
+
+    /**
+     * Rows of the stands with places still to fill.
+     *
+     * @return list<array{stand: Stand, cells: array<string, array{open: int, capacity: int}|null>, open: int, capacity: int}>
+     */
+    public function incompleteRows(): array
+    {
+        return array_values(array_filter($this->rows, fn (array $row): bool => $row['open'] > 0));
+    }
+
+    /**
+     * Number of emails a reminder sends: one per manager of each incomplete stand.
+     */
+    public function reminderCount(): int
+    {
+        return array_sum(array_map(fn (array $row): int => $row['stand']->managers->count(), $this->incompleteRows()));
     }
 
     public function isEmpty(): bool

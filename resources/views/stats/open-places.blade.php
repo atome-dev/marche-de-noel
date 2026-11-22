@@ -19,6 +19,18 @@
     @if ($summary->isEmpty())
         <flux:callout icon="information-circle">{{ __('stats.open_places.empty') }}</flux:callout>
     @else
+        @if ($canRemind && $summary->reminderCount() > 0)
+            <div>
+                <flux:button
+                    size="sm"
+                    icon="envelope"
+                    wire:click="sendReminders"
+                    wire:confirm="{{ trans_choice('stats.reminder.confirm_all', $summary->reminderCount(), ['count' => $summary->reminderCount()]) }}"
+                    data-remind-all
+                >{{ __('stats.reminder.all') }}</flux:button>
+            </div>
+        @endif
+
         <div class="overflow-x-auto rounded-2xl border border-brand-line bg-white">
             <table class="w-full text-sm" data-open-places>
                 <thead class="bg-brand-sand text-left">
@@ -38,8 +50,21 @@
                 <tbody>
                     @foreach ($summary->rows() as $row)
                         <tr class="border-t border-brand-line" wire:key="stand-{{ $row['stand']->id }}">
-                            <th scope="row" class="sticky left-0 z-10 bg-white px-3 py-2 text-left font-medium">
+                            <th scope="row" class="sticky left-0 z-10 max-w-48 bg-white px-3 py-2 text-left align-top font-medium">
                                 {{ $row['stand']->name }}
+                                <div class="text-xs font-normal text-zinc-600">
+                                    {{ $row['stand']->managers->pluck('name')->join(', ') ?: __('stats.open_places.no_manager') }}
+                                </div>
+                                @if ($canRemind && $row['open'] > 0 && $row['stand']->managers->isNotEmpty())
+                                    <flux:button
+                                        size="xs"
+                                        variant="ghost"
+                                        icon="envelope"
+                                        class="mt-1 -ms-2"
+                                        wire:click="sendReminders({{ $row['stand']->id }})"
+                                        wire:confirm="{{ trans_choice('stats.reminder.confirm_stand', $row['stand']->managers->count(), ['stand' => $row['stand']->name]) }}"
+                                    >{{ __('stats.reminder.stand') }}</flux:button>
+                                @endif
                             </th>
                             @foreach ($summary->days() as $day)
                                 <td class="px-3 py-2 text-center tabular-nums whitespace-nowrap {{ $tone($row['cells'][$day]) }}">{{ $label($row['cells'][$day]) }}</td>
