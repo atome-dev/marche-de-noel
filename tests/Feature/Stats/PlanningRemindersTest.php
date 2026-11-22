@@ -73,7 +73,7 @@ test('the email greets the manager and shows the current planning of the stand',
 
     $mail->assertHasSubject('Marché de Noël — le planning du stand « Buvette » n’est pas complet');
     $mail->assertSeeInHtml('Bonjour Camille Martin,', false);
-    $mail->assertSeeInHtml('le planning de votre stand « Buvette » n’est pas complet, merci de relancer les parents de votre classe.', false);
+    $mail->assertSeeInHtml('le planning de votre stand « Buvette » n’est pas complet (1 place libre sur 1 créneau), merci de relancer les parents de votre classe.', false);
     $mail->assertSeeInHtml('10:00–12:00', false);
     $mail->assertSeeInHtml('1 / 2', false);
     $mail->assertSeeInHtml('Alix Durand', false);
@@ -85,7 +85,8 @@ test('every day of the planning is a heading in the email', function () {
 
     $html = (new StandPlanningReminder($this->camille, $this->buvette))->render();
 
-    expect($html)->not->toContain('##')
+    expect($html)->toContain('(3 places libres sur 2 créneaux)')
+        ->not->toContain('##')
         ->and(substr_count($html, '<h2'))->toBe(2);
 });
 

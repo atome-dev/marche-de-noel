@@ -1,7 +1,7 @@
 <x-mail::message>
 # {{ __('stats.reminder.mail.greeting', ['first_name' => $manager->first_name, 'last_name' => $manager->last_name]) }}
 
-{{ __('stats.reminder.mail.intro', ['stand' => $stand->name]) }}
+{{ __('stats.reminder.mail.intro', ['stand' => $stand->name, 'open_summary' => $openSummary]) }}
 
 @foreach ($days as $day => $slots)
 ## {{ $day }}

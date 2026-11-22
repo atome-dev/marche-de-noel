@@ -30,7 +30,10 @@ return [
         'mail' => [
             'subject' => ':name — le planning du stand « :stand » n’est pas complet',
             'greeting' => 'Bonjour :first_name :last_name,',
-            'intro' => 'le planning de votre stand « :stand » n’est pas complet, merci de relancer les parents de votre classe. Voici le planning actuel :',
+            'intro' => 'le planning de votre stand « :stand » n’est pas complet (:open_summary), merci de relancer les parents de votre classe. Voici le planning actuel :',
+            'open_summary' => ':places sur :slots',
+            'open_places' => ':count place libre|:count places libres',
+            'open_slots' => ':count créneau|:count créneaux',
             'slot' => 'Créneau',
             'places' => 'Inscrits',
             'volunteers' => 'Bénévoles',

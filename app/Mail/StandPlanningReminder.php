@@ -31,16 +31,26 @@ class StandPlanningReminder extends Mailable
 
     public function content(): Content
     {
-        $days = $this->stand->slots()
+        $slots = $this->stand->slots()
             ->where('date', '>=', PlanningGrid::today())
             ->where('capacity', '>', 0)
             ->with('registrations.user')
-            ->get()
-            ->groupBy(fn (Slot $slot): string => OpenPlacesSummary::dayLabel($slot->date->toDateString()));
+            ->get();
+
+        // Overbooked slots do not make up for the others.
+        $openPlaces = $slots->map(fn (Slot $slot): int => max(0, $slot->capacity - $slot->takenCount()));
+        $placesCount = (int) $openPlaces->sum();
+        $slotsCount = $openPlaces->filter()->count();
 
         return new Content(
             markdown: 'mail.stand-planning-reminder',
-            with: ['days' => $days],
+            with: [
+                'days' => $slots->groupBy(fn (Slot $slot): string => OpenPlacesSummary::dayLabel($slot->date->toDateString())),
+                'openSummary' => __('stats.reminder.mail.open_summary', [
+                    'places' => trans_choice('stats.reminder.mail.open_places', $placesCount, ['count' => $placesCount]),
+                    'slots' => trans_choice('stats.reminder.mail.open_slots', $slotsCount, ['count' => $slotsCount]),
+                ]),
+            ],
         );
     }
 }
