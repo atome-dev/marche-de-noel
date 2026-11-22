@@ -87,6 +87,9 @@ class AppServiceProvider extends ServiceProvider
             ->where('type', StandType::Bandstand)
             ->exists());
 
+        // Statistics page: administrators and the managers of any stand.
+        Gate::define('see-stats', fn (User $user): bool => $user->managedStands()->exists());
+
         // The site is already open: links to the bandstand stay hidden from volunteers until a score is online.
         Gate::define('see-bandstand-link', fn (User $user): bool => Score::query()->exists()
             || $user->can('manage-bandstand'));

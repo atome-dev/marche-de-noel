@@ -12,6 +12,7 @@ return [
     'documents' => 'Documents',
     'stands' => 'Stands',
     'my_stands' => 'Mes stands',
+    'stats' => 'Statistiques',
     'administration' => 'Administration',
     'users' => 'Utilisateurs',
     'snapshots' => 'Sauvegardes',

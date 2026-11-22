@@ -33,6 +33,7 @@ use App\Livewire\Planning\Board;
 use App\Livewire\Raffle\Index as RaffleIndex;
 use App\Livewire\Stands\Index as StandsIndex;
 use App\Livewire\Stands\StandForm;
+use App\Livewire\Stats\Index as StatsIndex;
 use App\Livewire\TreeOrders\Manage as TreeOrdersManage;
 use App\Livewire\TreeOrders\OrderForm as TreeOrderForm;
 use App\Livewire\TreeOrders\Pickup as TreeOrdersPickup;
@@ -72,6 +73,8 @@ Route::middleware('auth')->group(function () {
 
     Route::livewire('planning', Board::class)->name('planning');
     Route::get('planning/print', PrintPlanning::class)->name('planning.print');
+
+    Route::livewire('statistiques', StatsIndex::class)->middleware('can:see-stats')->name('stats');
 
     Route::livewire('stands', StandsIndex::class)->name('stands.index');
     Route::livewire('stands/create', StandForm::class)->name('stands.create');

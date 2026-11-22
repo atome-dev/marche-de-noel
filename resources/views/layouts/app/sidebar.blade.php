@@ -42,6 +42,11 @@
                         {{ auth()->user()->isAdmin() ? __('navigation.stands') : __('navigation.my_stands') }}
                     </flux:sidebar.item>
                 @endif
+                @can('see-stats')
+                    <flux:sidebar.item icon="chart-bar" :href="route('stats')" :current="request()->routeIs('stats')" wire:navigate>
+                        {{ __('navigation.stats') }}
+                    </flux:sidebar.item>
+                @endcan
             </flux:sidebar.nav>
 
             @can('admin')
