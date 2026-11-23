@@ -62,7 +62,7 @@
         <flux:error name="orders" />
 
         @if ($this->orderables)
-            <div class="space-y-2 border-t border-brand-line pt-4">
+            <div id="commander" class="scroll-mt-4 space-y-2 border-t border-brand-line pt-4">
                 <flux:heading size="sm">{{ __('cookies.show.orders_heading') }}</flux:heading>
                 <p class="text-sm text-zinc-600">
                     @if ($this->locked)
@@ -100,6 +100,42 @@
             </div>
         @endif
     </div>
+
+    @php $unorderedIngredients = $this->unorderedIngredients(); @endphp
+    <flux:modal name="order-reminder" class="w-full max-w-md">
+        <div class="space-y-5">
+            <flux:heading size="lg" class="flex items-center gap-2">
+                <flux:icon.exclamation-triangle variant="solid" class="text-amber-500" />
+                {{ __('cookies.show.reminder.title') }}
+            </flux:heading>
+
+            <div class="space-y-3 text-sm">
+                <p>{{ trans_choice('cookies.show.reminder.intro', count($unorderedIngredients)) }}</p>
+                <ul class="list-disc space-y-1 ps-5 font-semibold">
+                    @foreach ($unorderedIngredients as $name)
+                        <li>{{ $name }}</li>
+                    @endforeach
+                </ul>
+                <p>
+                    {{ trans_choice('cookies.show.reminder.free', count($unorderedIngredients)) }}
+                    @if ($this->deadline)
+                        {{ __('cookies.show.reminder.order_before', ['date' => $this->deadline->locale(app()->getLocale())->translatedFormat('l j F Y')]) }}
+                    @else
+                        {{ __('cookies.show.reminder.order') }}
+                    @endif
+                </p>
+            </div>
+
+            <div class="flex justify-end">
+                <flux:modal.close>
+                    <flux:button
+                        variant="primary"
+                        x-on:click="setTimeout(() => document.getElementById('commander')?.scrollIntoView({ behavior: 'smooth' }), 150)"
+                    >{{ __('cookies.show.reminder.action') }}</flux:button>
+                </flux:modal.close>
+            </div>
+        </div>
+    </flux:modal>
 
     {{-- Ingrédients --}}
     @if ($recipe->ingredients->isNotEmpty())

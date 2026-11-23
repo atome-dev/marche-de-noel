@@ -61,6 +61,30 @@ class Show extends Component
         unset($this->commitment, $this->orderables);
 
         Flux::toast(variant: 'success', text: __('cookies.show.committed', ['quantity' => $this->quantity]));
+
+        // Ordering is not automatic: some families thought the commitment was enough.
+        if ($this->unorderedIngredients() !== []) {
+            Flux::modal('order-reminder')->show();
+        }
+    }
+
+    /**
+     * Names of the orderable ingredients of the recipe not ordered yet, while
+     * orders are open.
+     *
+     * @return list<string>
+     */
+    public function unorderedIngredients(): array
+    {
+        if ($this->locked) {
+            return [];
+        }
+
+        return collect($this->orderables)
+            ->whereNull('ordered')
+            ->pluck('name')
+            ->values()
+            ->all();
     }
 
     public function withdraw(CookieOrdering $ordering): void

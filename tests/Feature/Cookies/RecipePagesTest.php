@@ -167,6 +167,38 @@ describe('recipe page', function () {
             ->assertDontSee('Poudre de noisette');
     });
 
+    test('validating opens a reminder listing the ingredients to order before the deadline', function () {
+        Livewire::test(Show::class, ['recipe' => $this->recipe])
+            ->call('saveCommitment')
+            ->assertDispatched('modal-show', name: 'order-reminder')
+            ->assertSee('Votre recette contient l’ingrédient suivant :')
+            ->assertSee('L’école peut vous le fournir gratuitement')
+            ->assertSee('N’oubliez pas de passer la commande sur ce formulaire avant le dimanche 15 novembre 2026.');
+    });
+
+    test('no reminder once everything is ordered or for a recipe without orderable ingredient', function () {
+        Livewire::test(Show::class, ['recipe' => $this->recipe])
+            ->call('saveCommitment')
+            ->call('order', 'poudre-damande')
+            ->call('saveCommitment') // same quantity: the order is kept
+            ->assertNotDispatched('modal-show');
+
+        $plain = Recipe::factory()->create();
+        RecipeIngredient::factory()->for($plain)->create(['name' => 'Farine']);
+
+        Livewire::test(Show::class, ['recipe' => $plain])
+            ->call('saveCommitment')
+            ->assertNotDispatched('modal-show');
+    });
+
+    test('no reminder after the deadline', function () {
+        $this->travelTo('2026-11-16 10:00');
+
+        Livewire::test(Show::class, ['recipe' => $this->recipe])
+            ->call('saveCommitment')
+            ->assertNotDispatched('modal-show');
+    });
+
     test('an ingredient is ordered in the recipe proportion and can be cancelled', function () {
         $component = Livewire::test(Show::class, ['recipe' => $this->recipe])
             ->set('quantity', 3)
