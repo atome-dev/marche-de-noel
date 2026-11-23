@@ -62,7 +62,9 @@ class Index extends Component
 
         $sent = app(PlanningReminders::class)->send(auth()->user(), $standId);
 
-        Flux::toast(variant: 'success', text: trans_choice('stats.reminder.sent', $sent, ['count' => $sent]));
+        $sent > 0
+            ? Flux::toast(variant: 'success', text: trans_choice('stats.reminder.sent', $sent, ['count' => $sent]))
+            : Flux::toast(variant: 'warning', text: trans_choice('stats.reminder.none_sent', config('marche.planning.reminder_interval_days')));
     }
 
     public function render(): View

@@ -77,11 +77,23 @@ class OpenPlacesSummary
     }
 
     /**
-     * Number of emails a reminder sends: one per manager of each incomplete stand.
+     * Rows of the stands whose managers can be reminded now: incomplete, with
+     * managers, and not reminded too recently.
+     *
+     * @return list<array{stand: Stand, cells: array<string, array{open: int, capacity: int}|null>, open: int, capacity: int}>
+     */
+    public function remindableRows(): array
+    {
+        return array_values(array_filter($this->incompleteRows(), fn (array $row): bool => $row['stand']->managers->isNotEmpty()
+            && $row['stand']->canSendPlanningReminder()));
+    }
+
+    /**
+     * Number of emails a reminder sends: one per manager of each remindable stand.
      */
     public function reminderCount(): int
     {
-        return array_sum(array_map(fn (array $row): int => $row['stand']->managers->count(), $this->incompleteRows()));
+        return array_sum(array_map(fn (array $row): int => $row['stand']->managers->count(), $this->remindableRows()));
     }
 
     public function isEmpty(): bool

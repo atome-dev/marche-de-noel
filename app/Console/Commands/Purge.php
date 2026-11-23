@@ -66,6 +66,9 @@ class Purge extends Command
                     DB::table($table)->delete();
                 }
             }
+
+            // Stands are kept, the reminders of the year are not.
+            DB::table('stands')->update(['planning_reminded_at' => null]);
         });
 
         // Yearly documents are uploaded again by the administrator.

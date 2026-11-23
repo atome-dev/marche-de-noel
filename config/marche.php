@@ -89,6 +89,9 @@ return [
 
         // Intervalle (en secondes) d'actualisation automatique du planning ; 0 pour la désactiver.
         'refresh_seconds' => max(0, (int) env('PLANNING_REFRESH_SECONDS', 15)),
+
+        // Délai minimal (en jours) entre deux relances par courriel des responsables d'un même stand.
+        'reminder_interval_days' => max(0, (int) env('PLANNING_REMINDER_INTERVAL_DAYS', 3)),
     ],
 
     /*

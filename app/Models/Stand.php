@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_active
  * @property bool $is_open_to_all
  * @property int $position
+ * @property CarbonImmutable|null $planning_reminded_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Collection<int, User> $managers
@@ -42,6 +43,7 @@ class Stand extends Model
             'type' => StandType::class,
             'is_active' => 'boolean',
             'is_open_to_all' => 'boolean',
+            'planning_reminded_at' => 'immutable_datetime',
         ];
     }
 
@@ -81,6 +83,21 @@ class Stand extends Model
         }
 
         return $this->managers()->whereKey($user->id)->exists();
+    }
+
+    /**
+     * When the managers may be reminded again by email; null when they can be now.
+     */
+    public function nextPlanningReminderAt(): ?CarbonImmutable
+    {
+        $next = $this->planning_reminded_at?->addDays(config('marche.planning.reminder_interval_days'));
+
+        return $next !== null && $next->isFuture() ? $next : null;
+    }
+
+    public function canSendPlanningReminder(): bool
+    {
+        return $this->nextPlanningReminderAt() === null;
     }
 
     /**

@@ -10,6 +10,8 @@
     $label = fn (?array $cell): string => $cell === null
         ? __('stats.open_places.none')
         : __('stats.open_places.cell', ['open' => $cell['open'], 'capacity' => $cell['capacity']]);
+    $dateTime = fn ($date): string => $date->timezone(config('marche.timezone'))->locale(app()->getLocale())->translatedFormat('j F à H:i');
+    $intervalDays = config('marche.planning.reminder_interval_days');
 @endphp
 
 <div class="space-y-3">
@@ -29,6 +31,10 @@
                     data-remind-all
                 >{{ __('stats.reminder.all') }}</flux:button>
             </div>
+        @endif
+
+        @if ($canRemind && $intervalDays > 0)
+            <p class="text-xs text-zinc-600">{{ trans_choice('stats.reminder.interval', $intervalDays) }}</p>
         @endif
 
         <div class="overflow-x-auto rounded-2xl border border-brand-line bg-white">
@@ -55,7 +61,17 @@
                                 <div class="text-xs font-normal text-zinc-600">
                                     {{ $row['stand']->managers->pluck('name')->join(', ') ?: __('stats.open_places.no_manager') }}
                                 </div>
-                                @if ($canRemind && $row['open'] > 0 && $row['stand']->managers->isNotEmpty())
+                                @if ($canRemind && $row['stand']->planning_reminded_at)
+                                    <div class="text-xs font-bold text-red-500 " data-reminded-at>
+                                        {{ __('stats.reminder.reminded_at', ['date' => $dateTime($row['stand']->planning_reminded_at)]) }}
+                                        {{--
+                                        @if ($row['open'] > 0 && $row['stand']->nextPlanningReminderAt())
+                                            <br>{{ __('stats.reminder.next_at', ['date' => $dateTime($row['stand']->nextPlanningReminderAt())]) }}
+                                        @endif
+                                        --}}
+                                    </div>
+                                @endif
+                                @if ($canRemind && $row['open'] > 0 && $row['stand']->managers->isNotEmpty() && $row['stand']->canSendPlanningReminder())
                                     <flux:button
                                         size="xs"
                                         variant="ghost"

@@ -66,6 +66,30 @@ test('the stand button only reminds the managers of that stand', function () {
     Mail::assertSentCount(2);
 });
 
+test('a stand is reminded at most once every 3 days', function () {
+    config(['marche.planning.reminder_interval_days' => 3]);
+    $this->actingAs($this->admin);
+
+    Livewire::test(Index::class)->call('sendReminders');
+    Mail::assertSentCount(2);
+    expect($this->buvette->fresh()->planning_reminded_at->toDateTimeString())->toBe('2026-11-22 10:00:00');
+
+    // Neither the global button nor the stand button sends it again.
+    $this->travelTo('2026-11-25 09:59:00');
+    Livewire::test(Index::class)
+        ->assertSee('Relancé le 22 novembre à 11:00')
+        ->assertDontSee('Relancer les responsables des stands incomplets')
+        ->call('sendReminders')
+        ->call('sendReminders', $this->buvette->id);
+    Mail::assertSentCount(2);
+
+    $this->travelTo('2026-11-25 10:00:00');
+    Livewire::test(Index::class)
+        ->assertSee('Relancer les responsables des stands incomplets')
+        ->call('sendReminders', $this->buvette->id);
+    Mail::assertSentCount(4);
+});
+
 test('the email greets the manager and shows the current planning of the stand', function () {
     config(['marche.name' => 'Marché de Noël']);
 

@@ -59,6 +59,8 @@ test('every personal data is deleted after confirmation', function () {
 });
 
 test('slots, registrations and managers are deleted but stands are kept', function () {
+    $this->stand->forceFill(['planning_reminded_at' => now()])->save();
+
     $this->artisan('marche:purge')
         ->expectsQuestion(__('commands.purge.confirm', ['word' => __('commands.purge.word')]), __('commands.purge.word'))
         ->assertSuccessful();
@@ -69,7 +71,8 @@ test('slots, registrations and managers are deleted but stands are kept', functi
     $this->assertDatabaseCount('stand_manager', 0);
 
     expect(Stand::count())->toBe(1)
-        ->and($this->stand->fresh()->schoolClasses)->toHaveCount(1);
+        ->and($this->stand->fresh()->schoolClasses)->toHaveCount(1)
+        ->and($this->stand->fresh()->planning_reminded_at)->toBeNull();
 });
 
 test('commitments and orders are deleted but recipes are kept', function () {

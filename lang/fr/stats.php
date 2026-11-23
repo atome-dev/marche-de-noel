@@ -27,6 +27,10 @@ return [
         'confirm_all' => 'Envoyer :count courriel de relance au responsable du stand incomplet ?|Envoyer :count courriels de relance aux responsables des stands incomplets ?',
         'confirm_stand' => 'Envoyer un courriel de relance au responsable du stand « :stand » ?|Envoyer un courriel de relance à chaque responsable du stand « :stand » ?',
         'sent' => ':count courriel de relance envoyé.|:count courriels de relance envoyés.',
+        'none_sent' => 'Aucun courriel envoyé : les responsables ont déjà été relancés il y a moins d’un jour.|Aucun courriel envoyé : les responsables ont déjà été relancés il y a moins de :count jours.',
+        'interval' => 'Un même stand ne peut être relancé qu’une fois par jour.|Un même stand ne peut être relancé qu’une fois tous les :count jours.',
+        'reminded_at' => 'Relancé le :date',
+        'next_at' => 'Prochaine relance possible le :date',
         'mail' => [
             'subject' => ':name — le planning du stand « :stand » n’est pas complet',
             'greeting' => 'Bonjour :first_name :last_name,',
