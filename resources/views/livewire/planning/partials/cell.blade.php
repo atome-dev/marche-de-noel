@@ -1,4 +1,4 @@
-{{-- Contenu d'une case du planning. Variables : $slot, $canManage, $compact (liste mobile). --}}
+{{-- Contenu d'une case du planning. Variables : $slot, $canManage (nom complet et téléphone), $compact (liste mobile). --}}
 @php
     $status = $slot->statusFor(auth()->user(), $canManage);
     $mine = $slot->hasVolunteer(auth()->user());
@@ -34,7 +34,10 @@
         </span>
         <span class="text-xs leading-tight text-zinc-700">
             @forelse ($slot->registrations as $registration)
-                <span @class(['block truncate', 'font-semibold text-brand-ink' => $registration->user_id === auth()->id()])>{{ $registration->displayName() }}</span>
+                <span @class(['block truncate', 'font-semibold text-brand-ink' => $registration->user_id === auth()->id()])>{{ $registration->displayName($canManage) }}</span>
+                @if ($canManage && $registration->user?->phone)
+                    <span class="block truncate text-[11px] text-zinc-500">{{ $registration->user->phone }}</span>
+                @endif
             @empty
                 <span class="block truncate text-red-700">{{ __('planning.to_fill') }}</span>
             @endforelse

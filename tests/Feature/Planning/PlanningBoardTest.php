@@ -187,6 +187,48 @@ describe('privacy', function () {
             ->assertSee('06 98 76 54 32')
             ->assertSee('Message privé');
     });
+
+    test('in the grid, volunteers see short names without phones', function () {
+        Livewire::test(Board::class)
+            ->assertSee('Dominique P.')
+            ->assertDontSee('Dominique Petit')
+            ->assertDontSee('06 98 76 54 32');
+    });
+
+    test('in the grid, managers see full names and phones of their stand only', function () {
+        $this->crepes->managers()->attach($this->user);
+
+        Livewire::test(Board::class)
+            ->assertSee('Dominique P.')
+            ->assertDontSee('06 98 76 54 32');
+
+        $this->buvette->managers()->attach($this->user);
+
+        Livewire::test(Board::class)
+            ->assertSee('Dominique Petit')
+            ->assertSee('06 98 76 54 32');
+    });
+
+    test('in the grid, admins see full names and phones', function () {
+        $this->actingAs(User::factory()->admin()->create());
+
+        Livewire::test(Board::class)
+            ->assertSee('Dominique Petit')
+            ->assertSee('06 98 76 54 32');
+    });
+
+    test('the global print shows full names and phones to managers of the stand only', function () {
+        $this->get(route('planning.print'))
+            ->assertSee('Dominique P.')
+            ->assertDontSee('Dominique Petit')
+            ->assertDontSee('06 98 76 54 32');
+
+        $this->buvette->managers()->attach($this->user);
+
+        $this->get(route('planning.print'))
+            ->assertSee('Dominique Petit')
+            ->assertSee('06 98 76 54 32');
+    });
 });
 
 describe('manager actions', function () {

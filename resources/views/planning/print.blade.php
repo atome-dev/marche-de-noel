@@ -102,6 +102,7 @@
                         </thead>
                         <tbody>
                             @foreach ($planningDay->rows as $row)
+                                @php $rowContacts = Gate::allows('update', $row->stand); @endphp
                                 <tr>
                                     <th class="border border-zinc-400 px-1 py-1 text-left align-top text-[10px]">{{ $row->stand->name }}</th>
                                     @foreach ($row->cells as $cell)
@@ -111,7 +112,10 @@
                                             <td colspan="{{ $cell->span }}" class="print-cell overflow-hidden border-2 border-zinc-500 bg-zinc-100 px-1 py-0.5 align-top">
                                                 <strong>{{ $cell->slot->takenCount() }}/{{ $cell->slot->capacity }}</strong>
                                                 @foreach ($cell->slot->registrations as $registration)
-                                                    <span class="block truncate">{{ $registration->displayName() }}</span>
+                                                    <span class="block truncate">{{ $registration->displayName($rowContacts) }}</span>
+                                                    @if ($rowContacts && $registration->user?->phone)
+                                                        <span class="block truncate text-zinc-600">{{ $registration->user->phone }}</span>
+                                                    @endif
                                                 @endforeach
                                             </td>
                                         @endif
